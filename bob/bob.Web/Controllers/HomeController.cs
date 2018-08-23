@@ -15,11 +15,11 @@ namespace bob.Controllers
             CaeceDbContext context = new CaeceDbContext();
 
             ViewBag.Title = "Home Page";
-            var materia = context.materias.Create();
-            materia.materiaid = 8015;
-            materia.abr = "INTRO. A LA INFORMATICA";
-            context.materias.Add(materia);
-            context.SaveChanges();
+            //var materia = context.materias.Create();
+            //materia.materiaid = 8015;
+            //materia.abr = "INTRO. A LA INFORMATICA";
+            //context.materias.Add(materia);
+            //context.SaveChanges();
 
             return View();
         }
