@@ -21,6 +21,3 @@ namespace bob
         }
     }
 }
-
-
-// localhost:XXXX/Controller/Action/Parametro
