@@ -4,11 +4,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using bob.Data;
 
 namespace bob.Controllers
 {
     public class ValuesController : ApiController
     {
+        public readonly CaeceDbContext context = new CaeceDbContext();
         // GET api/values
         public IEnumerable<string> Get()
         {
@@ -16,9 +18,12 @@ namespace bob.Controllers
         }
 
         // GET api/values/5
-        public string Get(int id)
+        [Route("api/values/{materiaId}")]
+        public string Get(int materiaId)
         {
-            return "value";
+            var materia = context.materias.First(x => x.materiaid == materiaId);
+
+            return materia.abr;
         }
 
         // POST api/values
