@@ -260,3 +260,6 @@ paket-files/
 __pycache__/
 *.pyc
 /basededatos/caece_v4.mwb
+bob/bob.Data/App.config
+bob/bob.Web/Web.config
+/basededatos/caece_v4.mwb.bak
