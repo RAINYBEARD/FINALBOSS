@@ -1,4 +1,4 @@
-namespace bob.Data
+namespace bob.Data.Entities.Caece
 {
     using System;
     using System.Collections.Generic;

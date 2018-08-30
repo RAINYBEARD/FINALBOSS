@@ -1,10 +1,11 @@
-namespace bob.Data
+namespace bob.Data.Entities.Authentication
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using bob.Data.Entities.Caece;
 
     [Table("caece.alumno")]
     public partial class alumno

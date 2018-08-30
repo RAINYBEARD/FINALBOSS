@@ -4,7 +4,8 @@ namespace bob.Data
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
-
+    using bob.Data.Entities.Authentication;
+    using bob.Data.Entities.Caece;
     public partial class CaeceDbContext : DbContext
     {
         public CaeceDbContext()
