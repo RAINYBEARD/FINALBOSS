@@ -36,14 +36,6 @@ namespace bob.Controllers
             return View();
         }
 
-        public List<Curso> LoadJson()
-        {
-            var json = MockService.MockService.CursosJson();
-            var jobject = JObject.Parse(json);
-            var sCursos = (JArray)jobject["Cursos"];
-            return sCursos.ToObject<List<Curso>>();
-        }
-
         public List<PlanDeEstudio> LoadJson()
         {
             var json = MockService.MockService.PlanDeEstudio();
@@ -51,7 +43,6 @@ namespace bob.Controllers
             var sCursos = (JArray)jobject["PlanEstudio"];
             return sCursos.ToObject<List<PlanDeEstudio>>();
         }
-
 
     }
 
