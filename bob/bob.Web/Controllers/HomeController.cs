@@ -17,28 +17,22 @@ namespace bob.Controllers
         {
             CaeceDBContext context = new CaeceDBContext();
 
-            ViewBag.Title = "Home Page";
-            //var materia_des = context.Materias_Descripciones.Create();
-            //materia_des.Materia_Id = 8015;
-            //materia_des.Mat_Des = "INTRO. A LA INFORMATICA";
-            //context.Materias_Descripciones.Add(materia_des);
-            var titulo = context.Titulos.Create();
-            titulo.Plan_Tit = "10Z";
-            titulo.Titulo_Id = 7290;
-            titulo.Tit_Des = "Licenciado en Sistemas de Informacion";
+            ViewBag.PlanDeEstudio = LoadJson();
+            foreach (PlanDeEstudio dato in ViewBag.PlanDeEstudio)
+            {
+                int materia_a_buscar = int.Parse(dato.materia_id);
+                bool resultado = context.Materias_Descripciones.Any(a => a.Materia_Id == materia_a_buscar);
 
-            var alumno = context.Alumnos.Create();
-            alumno.Matricula = " 951282";
-            alumno.Password = "lalalalala";
-            alumno.Titulo = titulo;
-            context.Alumnos.Add(alumno);
-            
+                if (resultado == false)
+                {
+                    var materia = context.Materias_Descripciones.Create();
+                    materia.Materia_Id = materia_a_buscar;
+                    materia.Mat_Des = dato.mat_des.Trim();
+                    context.Materias_Descripciones.Add(materia);
+                    context.SaveChanges();
+                }
+            }
 
-
-            //var materia = context.Materias.Create();
-
-            context.SaveChanges();
-            //ViewBag.Cursos = LoadJson();
             return View();
         }
 
