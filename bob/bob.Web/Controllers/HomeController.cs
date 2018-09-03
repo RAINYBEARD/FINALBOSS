@@ -48,6 +48,12 @@ namespace bob.Controllers
 
     }
 
+    public class PlanDeEstudio
+    {
+        public string materia_id { get; set; }
+        public string mat_des { get; set; }
+    }
+
     public class Curso
     {
         public string periodo_id { get; set; }
