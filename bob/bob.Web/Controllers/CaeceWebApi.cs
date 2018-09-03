@@ -11,7 +11,7 @@ namespace bob.Controllers
 {
     public class CaeceWebApi : ApiController
     {
-        private readonly CaeceDbContext context = new CaeceDbContext();
+        private readonly CaeceDBContext context = new CaeceDBContext();
 
         public void GetPlanDeEstudio()
         {

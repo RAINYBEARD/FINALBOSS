@@ -8,21 +8,37 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using bob.MockService;
+
 namespace bob.Controllers
 {
     public class HomeController : Controller
     {
         public ActionResult Index()
         {
-            CaeceDbContext context = new CaeceDbContext();
+            CaeceDBContext context = new CaeceDBContext();
 
             ViewBag.Title = "Home Page";
-            //var materia = context.materias.Create();
-            //materia.materiaid = 8015;
-            //materia.abr = "INTRO. A LA INFORMATICA";
-            //context.materias.Add(materia);
-            //context.SaveChanges();
-            ViewBag.Cursos = LoadJson();
+            //var materia_des = context.Materias_Descripciones.Create();
+            //materia_des.Materia_Id = 8015;
+            //materia_des.Mat_Des = "INTRO. A LA INFORMATICA";
+            //context.Materias_Descripciones.Add(materia_des);
+            var titulo = context.Titulos.Create();
+            titulo.Plan_Tit = "10Z";
+            titulo.Titulo_Id = 7290;
+            titulo.Tit_Des = "Licenciado en Sistemas de Informacion";
+
+            var alumno = context.Alumnos.Create();
+            alumno.Matricula = " 951282";
+            alumno.Password = "lalalalala";
+            alumno.Titulo = titulo;
+            context.Alumnos.Add(alumno);
+            
+
+
+            //var materia = context.Materias.Create();
+
+            context.SaveChanges();
+            //ViewBag.Cursos = LoadJson();
             return View();
         }
 

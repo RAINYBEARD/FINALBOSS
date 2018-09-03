@@ -4,79 +4,89 @@ namespace bob.Data
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
-    using bob.Data.Entities.Authentication;
-    using bob.Data.Entities.Caece;
-    public partial class CaeceDbContext : DbContext
+    using bob.Data.Entities.DB;
+    public partial class CaeceDBContext : DbContext
     {
-        public CaeceDbContext()
-            : base("name=CaeceDbContext")
+        public CaeceDBContext()
+            : base("name=CaeceDBContext")
         {
         }
 
-        public virtual DbSet<alumno> alumnos { get; set; }
-        public virtual DbSet<correlativa> correlativas { get; set; }
-        public virtual DbSet<materia> materias { get; set; }
-        public virtual DbSet<materia_has_plan> materia_has_plan { get; set; }
-        public virtual DbSet<titulo> titulos { get; set; }
-        public virtual DbSet<titulo_plan> titulo_plan { get; set; }
+        public virtual DbSet<Alumno> Alumnos { get; set; }
+        public virtual DbSet<Correlativa> Correlativas { get; set; }
+        public virtual DbSet<Materia> Materias { get; set; }
+        public virtual DbSet<Materia_Descripcion> Materias_Descripciones { get; set; }
+        public virtual DbSet<Titulo> Titulos { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<alumno>()
-                .Property(e => e.matricula)
+            modelBuilder.Entity<Alumno>()
+                .Property(e => e.Matricula)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<alumno>()
-                .Property(e => e.password)
+            modelBuilder.Entity<Alumno>()
+                .Property(e => e.Password)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<alumno>()
-                .Property(e => e.plantit)
+            modelBuilder.Entity<Alumno>()
+                .Property(e => e.Plan_Tit)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<correlativa>()
-                .Property(e => e.plantit)
+            modelBuilder.Entity<Correlativa>()
+                .Property(e => e.PCursar)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<materia>()
-                .Property(e => e.abr)
+            modelBuilder.Entity<Correlativa>()
+                .Property(e => e.PAprobar)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<materia>()
-                .HasMany(e => e.materia_has_plan)
-                .WithRequired(e => e.materia)
+            modelBuilder.Entity<Correlativa>()
+                .Property(e => e.Plan_Id)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Correlativa>()
+                .Property(e => e.Plan_Tit)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Materia>()
+                .Property(e => e.Plan_Id)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Materia>()
+                .Property(e => e.Plan_Tit)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Materia>()
+                .HasOptional(e => e.Correlativa)
+                .WithRequired(e => e.Materia);
+
+            modelBuilder.Entity<Materia_Descripcion>()
+                .Property(e => e.Mat_Des)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Materia_Descripcion>()
+                .HasMany(e => e.Materias)
+                .WithRequired(e => e.Materia_Descripcion)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<materia_has_plan>()
-                .Property(e => e.plantit)
+            modelBuilder.Entity<Titulo>()
+                .Property(e => e.Plan_Tit)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<materia_has_plan>()
-                .HasOptional(e => e.correlativa)
-                .WithRequired(e => e.materia_has_plan);
-
-            modelBuilder.Entity<titulo>()
-                .Property(e => e.plantit)
+            modelBuilder.Entity<Titulo>()
+                .Property(e => e.Tit_Des)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<titulo>()
-                .HasMany(e => e.alumnos)
-                .WithRequired(e => e.titulo)
+            modelBuilder.Entity<Titulo>()
+                .HasMany(e => e.Alumnos)
+                .WithRequired(e => e.Titulo)
+                .HasForeignKey(e => new { e.Plan_Tit, e.Titulo_Id })
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<titulo>()
-                .HasMany(e => e.titulo_plan)
-                .WithRequired(e => e.titulo)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<titulo_plan>()
-                .Property(e => e.plantit)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<titulo_plan>()
-                .HasMany(e => e.materia_has_plan)
-                .WithRequired(e => e.titulo_plan)
-                .HasForeignKey(e => new { e.planid, e.plantit })
+            modelBuilder.Entity<Titulo>()
+                .HasMany(e => e.Materias)
+                .WithRequired(e => e.Titulo)
+                .HasForeignKey(e => new { e.Plan_Tit, e.Titulo_Id })
                 .WillCascadeOnDelete(false);
         }
     }

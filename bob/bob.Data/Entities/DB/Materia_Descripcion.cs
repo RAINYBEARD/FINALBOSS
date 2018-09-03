@@ -1,4 +1,4 @@
-namespace bob.Data.Entities.Caece
+namespace bob.Data.Entities.DB
 {
     using System;
     using System.Collections.Generic;
@@ -6,28 +6,23 @@ namespace bob.Data.Entities.Caece
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("caece.titulo_plan")]
-    public partial class titulo_plan
+    [Table("caece.Materia_Descripcion")]
+    public partial class Materia_Descripcion
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public titulo_plan()
+        public Materia_Descripcion()
         {
-            materia_has_plan = new HashSet<materia_has_plan>();
+            Materias = new HashSet<Materia>();
         }
 
         [Key]
-        [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int planid { get; set; }
+        public int Materia_Id { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
-        [StringLength(20)]
-        public string plantit { get; set; }
+        [StringLength(80)]
+        public string Mat_Des { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<materia_has_plan> materia_has_plan { get; set; }
-
-        public virtual titulo titulo { get; set; }
+        public virtual ICollection<Materia> Materias { get; set; }
     }
 }
