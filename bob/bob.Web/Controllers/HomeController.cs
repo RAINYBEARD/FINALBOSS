@@ -44,6 +44,13 @@ namespace bob.Controllers
             return sCursos.ToObject<List<Curso>>();
         }
 
+        public List<PlanDeEstudio> LoadJson()
+        {
+            var json = MockService.MockService.PlanDeEstudio();
+            var jobject = JObject.Parse(json);
+            var sCursos = (JArray)jobject["PlanEstudio"];
+            return sCursos.ToObject<List<PlanDeEstudio>>();
+        }
 
 
     }
