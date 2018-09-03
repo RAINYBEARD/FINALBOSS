@@ -24,11 +24,10 @@
         <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
     </div>
 
-    @*@foreach (var curso in ViewBag.Cursos)
+   @*@ @foreach (var plandeestudio in ViewBag.PlanDeEstudio)
     {<ul>
-    <li>@curso.periodo_id</li>
-    <li>@curso.materia_id </li>
-    <li>@curso.perso_id </li>
+    <li>@plandeestudio.materia_id </li>
+    <li>@plandeestudio.mat_des </li>
 </ul>
         <br>
     }*@
