@@ -9,11 +9,11 @@ namespace bob.MockService
 {
     public class MockService
     {
-        private static string _repoPath = WebConfigurationManager.AppSettings.Get("LocalRepositoryPath");
+        private static readonly string _repoPath = HttpContext.Current.Server.MapPath("~/App_Data");
 
         public static string HistoriaAcademicaJson() {
 
-            using (StreamReader r = new StreamReader(_repoPath + @"\bob\bob.Web\App_Data\Cursos.json"))
+            using (StreamReader r = new StreamReader(Path.Combine(_repoPath, "HistoriaAcademica.json")))
             {
                 return r.ReadToEnd();
             }
@@ -22,7 +22,7 @@ namespace bob.MockService
         public static string CursosJson()
         {
 
-            using (StreamReader r = new StreamReader(_repoPath + @"\bob\bob.Web\App_Data\Cursos.json"))
+            using (StreamReader r = new StreamReader(Path.Combine(_repoPath, "Cursos.json")))
             {
                 return r.ReadToEnd();
             }
@@ -31,7 +31,7 @@ namespace bob.MockService
         public static string MesasFinal()
         {
 
-            using (StreamReader r = new StreamReader(_repoPath + @"\bob\bob.Web\App_Data\MesasFinal.json"))
+            using (StreamReader r = new StreamReader(Path.Combine(_repoPath, "MesasFinal.json")))
             {
                 return r.ReadToEnd();
             }
@@ -40,7 +40,7 @@ namespace bob.MockService
         public static string PlanDeEstudio()
         {
 
-            using (StreamReader r = new StreamReader(_repoPath + @"\bob\bob.Web\App_Data\PlanDeEstudio.json"))
+            using (StreamReader r = new StreamReader(Path.Combine(_repoPath, "PlanDeEstudio.json")))
             {
                 return r.ReadToEnd();
             }

@@ -91,9 +91,9 @@ namespace bob.Controllers
 
         public List<PlanDeEstudio> LoadJson()
         {
-            CaeceWS.wbsTrans service = new bob.CaeceWS.wbsTrans();
-            var json = service.getPlanEstudioJSON(_token, " 951282");
-            var jobject = JObject.Parse(json);
+            //CaeceWS.wbsTrans service = new bob.CaeceWS.wbsTrans();
+            //var json = service.getPlanEstudioJSON(_token, " 951282");
+            var jobject = JObject.Parse(MockService.MockService.CursosJson());
             var sCursos = (JArray)jobject["PlanEstudio"];
             return sCursos.ToObject<List<PlanDeEstudio>>();
         }
