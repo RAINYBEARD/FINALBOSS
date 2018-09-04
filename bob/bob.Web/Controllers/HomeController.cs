@@ -17,21 +17,53 @@ namespace bob.Controllers
         {
             CaeceDBContext context = new CaeceDBContext();
 
-            ViewBag.PlanDeEstudio = LoadJson();
-            foreach (PlanDeEstudio dato in ViewBag.PlanDeEstudio)
+            var PlanDeEstudioJSON = LoadJson();
+            foreach (PlanDeEstudio dato in PlanDeEstudioJSON)
             {
-                int materia_a_buscar = int.Parse(dato.materia_id);
-                bool resultado = context.Materias_Descripciones.Any(a => a.Materia_Id == materia_a_buscar);
+                // Cargo a la base los datos de las materias
+                bool resultado = context.Materias_Descripciones.Any(a => a.Materia_Id == dato.materia_id);
 
                 if (resultado == false)
                 {
-                    var materia = context.Materias_Descripciones.Create();
-                    materia.Materia_Id = materia_a_buscar;
-                    materia.Mat_Des = dato.mat_des.Trim();
-                    context.Materias_Descripciones.Add(materia);
+                    var materia_descripcion = context.Materias_Descripciones.Create();
+                    materia_descripcion.Materia_Id = dato.materia_id;
+                    materia_descripcion.Mat_Des = dato.mat_des.Trim();
+                    context.Materias_Descripciones.Add(materia_descripcion);
+                    context.SaveChanges();
+                }
+
+                // Cargo a la base los datos de los titulos
+                resultado = context.Titulos.Any(a => a.Plan_Tit == dato.plan_tit && a.Titulo_Id == dato.titulo_id);
+
+                if (resultado == false)
+                {
+                    var titulo = context.Titulos.Create();
+                    titulo.Plan_Tit = dato.plan_tit;
+                    titulo.Titulo_Id = dato.titulo_id;
+                    context.Titulos.Add(titulo);
+                    context.SaveChanges();
+                }
+
+                // Cargo a la base la relacion materia titulo
+                resultado = context.Materias.Any(a => a.Materia_Id == dato.materia_id && a.Plan_Id == dato.plan_id && a.Plan_Tit == dato.plan_tit && a.Titulo_Id == dato.titulo_id );
+
+                if (resultado == false)
+                {
+                    var materia = context.Materias.Create();
+                    materia.Materia_Id = dato.materia_id;
+                    materia.Plan_Id = dato.plan_id;
+                    materia.Plan_Tit = dato.plan_tit;
+                    materia.Titulo_Id = dato.titulo_id;
+                    materia.Anio = dato.anio;
+                    materia.Cuatrim = dato.cuatrim;
+                    materia.Mat_Modulos = dato.mat_modulos;
+                    context.Materias.Add(materia);
                     context.SaveChanges();
                 }
             }
+
+
+
 
             return View();
         }
@@ -48,8 +80,14 @@ namespace bob.Controllers
 
     public class PlanDeEstudio
     {
-        public string materia_id { get; set; }
+        public int materia_id { get; set; }
         public string mat_des { get; set; }
+        public string plan_tit { get; set; }
+        public int titulo_id { get; set; }
+        public string plan_id { get; set; }
+        public short anio { get; set; }
+        public short cuatrim { get; set; }
+        public float mat_modulos { get; set; }
     }
 
     public class Curso
