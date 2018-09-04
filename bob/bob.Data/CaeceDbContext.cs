@@ -57,8 +57,10 @@ namespace bob.Data
                 .IsUnicode(false);
 
             modelBuilder.Entity<Materia>()
-                .HasOptional(e => e.Correlativa)
-                .WithRequired(e => e.Materia);
+                .HasMany(e => e.Correlativas)
+                .WithRequired(e => e.Materia)
+                .HasForeignKey(e => new { e.Materia_Id, e.Plan_Id, e.Plan_Tit, e.Titulo_Id })
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Materia_Descripcion>()
                 .Property(e => e.Mat_Des)

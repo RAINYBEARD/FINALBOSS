@@ -29,8 +29,10 @@ namespace bob.Data.Entities.DB
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Titulo_Id { get; set; }
 
-
-        public int? Codigo_Correlativa { get; set; }
+        [Key]
+        [Column(Order = 4)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int Codigo_Correlativa { get; set; }
 
         [StringLength(5)]
         public string PCursar { get; set; }

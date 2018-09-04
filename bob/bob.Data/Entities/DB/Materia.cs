@@ -9,6 +9,11 @@ namespace bob.Data.Entities.DB
     [Table("caece.Materia")]
     public partial class Materia
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Materia()
+        {
+            Correlativas = new HashSet<Correlativa>();
+        }
 
         [Key]
         [Column(Order = 0)]
@@ -29,16 +34,15 @@ namespace bob.Data.Entities.DB
         [Column(Order = 3)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Titulo_Id { get; set; }
-
-
         public short? Anio { get; set; }
 
         public short? Cuatrim { get; set; }
-
         public float? Mat_Modulos { get; set; }
 
-        public virtual Correlativa Correlativa { get; set; }
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Correlativa> Correlativas { get; set; }
         public virtual Materia_Descripcion Materia_Descripcion { get; set; }
 
         public virtual Titulo Titulo { get; set; }
