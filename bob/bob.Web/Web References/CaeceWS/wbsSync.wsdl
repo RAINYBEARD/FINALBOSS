@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="wbsTransNS" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="wbsTransNS" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="wbsTransNS">
+      <s:element name="getDatosAspirantes">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fecha" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getDatosAspirantesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getDatosAspirantesResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getContactoCaece">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fecha" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getContactoCaeceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getContactoCaeceResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getEstadoDni">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dni" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getEstadoDniResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getEstadoDniResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getHistoriaAcademicaXML">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="matricula" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getHistoriaAcademicaXMLResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getHistoriaAcademicaXMLResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getHistoriaAcademicaJSON">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="matricula" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getHistoriaAcademicaJSONResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getHistoriaAcademicaJSONResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getPlanEstudioXML">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="matricula" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getPlanEstudioXMLResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getPlanEstudioXMLResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getPlanEstudioJSON">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="matricula" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getPlanEstudioJSONResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getPlanEstudioJSONResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getCursosAbiertosXML">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getCursosAbiertosXMLResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getCursosAbiertosXMLResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getCursosAbiertosJSON">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getCursosAbiertosJSONResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getCursosAbiertosJSONResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getMesasAbiertasXML">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="examen_id" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getMesasAbiertasXMLResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getMesasAbiertasXMLResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getMesasAbiertasJSON">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="examen_id" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getMesasAbiertasJSONResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getMesasAbiertasJSONResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="autenticacion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="alumno_id" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="autenticacionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="autenticacionResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="getDatosAspirantesSoapIn">
+    <wsdl:part name="parameters" element="tns:getDatosAspirantes" />
+  </wsdl:message>
+  <wsdl:message name="getDatosAspirantesSoapOut">
+    <wsdl:part name="parameters" element="tns:getDatosAspirantesResponse" />
+  </wsdl:message>
+  <wsdl:message name="getContactoCaeceSoapIn">
+    <wsdl:part name="parameters" element="tns:getContactoCaece" />
+  </wsdl:message>
+  <wsdl:message name="getContactoCaeceSoapOut">
+    <wsdl:part name="parameters" element="tns:getContactoCaeceResponse" />
+  </wsdl:message>
+  <wsdl:message name="getEstadoDniSoapIn">
+    <wsdl:part name="parameters" element="tns:getEstadoDni" />
+  </wsdl:message>
+  <wsdl:message name="getEstadoDniSoapOut">
+    <wsdl:part name="parameters" element="tns:getEstadoDniResponse" />
+  </wsdl:message>
+  <wsdl:message name="getHistoriaAcademicaXMLSoapIn">
+    <wsdl:part name="parameters" element="tns:getHistoriaAcademicaXML" />
+  </wsdl:message>
+  <wsdl:message name="getHistoriaAcademicaXMLSoapOut">
+    <wsdl:part name="parameters" element="tns:getHistoriaAcademicaXMLResponse" />
+  </wsdl:message>
+  <wsdl:message name="getHistoriaAcademicaJSONSoapIn">
+    <wsdl:part name="parameters" element="tns:getHistoriaAcademicaJSON" />
+  </wsdl:message>
+  <wsdl:message name="getHistoriaAcademicaJSONSoapOut">
+    <wsdl:part name="parameters" element="tns:getHistoriaAcademicaJSONResponse" />
+  </wsdl:message>
+  <wsdl:message name="getPlanEstudioXMLSoapIn">
+    <wsdl:part name="parameters" element="tns:getPlanEstudioXML" />
+  </wsdl:message>
+  <wsdl:message name="getPlanEstudioXMLSoapOut">
+    <wsdl:part name="parameters" element="tns:getPlanEstudioXMLResponse" />
+  </wsdl:message>
+  <wsdl:message name="getPlanEstudioJSONSoapIn">
+    <wsdl:part name="parameters" element="tns:getPlanEstudioJSON" />
+  </wsdl:message>
+  <wsdl:message name="getPlanEstudioJSONSoapOut">
+    <wsdl:part name="parameters" element="tns:getPlanEstudioJSONResponse" />
+  </wsdl:message>
+  <wsdl:message name="getCursosAbiertosXMLSoapIn">
+    <wsdl:part name="parameters" element="tns:getCursosAbiertosXML" />
+  </wsdl:message>
+  <wsdl:message name="getCursosAbiertosXMLSoapOut">
+    <wsdl:part name="parameters" element="tns:getCursosAbiertosXMLResponse" />
+  </wsdl:message>
+  <wsdl:message name="getCursosAbiertosJSONSoapIn">
+    <wsdl:part name="parameters" element="tns:getCursosAbiertosJSON" />
+  </wsdl:message>
+  <wsdl:message name="getCursosAbiertosJSONSoapOut">
+    <wsdl:part name="parameters" element="tns:getCursosAbiertosJSONResponse" />
+  </wsdl:message>
+  <wsdl:message name="getMesasAbiertasXMLSoapIn">
+    <wsdl:part name="parameters" element="tns:getMesasAbiertasXML" />
+  </wsdl:message>
+  <wsdl:message name="getMesasAbiertasXMLSoapOut">
+    <wsdl:part name="parameters" element="tns:getMesasAbiertasXMLResponse" />
+  </wsdl:message>
+  <wsdl:message name="getMesasAbiertasJSONSoapIn">
+    <wsdl:part name="parameters" element="tns:getMesasAbiertasJSON" />
+  </wsdl:message>
+  <wsdl:message name="getMesasAbiertasJSONSoapOut">
+    <wsdl:part name="parameters" element="tns:getMesasAbiertasJSONResponse" />
+  </wsdl:message>
+  <wsdl:message name="autenticacionSoapIn">
+    <wsdl:part name="parameters" element="tns:autenticacion" />
+  </wsdl:message>
+  <wsdl:message name="autenticacionSoapOut">
+    <wsdl:part name="parameters" element="tns:autenticacionResponse" />
+  </wsdl:message>
+  <wsdl:portType name="wbsTransSoap">
+    <wsdl:operation name="getDatosAspirantes">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Uso interno UCAECE</wsdl:documentation>
+      <wsdl:input message="tns:getDatosAspirantesSoapIn" />
+      <wsdl:output message="tns:getDatosAspirantesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getContactoCaece">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Uso interno UCAECE</wsdl:documentation>
+      <wsdl:input message="tns:getContactoCaeceSoapIn" />
+      <wsdl:output message="tns:getContactoCaeceSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getEstadoDni">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Uso interno UCAECE</wsdl:documentation>
+      <wsdl:input message="tns:getEstadoDniSoapIn" />
+      <wsdl:output message="tns:getEstadoDniSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getHistoriaAcademicaXML">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retorna la Historia Academica de un alumno a partir de su matricula (FORMARTO XML)</wsdl:documentation>
+      <wsdl:input message="tns:getHistoriaAcademicaXMLSoapIn" />
+      <wsdl:output message="tns:getHistoriaAcademicaXMLSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getHistoriaAcademicaJSON">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retorna la Historia Academica de un alumno a partir de su matricula (FORMARTO JSON)</wsdl:documentation>
+      <wsdl:input message="tns:getHistoriaAcademicaJSONSoapIn" />
+      <wsdl:output message="tns:getHistoriaAcademicaJSONSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getPlanEstudioXML">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retorna el plan de estudio a partir de su matricula (FORMARTO XML)</wsdl:documentation>
+      <wsdl:input message="tns:getPlanEstudioXMLSoapIn" />
+      <wsdl:output message="tns:getPlanEstudioXMLSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getPlanEstudioJSON">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retorna el plan de estudio a partir de su matricula (FORMARTO JSON)</wsdl:documentation>
+      <wsdl:input message="tns:getPlanEstudioJSONSoapIn" />
+      <wsdl:output message="tns:getPlanEstudioJSONSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getCursosAbiertosXML">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retorna los cursos abiertos del cuatrimestre activo (FORMARTO XML)</wsdl:documentation>
+      <wsdl:input message="tns:getCursosAbiertosXMLSoapIn" />
+      <wsdl:output message="tns:getCursosAbiertosXMLSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getCursosAbiertosJSON">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retorna los cursos abiertos del cuatrimestre activo (FORMARTO JSON)</wsdl:documentation>
+      <wsdl:input message="tns:getCursosAbiertosJSONSoapIn" />
+      <wsdl:output message="tns:getCursosAbiertosJSONSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getMesasAbiertasXML">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retorna las mesas abiertas de un llamado a examenes (FORMARTO XML)</wsdl:documentation>
+      <wsdl:input message="tns:getMesasAbiertasXMLSoapIn" />
+      <wsdl:output message="tns:getMesasAbiertasXMLSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getMesasAbiertasJSON">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Retorna las mesas abiertas de un llamado a examenes (FORMARTO JSON)</wsdl:documentation>
+      <wsdl:input message="tns:getMesasAbiertasJSONSoapIn" />
+      <wsdl:output message="tns:getMesasAbiertasJSONSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="autenticacion">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Autentica usuario. Parametros matricula y contraseña</wsdl:documentation>
+      <wsdl:input message="tns:autenticacionSoapIn" />
+      <wsdl:output message="tns:autenticacionSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wbsTransSoap" type="tns:wbsTransSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getDatosAspirantes">
+      <soap:operation soapAction="wbsTransNS/getDatosAspirantes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getContactoCaece">
+      <soap:operation soapAction="wbsTransNS/getContactoCaece" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getEstadoDni">
+      <soap:operation soapAction="wbsTransNS/getEstadoDni" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHistoriaAcademicaXML">
+      <soap:operation soapAction="wbsTransNS/getHistoriaAcademicaXML" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHistoriaAcademicaJSON">
+      <soap:operation soapAction="wbsTransNS/getHistoriaAcademicaJSON" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPlanEstudioXML">
+      <soap:operation soapAction="wbsTransNS/getPlanEstudioXML" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPlanEstudioJSON">
+      <soap:operation soapAction="wbsTransNS/getPlanEstudioJSON" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCursosAbiertosXML">
+      <soap:operation soapAction="wbsTransNS/getCursosAbiertosXML" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCursosAbiertosJSON">
+      <soap:operation soapAction="wbsTransNS/getCursosAbiertosJSON" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMesasAbiertasXML">
+      <soap:operation soapAction="wbsTransNS/getMesasAbiertasXML" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMesasAbiertasJSON">
+      <soap:operation soapAction="wbsTransNS/getMesasAbiertasJSON" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="autenticacion">
+      <soap:operation soapAction="wbsTransNS/autenticacion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wbsTransSoap12" type="tns:wbsTransSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getDatosAspirantes">
+      <soap12:operation soapAction="wbsTransNS/getDatosAspirantes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getContactoCaece">
+      <soap12:operation soapAction="wbsTransNS/getContactoCaece" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getEstadoDni">
+      <soap12:operation soapAction="wbsTransNS/getEstadoDni" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHistoriaAcademicaXML">
+      <soap12:operation soapAction="wbsTransNS/getHistoriaAcademicaXML" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getHistoriaAcademicaJSON">
+      <soap12:operation soapAction="wbsTransNS/getHistoriaAcademicaJSON" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPlanEstudioXML">
+      <soap12:operation soapAction="wbsTransNS/getPlanEstudioXML" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPlanEstudioJSON">
+      <soap12:operation soapAction="wbsTransNS/getPlanEstudioJSON" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCursosAbiertosXML">
+      <soap12:operation soapAction="wbsTransNS/getCursosAbiertosXML" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCursosAbiertosJSON">
+      <soap12:operation soapAction="wbsTransNS/getCursosAbiertosJSON" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMesasAbiertasXML">
+      <soap12:operation soapAction="wbsTransNS/getMesasAbiertasXML" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getMesasAbiertasJSON">
+      <soap12:operation soapAction="wbsTransNS/getMesasAbiertasJSON" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="autenticacion">
+      <soap12:operation soapAction="wbsTransNS/autenticacion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wbsTrans">
+    <wsdl:port name="wbsTransSoap" binding="tns:wbsTransSoap">
+      <soap:address location="http://www.caece.edu.ar/sqlcaece/webservices/wbsSync.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wbsTransSoap12" binding="tns:wbsTransSoap12">
+      <soap12:address location="http://www.caece.edu.ar/sqlcaece/webservices/wbsSync.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

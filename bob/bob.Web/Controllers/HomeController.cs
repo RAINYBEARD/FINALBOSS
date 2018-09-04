@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using bob.Data;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.IO;
-using bob.MockService;
-using bob.Data.Entities.DB;
+using bob.CaeceWS;
+using System.Web.Configuration;
 
 namespace bob.Controllers
 {
     public class HomeController : Controller
     {
+        private string _token = WebConfigurationManager.AppSettings.Get("CaeceWSToken");
+
         public ActionResult Index()
         {
             var PlanDeEstudioJSON = LoadJson();
@@ -92,7 +91,8 @@ namespace bob.Controllers
 
         public List<PlanDeEstudio> LoadJson()
         {
-            var json = MockService.MockService.PlanDeEstudio();
+            CaeceWS.wbsTrans service = new bob.CaeceWS.wbsTrans();
+            var json = service.getPlanEstudioJSON(_token, " 951282");
             var jobject = JObject.Parse(json);
             var sCursos = (JArray)jobject["PlanEstudio"];
             return sCursos.ToObject<List<PlanDeEstudio>>();
