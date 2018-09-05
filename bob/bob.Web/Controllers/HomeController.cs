@@ -82,7 +82,6 @@ namespace bob.Controllers
                     catch (Exception)
                     {
                         transaction.Rollback();
-                        throw;
                     }
                 }
             }
@@ -93,7 +92,7 @@ namespace bob.Controllers
         {
             //CaeceWS.wbsTrans service = new bob.CaeceWS.wbsTrans();
             //var json = service.getPlanEstudioJSON(_token, " 951282");
-            var jobject = JObject.Parse(MockService.MockService.CursosJson());
+            var jobject = JObject.Parse(MockService.MockService.PlanDeEstudio());
             var sCursos = (JArray)jobject["PlanEstudio"];
             return sCursos.ToObject<List<PlanDeEstudio>>();
         }
