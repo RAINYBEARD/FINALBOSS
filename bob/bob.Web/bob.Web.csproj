@@ -187,6 +187,7 @@
     <Content Include="App_Data\HistoriaAcademica.json" />
     <Content Include="App_Data\MesasFinal.json" />
     <Content Include="App_Data\PlanDeEstudio.json" />
+    <Content Include="App_Data\Autenticacion.json" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

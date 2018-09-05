@@ -45,5 +45,14 @@ namespace bob.MockService
                 return r.ReadToEnd();
             }
         }
+
+        public static string Autenticacion()
+        {
+
+            using (StreamReader r = new StreamReader(Path.Combine(_repoPath, "Autenticacion.json")))
+            {
+                return r.ReadToEnd();
+            }
+        }
     }
 }
