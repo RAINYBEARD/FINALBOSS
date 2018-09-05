@@ -45,6 +45,7 @@ namespace bob.Controllers
                                 var titulo = context.Titulos.Create();
                                 titulo.Plan_Tit = dato.plan_tit;
                                 titulo.Titulo_Id = dato.titulo_id;
+                                titulo.Tit_Des = dato.abr_titulo;
                                 context.Titulos.Add(titulo);
                                 context.SaveChanges();
                             }
@@ -58,8 +59,8 @@ namespace bob.Controllers
                                 materia.Plan_Id = dato.plan_id;
                                 materia.Plan_Tit = dato.plan_tit;
                                 materia.Titulo_Id = dato.titulo_id;
-                                materia.Anio = dato.anio;
-                                materia.Cuatrim = dato.cuatrim;
+                                materia.Anio = dato.mat_anio;
+                                materia.Cuatrim = dato.mat_cuatrim;
                                 materia.Mat_Modulos = dato.mat_modulos;
                                 context.Materias.Add(materia);
                                 context.SaveChanges();
@@ -106,12 +107,13 @@ namespace bob.Controllers
         public string plan_tit { get; set; }
         public int titulo_id { get; set; }
         public string plan_id { get; set; }
-        public short anio { get; set; }
-        public short cuatrim { get; set; }
+        public short mat_anio { get; set; }
+        public short mat_cuatrim { get; set; }
         public float mat_modulos { get; set; }
         public string pcursar { get; set; }
         public string paprobar { get; set; }
         public int codigo_correlativa { get; set; }
+        public string abr_titulo { get; set; }
     }
 
     public class Curso
