@@ -11,7 +11,7 @@ namespace bob.MockService
     {
         private static readonly string _repoPath = HttpContext.Current.Server.MapPath("~/App_Data");
 
-        public static string HistoriaAcademicaJson() {
+        public static string HistoriaAcademica() {
 
             using (StreamReader r = new StreamReader(Path.Combine(_repoPath, "HistoriaAcademica.json")))
             {
@@ -19,7 +19,7 @@ namespace bob.MockService
             }
         }
 
-        public static string CursosJson()
+        public static string Cursos()
         {
 
             using (StreamReader r = new StreamReader(Path.Combine(_repoPath, "Cursos.json")))

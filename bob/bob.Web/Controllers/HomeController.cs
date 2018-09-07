@@ -11,11 +11,11 @@ namespace bob.Controllers
 {
     public class HomeController : Controller
     {
-        private string _token = WebConfigurationManager.AppSettings.Get("CaeceWSToken");
+        //private string _token = WebConfigurationManager.AppSettings.Get("CaeceWSToken");
 
         public ActionResult Index()
         {
-            var PlanDeEstudioJSON = LoadJson();
+            var PlanDeEstudioJSON = LoadJson<PlanDeEstudio>(MockMethod.PlanDeEstudio);
 
             using (var context = new CaeceDBContext())
             {
@@ -89,13 +89,62 @@ namespace bob.Controllers
             return View();
         }
 
-        public List<PlanDeEstudio> LoadJson()
+        //public ActionResult Nacho()
+        //{
+        //    var dict = new AprDictionary();
+        //    //dict.Add()
+        //    foreach (HistoriaAcademica dato in LoadJson<HistoriaAcademica>(MockMethod.HistoriaAcademica))
+        //    {
+        //        char estado_materia = char.Parse(dato.descrip);
+        //        if (estado_materia == 'A')
+        //        {
+           
+        //            string mid = dato.materia_id;
+        //            string fec = dato.fecha;
+        //            string ab = dato.abr;
+        //            int not = dato.nota;
+        //            string prof = dato.profesor;
+        //            string act = dato.acta_id;
+        //            int an = dato.anio;
+        //            int cua = dato.cuatrim;
+        //            dict.Add(mid, fec, ab, not, prof, act, an, cua);
+        //        }
+        //    }
+        //    return View("Index.cshtml");
+        //}
+
+        public List<T> LoadJson<T>(MockMethod mm)
         {
             //CaeceWS.wbsTrans service = new bob.CaeceWS.wbsTrans();
             //var json = service.getPlanEstudioJSON(_token, " 951282");
-            var jobject = JObject.Parse(MockService.MockService.PlanDeEstudio());
-            var sCursos = (JArray)jobject["PlanEstudio"];
-            return sCursos.ToObject<List<PlanDeEstudio>>();
+
+            switch (mm)
+            {
+                case MockMethod.Autenticacion:
+                    return ((JArray)JObject.Parse(MockService.MockService.Autenticacion())["autenticacion"]).ToObject<List<T>>();
+
+                case MockMethod.Cursos:
+                    return ((JArray)JObject.Parse(MockService.MockService.Cursos())["Cursos"]).ToObject<List<T>>();
+
+                case MockMethod.HistoriaAcademica:
+                    return ((JArray)JObject.Parse(MockService.MockService.HistoriaAcademica())["HistoriaAcademica"]).ToObject<List<T>>();
+
+                case MockMethod.MesasFinal:
+                    return ((JArray)JObject.Parse(MockService.MockService.MesasFinal())["Mesas"]).ToObject<List<T>>();
+
+                case MockMethod.PlanDeEstudio:
+                    return ((JArray)JObject.Parse(MockService.MockService.PlanDeEstudio())["PlanEstudio"]).ToObject<List<T>>();
+            }
+            return new List<T>();
+        }
+
+        public enum MockMethod
+        {
+            Autenticacion,
+            Cursos,
+            HistoriaAcademica,
+            MesasFinal,
+            PlanDeEstudio
         }
 
     }
@@ -123,3 +172,51 @@ namespace bob.Controllers
         public string perso_id { get; set; }
     }
 }
+
+
+
+
+
+
+
+
+public class HistoriaAcademica
+{
+    public string descrip;
+    public string materia_id;
+    public string fecha;
+    public string abr;
+    public int nota;
+    public string profesor;
+    public string acta_id;
+    public int anio;
+    public int cuatrim;
+}
+
+//struct AprValue {
+//    string Fecha  
+//    Abr = ab
+//    Nota = n
+//    Profesor
+//    Acta_id
+//    Anio = a
+//    Cuatrim
+//}
+
+//public class AprDictionary : Dictionary<string, AprValue>
+//{
+
+//    public void Add(string materia_id, string fecha, string abr, int nota, string profesor, string acta_id, int anio, int cuatrim)
+//    {
+
+//        AprValue apr;
+//        apr.Fecha = fecha;
+//        apr.Abr = abr;
+//        apr.Nota = nota;
+//        apr.Profesor = profesor;
+//        apr.Acta_id = acta_id;
+//        apr.Anio = anio;
+//        apr.Cuatrim = cuatrim;
+//        this.Add(materia_id, apr);
+//    }
+//}
