@@ -89,99 +89,99 @@ namespace bob.Controllers
             return View();
         }
 
-        //public ActionResult Nacho()
-        //{
-        //    var dict = new AprDictionary();
-        //    var dict = new CurDictionary();
-        //    var dict = new EquivDictionary();
-        //    var dict = new NotCurDictionary();
-        //    var dict = new MesaFinalDictionary();
-        //    var dict = new CursosDictionary();
-        //    //dict.Add()
-        //    foreach (HistoriaAcademica dato in LoadJson<HistoriaAcademica>(MockMethod.HistoriaAcademica))
-        //    {
-        //        char estado_materia = char.Parse(dato.descrip);
-        //        if (estado_materia == 'APR')
-        //        {
+        public ActionResult Nacho()
+        {
+           var dict = new AprDictionary();
+           var dict1 = new CurDictionary();
+           var dict2 = new EquivDictionary();
+           var dict3 = new NotCurDictionary();
+           var dict4 = new MesaFinalDictionary();
+           var dict5 = new CursosDictionary();
+            //dict.Add()
+           foreach (HistoriaAcademica dato in LoadJson<HistoriaAcademica>(MockMethod.HistoriaAcademica))
+           {
+              char estado_materia = char.Parse(dato.descrip);
+               if (estado_materia.Equals ("APR"))
+               {
 
-        //            AprValue apr;
-        //            string materia_id = dato.materia_id;
-        //            apr.Fecha = dato.fecha;
-        //            apr.Calificacion = dato.calificacion;
-        //            apr.Descripcion = dato.descrip;
-        //            apr.Profesor = dato.profesor;
-        //            apr.Acta_id = dato.acta_id;
-        //            apr.Anio = dato.anio;
-        //            apr.Cuatrim = dato.cuatrim;
-        //            dict.Add(materia_id, apr);
-        //        }
-        //        else {
-        //               if (estado_materia == 'CUR') 
-        //               {
-        //                 CurValue cur;
-        //                 cur.Fecha = fecha;
-        //                 cur.Abr = abr;
-        //                 cur.Profesor = profesor;
-        //                 cur.Anio = anio;
-        //                 cur.Cuatrim = cuatrim;
-        //                 cur.Plan_id = plan_id;
-        //                 cur.Plan_tit = plan_tit;
-        //                 this.Add(materia_id, cur);
-        //               }
-        //               else 
-        //               {
-        //                  if (estado_materia == 'PEN') 
-        //                  {
-        //                    EquivVale equiv;
-        //                    cur.Fecha = fecha;
-        //                    cur.Abr = abr;     
-        //                    cur.Plan_id = plan_id;
-        //                    cur.Plan_tit = plan_tit;
-        //                    this.Add(materia_id, equiv);
-        //                  }
-        //                  else 
-        //                  {
-        //                    NotCurValue notcur;
-        //                    notcur.Abr = abr;
-        //                    notcur.Profesor = profesor;
-        //                    notcur.Anio = anio;
-        //                    notcur.Cuatrim = cuatrim;
-        //                    notcur.Plan_id = plan_id;
-        //                    notcur.Plan_tit = plan_tit;
-        //                    this.Add(materia_id, notcur);
-        //                  }
-        //               }
-        //             }
-        //    }
-        //    foreach (MesaFinal dato in LoadJson<MesaFinal>(MockMethod.MesasFinal))
-        //     { 
-        //       MesaFinalValue  mesafinal;
-        //       string materia_id = dato.materia_id;
-        //       mesafinal.Turno_id = dato.Turno_id;
-        //       mesafinal.Plan_id = dato.Plan_id
-        //       mesafinal.Profesor = dato.Profesor;
-        //       mesafinal.Sede_id = dato.Sede_id;
-        //       dict.Add(materia_id, mesafinal);
-        //     }
-        //     foreach (Cursos dato in LoadJson<Cursos>(MockMethod.Cursos))
-        //     {
-        //       char turno_materia = char.Parse(dato.turno_id);
-        //       string dia_materia = dato.dia;
-        //       if (turno_materia == 'N') || ((dia_materia == '0000010') || (dia_materia == '0000020') !! (dia_materia == '0000030')) || (dato.materia_id = '2091')
-        //       {
-        //          CursosValue cursos;
-        //          string materia_id = dato.materia_id;
-        //          cursos.Turno_id = dato.turno_id;
-        //          cursos.Dia = dato.dia;
-        //          cursos.M_acobrar = dato.m_acobrar;
-        //          cursos.Plan_id = dato.plan_id;
-        //          dict.Add(materia_id, cursos);
-        //       }
-        //       
-        //         
-        //     }
-        //    return View("Index.cshtml");
-        //}
+                    AprValue apr;
+                    string materia_id = dato.materia_id;
+                    apr.Fecha = dato.fecha;
+                    apr.Calificacion = dato.calificacion;
+                    apr.Descripcion = dato.descrip;
+                    apr.Profesor = dato.profesor;
+                    apr.Acta_id = dato.acta_id;
+                    apr.Anio = dato.anio;
+                    apr.Cuatrim = dato.cuatrim;
+                    dict.Add(materia_id, apr);
+               }
+               else {
+                       if (estado_materia.Equals ("CUR")) 
+                       {
+                         CurValue cur;
+                         cur.Fecha = fecha;
+                         cur.Abr = abr;
+                         cur.Profesor = profesor;
+                         cur.Anio = anio;
+                         cur.Cuatrim = cuatrim;
+                         cur.Plan_id = plan_id;
+                         cur.Plan_tit = plan_tit;
+                         dict1.Add(materia_id, cur);
+                       }
+                       else 
+                       {
+                          if (estado_materia.Equals ("PEN")) 
+                          {
+                            EquivVale equiv;
+                            cur.Fecha = fecha;
+                            cur.Abr = abr;     
+                            cur.Plan_id = plan_id;
+                            cur.Plan_tit = plan_tit;
+                            dict2.Add(materia_id, equiv);
+                          }
+                          else 
+                          {
+                            NotCurValue notcur;
+                            notcur.Abr = abr;
+                            notcur.Profesor = profesor;
+                            notcur.Anio = anio;
+                            notcur.Cuatrim = cuatrim;
+                            notcur.Plan_id = plan_id;
+                            notcur.Plan_tit = plan_tit;
+                            dict3.Add(materia_id, notcur);
+                          }
+                       }
+                    }
+           }
+            foreach (MesaFinal dato in LoadJson<MesaFinal>(MockMethod.MesasFinal))
+             { 
+               MesaFinalValue  mesafinal;
+               string materia_id = dato.materia_id;
+               mesafinal.Turno_id = dato.Turno_id;
+               mesafinal.Plan_id = dato.Plan_id;
+               mesafinal.Profesor = dato.Profesor;
+               mesafinal.Sede_id = dato.Sede_id;
+               dict4.Add(materia_id, mesafinal);
+             }
+             foreach (Cursos dato in LoadJson<Cursos>(MockMethod.Cursos))
+             {
+               char turno_materia = char.Parse(dato.turno_id);
+               string dia_materia = dato.dia;
+               if (turno_materia == 'N') || ((dia_materia.Equals "0000010") || (dia_materia.Equals "0000020") || (dia_materia.Equals "0000030")) || (dato.materia_id.Equals "2091")
+               {
+                  CursosValue cursos;
+                  string materia_id = dato.materia_id;
+                  cursos.Turno_id = dato.turno_id;
+                  cursos.Dia = dato.dia;
+                  cursos.M_acobrar = dato.m_acobrar;
+                  cursos.Plan_id = dato.plan_id;
+                  dict5.Add(materia_id, cursos);
+               }
+               
+                
+             }
+            return View("Index.cshtml");
+        }
 
         public List<T> LoadJson<T>(MockMethod mm)
         {
@@ -283,142 +283,148 @@ public class Cursos
 
 }
 
-//struct AprValue {
-//    string Fecha  
-//    string Abr
-//    int Calificacion
-//    string Profesor
-//    string Acta_id
-//    int Anio 
-//    int Cuatrim
-//}
+public class AprValue
+{
+    string Fecha;
+    string Abr;
+    int Calificacion;
+    string Profesor;
+    string Acta_id;
+    int Anio;
+    int Cuatrim;
+}
 
-//struct CurValue {
-//    string Fecha  
-//    string Abr
-//    string Profesor
-//    int Anio 
-//    int Cuatrim
-//    string Plan_id
-//    int Plan_tit
-//}
+public class CurValue
+{
+    string Fecha;
+    string Abr;
+    string Profesor;
+    int Anio;
+    int Cuatrim;
+    string Plan_id;
+    int Plan_tit;
+}
 
-//struct EquivValue {
-//    string Fecha  
-//    string Abr
-//    string Plan_id
-//    int Plan_tit
-//}
+public class EquivValue {
+    string Fecha;
+    string Abr;
+    string Plan_id;
+    int Plan_tit;
+}
 
-//struct NotCurValue {
-//    string Fecha  
-//    string Abr
-//    int Anio 
-//    int Cuatrim
-//    string Plan_id
-//    int Plan_tit
-//}
+public class NotCurValue
+{
+    string Fecha;
+    string Abr;
+    int Anio;
+    int Cuatrim;
+    string Plan_id;
+    int Plan_tit;
+}
 
-//struct MesaFinalValue {
-//    char Turno_id 
-//    string Plan_id
-//    string Profesor 
-//    char sede_id 
-//}
+public class MesaFinalValue
+{
+    char Turno_id;
+    string Plan_id;
+    string Profesor;
+    char sede_id; 
+}
 
-//struct CursosValue {
-//    string Plan_id
-//    char Turno_id
-//    string Dia 
-//    int M_acobrar
-//}
+struct CursosValue
+{
+    string Plan_id;
+    char Turno_id;
+    string Dia;
+    int M_acobrar;
+}
 
-//public class AprDictionary : Dictionary<string, AprValue>
-//{
+class AprDictionary : Dictionary<string, AprValue>
+{
 
-//    public void Add(string materia_id, string fecha, string abr, int calificacion, string profesor, string acta_id, int anio, int cuatrim)
-//    {
+    public void Add(string materia_id, string fecha, string abr, int calificacion, string profesor, string acta_id, int anio, int cuatrim)
+    {
 
-//        AprValue apr;
-//        apr.Fecha = fecha;
-//        apr.Abr = abr;
-//        apr.Calificacion = calificacion;
-//        apr.Profesor = profesor;
-//        apr.Acta_id = acta_id;
-//        apr.Anio = anio;
-//        apr.Cuatrim = cuatrim;
-//        this.Add(materia_id, apr);
-//    }
-//}
-//public class CurDictionary : Dictionary<string, CurValue>
-//{
+        AprValue apr;
+        apr.Fecha = fecha;
+        apr.Abr = abr;
+        apr.Calificacion = calificacion;
+        apr.Profesor = profesor;
+        apr.Acta_id = acta_id;
+        apr.Anio = anio;
+        apr.Cuatrim = cuatrim;
+        this.Add(materia_id, apr);
+    }
+}
 
-//    public void Add(string materia_id, string fecha, string abr, string profesor,  int anio, int cuatrim, string plan_id, int plan_tit)
-//    {
-//        CurValue cur;
-//        cur.Fecha = fecha;
-//        cur.Abr = abr;
-//        cur.Profesor = profesor;
-//        cur.Anio = anio;
-//        cur.Cuatrim = cuatrim;
-//        cur.Plan_id = plan_id;
-//        cur.Plan_tit = plan_tit;
-//        this.Add(materia_id, cur);
-//    }
-//}
+class CurDictionary : Dictionary<string, CurValue>
+{
 
-//public class EquivDictionary : Dictionary<string, EquivValue>
-//{
+    public void Add(string materia_id, string fecha, string abr, string profesor,  int anio, int cuatrim, string plan_id, int plan_tit)
+    {
+        CurValue cur;
+        cur.Fecha = fecha;
+        cur.Abr = abr;
+        cur.Profesor = profesor;
+        cur.Anio = anio;
+        cur.Cuatrim = cuatrim;
+        cur.Plan_id = plan_id;
+        cur.Plan_tit = plan_tit;
+        this.Add(materia_id, cur);
+    }
+}
 
-//    public void Add(string materia_id, string fecha, string abr, string plan_id, int plan_tit)
-//    {
-//        EquivValue equiv;
-//        cur.Fecha = fecha;
-//        cur.Abr = abr;     
-//        cur.Plan_id = plan_id;
-//        cur.Plan_tit = plan_tit;
-//        this.Add(materia_id, equiv);
-//    }
-//}
+class EquivDictionary : Dictionary<string, EquivValue>
+{
 
-//public class NotCurDictionary : Dictionary<string, NotCurValue>
-//{
+    public void Add(string materia_id, string fecha, string abr, string plan_id, int plan_tit)
+    {
+        EquivValue equiv;
+        equiv.Fecha = fecha;
+        equiv.Abr = abr;     
+        equiv.Plan_id = plan_id;
+        equiv.Plan_tit = plan_tit;
+        this.Add(materia_id, equiv);
+    }
+}
 
-//    public void Add(string materia_id, string abr, int anio, int cuatrim, string plan_id, int plan_tit)
-//    {
-//        NotCurValue notcur;
-//        notcur.Abr = abr;
-//        notcur.Profesor = profesor;
-//        notcur.Anio = anio;
-//        notcur.Cuatrim = cuatrim;
-//        notcur.Plan_id = plan_id;
-//        notcur.Plan_tit = plan_tit;
-//        this.Add(materia_id, notcur);
-//    }
-//}
+class NotCurDictionary : Dictionary<string, NotCurValue>
+{
 
-// public class MesaFinalDictionary : Dictionary<string, MesaFinalValue>
-//  {
-//     public void Add(string materia_id, char turno_id, string plan_id, string profesor, char sede_id)
-//   {
-//      MesaFinalValue mesafinal
-//      mesafinal.Turno_id = turno_id;
-//      mesafinal.Plan_id = plan_id;
-//      mesafinal.Profesor = profesor;
-//      mesafinal.Sede_id= sede_id;
-//      this.Add(materia_id, mesafinal);
-//   }
-//  }
+    public void Add(string materia_id, string abr, int anio, int cuatrim, string plan_id, int plan_tit)
+    {
+        NotCurValue notcur;
+        notcur.Abr = abr;
+        notcur.Profesor = profesor;
+        notcur.Anio = anio;
+        notcur.Cuatrim = cuatrim;
+        notcur.Plan_id = plan_id;
+        notcur.Plan_tit = plan_tit;
+        this.Add(materia_id, notcur);
+    }
+}
 
-// public class CursosDictionary : Dictionary<string, Cursosvalue>
-// {
-//   public void Add(string materia_id, char turno_id, string dia, int m_acobrar, string plan_id, int plan_tit)
-//    {
-//      CursosValue cursos
-//      cursos.Turno_id = turno_id;
-//      cursos.Dia = dia;
-//      cursos.M_acobrar = m_acobrar;
-//      cursos.Plan_id = plan_id;
-//      this.Add(materia_id, cursos);
-//    }
-// }
+ class MesaFinalDictionary : Dictionary<string, MesaFinalValue>
+ {
+     public void Add(string materia_id, char turno_id, string plan_id, string profesor, char sede_id)
+   {
+      MesaFinalValue mesafinal;
+      mesafinal.Turno_id = turno_id;
+      mesafinal.Plan_id = plan_id;
+      mesafinal.Profesor = profesor;
+      mesafinal.Sede_id= sede_id;
+      this.Add(materia_id, mesafinal);
+   }
+  }
+
+ class CursosDictionary : Dictionary<string, Cursosvalue>
+ {
+   public void Add(string materia_id, char turno_id, string dia, int m_acobrar, string plan_id, int plan_tit)
+    {
+      CursosValue cursos;
+      cursos.Turno_id = turno_id;
+      cursos.Dia = dia;
+      cursos.M_acobrar = m_acobrar;
+      cursos.Plan_id = plan_id;
+      this.Add(materia_id, cursos);
+    }
+ }
