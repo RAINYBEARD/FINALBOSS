@@ -100,87 +100,86 @@ namespace bob.Controllers
             //dict.Add()
            foreach (HistoriaAcademica dato in LoadJson<HistoriaAcademica>(MockMethod.HistoriaAcademica))
            {
-              char estado_materia = char.Parse(dato.descrip);
-               if (estado_materia.Equals ("APR"))
-               {
+              string estado_materia = dato.Descrip;
+              string matcod = dato.Matcod;
+              switch (estado_materia)
+              {
+                    case ("APR"):
+                        AprValue apr = new AprValue();
+                        apr.Fecha = dato.Fecha;
+                        apr.Calificacion = dato.Calificacion;
+                        apr.Profesor = dato.Profesor;
+                        apr.Acta_Id = dato.Acta_Id;
+                        apr.Anio = dato.Anio;
+                        apr.Cuatrim = dato.Cuatrim;
+                        dict.Add(matcod, apr);
+                        System.Diagnostics.Debug.WriteLine("MateriaID:" + matcod + "Nombre Materia" + apr.Fecha);
+                        break;
+                    case ("CUR"):
+                        CurValue cur = new CurValue();
+                        cur.Fecha = dato.Fecha;
+                        cur.Abr = dato.Abr;
+                        cur.Profesor = dato.Profesor;
+                        cur.Anio = dato.Anio;
+                        cur.Cuatrim = dato.Cuatrim;
+                        cur.Plan_Id = dato.Plan_Id;
+                        cur.Plan_Tit = dato.Plan_Tit;
+                        dict1.Add(matcod, cur);
+                        break;
+                    case ("PEN"):
+                        EquivValue equiv = new EquivValue();
+                        equiv.Fecha = dato.Fecha;
+                        equiv.Abr = dato.Abr;
+                        equiv.Plan_Id = dato.Plan_Id;
+                        equiv.Plan_Tit = dato.Plan_Tit;
+                        dict2.Add(matcod, equiv);
+                        break;
+                    default:
+                        if ((estado_materia.Equals("   ")) || (estado_materia.Equals("?  ")))
+                        {
+                            NotCurValue notcur = new NotCurValue();
+                            notcur.Abr = dato.Abr;
+                            notcur.Anio = dato.Anio;
+                            notcur.Cuatrim = dato.Cuatrim;
+                            notcur.Plan_Id = dato.Plan_Id;
+                            notcur.Plan_Tit = dato.Plan_Tit;
+                            dict3.Add(matcod, notcur);
+                        }
+                        break;
+              }
 
-                    AprValue apr;
-                    string materia_id = dato.materia_id;
-                    apr.Fecha = dato.fecha;
-                    apr.Calificacion = dato.calificacion;
-                    apr.Descripcion = dato.descrip;
-                    apr.Profesor = dato.profesor;
-                    apr.Acta_id = dato.acta_id;
-                    apr.Anio = dato.anio;
-                    apr.Cuatrim = dato.cuatrim;
-                    dict.Add(materia_id, apr);
-               }
-               else {
-                       if (estado_materia.Equals ("CUR")) 
-                       {
-                         CurValue cur;
-                         cur.Fecha = fecha;
-                         cur.Abr = abr;
-                         cur.Profesor = profesor;
-                         cur.Anio = anio;
-                         cur.Cuatrim = cuatrim;
-                         cur.Plan_id = plan_id;
-                         cur.Plan_tit = plan_tit;
-                         dict1.Add(materia_id, cur);
-                       }
-                       else 
-                       {
-                          if (estado_materia.Equals ("PEN")) 
-                          {
-                            EquivVale equiv;
-                            cur.Fecha = fecha;
-                            cur.Abr = abr;     
-                            cur.Plan_id = plan_id;
-                            cur.Plan_tit = plan_tit;
-                            dict2.Add(materia_id, equiv);
-                          }
-                          else 
-                          {
-                            NotCurValue notcur;
-                            notcur.Abr = abr;
-                            notcur.Profesor = profesor;
-                            notcur.Anio = anio;
-                            notcur.Cuatrim = cuatrim;
-                            notcur.Plan_id = plan_id;
-                            notcur.Plan_tit = plan_tit;
-                            dict3.Add(materia_id, notcur);
-                          }
-                       }
-                    }
-           }
-            foreach (MesaFinal dato in LoadJson<MesaFinal>(MockMethod.MesasFinal))
-             { 
-               MesaFinalValue  mesafinal;
-               string materia_id = dato.materia_id;
-               mesafinal.Turno_id = dato.Turno_id;
-               mesafinal.Plan_id = dato.Plan_id;
-               mesafinal.Profesor = dato.Profesor;
-               mesafinal.Sede_id = dato.Sede_id;
-               dict4.Add(materia_id, mesafinal);
-             }
-             foreach (Cursos dato in LoadJson<Cursos>(MockMethod.Cursos))
-             {
-               char turno_materia = char.Parse(dato.turno_id);
-               string dia_materia = dato.dia;
-               if (turno_materia == 'N') || ((dia_materia.Equals "0000010") || (dia_materia.Equals "0000020") || (dia_materia.Equals "0000030")) || (dato.materia_id.Equals "2091")
-               {
-                  CursosValue cursos;
-                  string materia_id = dato.materia_id;
-                  cursos.Turno_id = dato.turno_id;
-                  cursos.Dia = dato.dia;
-                  cursos.M_acobrar = dato.m_acobrar;
-                  cursos.Plan_id = dato.plan_id;
-                  dict5.Add(materia_id, cursos);
-               }
-               
                 
-             }
-            return View("Index.cshtml");
+            }
+            //foreach (MesaFinal dato in LoadJson<MesaFinal>(MockMethod.MesasFinal))
+            // {
+
+            //        MesaFinalValue mesafinal = new MesaFinalValue();
+            //        string materia_id = dato.Matcod;
+            //        mesafinal.Turno_Id = dato.Turno_Id;
+            //        mesafinal.Plan_Id = dato.Plan_Id;
+            //        mesafinal.Profesor = dato.Profesor;
+            //        mesafinal.Sede_Id = dato.Sede_Id;
+            //        dict4.Add(materia_id, mesafinal);
+
+            // }
+            // foreach (Cursos dato in LoadJson<Cursos>(MockMethod.Cursos))
+            // {
+            //   char turno_materia = dato.Turno_Id;
+            //   string dia_materia = dato.Dia;
+            //    if ((turno_materia == 'N') || (dia_materia.Equals("0000010")) || (dia_materia.Equals("0000020")) || (dia_materia.Equals("0000030")) || (dato.Materia_Id.Equals("2091")))
+            //    {
+            //      CursosValue cursos = new CursosValue();
+            //      string materia_id = dato.Matcod; 
+            //      cursos.Turno_Id = dato.Turno_Id;
+            //      cursos.Dia = dato.Dia;
+            //      cursos.M_Acobrar = dato.M_Acobrar;
+            //      cursos.Plan_Id = dato.Plan_Id;
+            //      dict5.Add(materia_id, cursos);
+            //    }
+
+
+            //}
+            return View("Index");
         }
 
         public List<T> LoadJson<T>(MockMethod mm)
@@ -252,179 +251,182 @@ namespace bob.Controllers
 
 public class HistoriaAcademica
 {
-    public string descrip;
-    public string materia_id;
-    public string fecha;
-    public string abr;
-    public int calificacion;
-    public string profesor;
-    public string acta_id;
-    public int anio;
-    public int cuatrim;
-}
+    public string Descrip;
+    public string Matcod;
+    public string Materia_Id;
+    public string Plan_Id;
+    public string Fecha;
+    public string Abr;
+    public int Calificacion;
+    public string Profesor;
+    public string Acta_Id;
+    public int Anio;
+    public int Cuatrim;
+    public string  Plan_Tit;
+    }
 
 public class MesaFinal
 {
-    public string materia_id;
-    string plan_id;
-    char turno_id;
-    string profesor;
-    char sede_id;
+    public string Materia_Id;
+    public string Plan_Id;
+    public char Turno_Id;
+    public string Profesor;
+    public char Sede_Id;
 }
 
 public class Cursos
 {
-    public string materia_id;
-    string plan_id;
-    char turno_id;
-    string dia;
-    int m_acobrar;
+    public string Materia_Id;
+    public string Plan_Id;
+    public char Turno_Id;
+    public string Dia;
+    public int M_Acobrar;
 
 
 }
 
 public class AprValue
 {
-    string Fecha;
-    string Abr;
-    int Calificacion;
-    string Profesor;
-    string Acta_id;
-    int Anio;
-    int Cuatrim;
+    public string Fecha { get; set; }
+    public string Abr { get; set; }
+    public int Calificacion { get; set; }
+    public string Profesor { get; set; }
+    public string Acta_Id { get; set; }
+    public int Anio { get; set; }
+    public int Cuatrim { get; set; }
 }
 
 public class CurValue
 {
-    string Fecha;
-    string Abr;
-    string Profesor;
-    int Anio;
-    int Cuatrim;
-    string Plan_id;
-    int Plan_tit;
+    public string Fecha { get; set; }
+    public string Abr { get; set; }
+    public string Profesor { get; set; }
+    public int Anio { get; set; }
+    public int Cuatrim { get; set; }
+    public string Plan_Id { get; set; }
+    public string Plan_Tit { get; set; }
 }
 
 public class EquivValue {
-    string Fecha;
-    string Abr;
-    string Plan_id;
-    int Plan_tit;
+    public string Fecha { get; set; }
+    public string Abr { get; set; }
+    public string Plan_Id { get; set; }
+    public string Plan_Tit { get; set; }
 }
 
 public class NotCurValue
 {
-    string Fecha;
-    string Abr;
-    int Anio;
-    int Cuatrim;
-    string Plan_id;
-    int Plan_tit;
+    public string Fecha { get; set; }
+    public string Abr { get; set; }
+    public int Anio { get; set; }
+    public int Cuatrim { get; set; }
+    public string Plan_Id { get; set; }
+    public string Plan_Tit { get; set; }
 }
 
 public class MesaFinalValue
 {
-    char Turno_id;
-    string Plan_id;
-    string Profesor;
-    char sede_id; 
+    public char Turno_Id { get; set; }
+    public string Plan_Id { get; set; }
+    public string Profesor { get; set; }
+    public char Sede_Id { get; set; }
 }
 
-struct CursosValue
+public class CursosValue
 {
-    string Plan_id;
-    char Turno_id;
-    string Dia;
-    int M_acobrar;
+    public string Plan_Id { get; set; }
+    public char Turno_Id { get; set; }
+    public string Dia { get; set; }
+    public int M_Acobrar { get; set; }
 }
 
 class AprDictionary : Dictionary<string, AprValue>
 {
 
-    public void Add(string materia_id, string fecha, string abr, int calificacion, string profesor, string acta_id, int anio, int cuatrim)
+    public void Add(string matcod, string fecha, string abr, int calificacion, string profesor, string acta_id, int anio, int cuatrim)
     {
 
-        AprValue apr;
+        AprValue apr = new AprValue();
         apr.Fecha = fecha;
         apr.Abr = abr;
         apr.Calificacion = calificacion;
         apr.Profesor = profesor;
-        apr.Acta_id = acta_id;
+        apr.Acta_Id = acta_id;
         apr.Anio = anio;
         apr.Cuatrim = cuatrim;
-        this.Add(materia_id, apr);
+        this.Add(matcod, apr);
     }
 }
 
 class CurDictionary : Dictionary<string, CurValue>
 {
 
-    public void Add(string materia_id, string fecha, string abr, string profesor,  int anio, int cuatrim, string plan_id, int plan_tit)
+    public void Add(string matcod, string fecha, string abr, string profesor,  int anio, int cuatrim, string plan_id, string plan_tit)
     {
-        CurValue cur;
+        CurValue cur = new CurValue();
         cur.Fecha = fecha;
         cur.Abr = abr;
         cur.Profesor = profesor;
         cur.Anio = anio;
         cur.Cuatrim = cuatrim;
-        cur.Plan_id = plan_id;
-        cur.Plan_tit = plan_tit;
-        this.Add(materia_id, cur);
+        cur.Plan_Id = plan_id;
+        cur.Plan_Tit = plan_tit;
+        this.Add(matcod, cur);
     }
 }
 
 class EquivDictionary : Dictionary<string, EquivValue>
 {
 
-    public void Add(string materia_id, string fecha, string abr, string plan_id, int plan_tit)
+    public void Add(string matcod, string fecha, string abr, string plan_id, string plan_tit)
     {
-        EquivValue equiv;
+        EquivValue equiv = new EquivValue();
         equiv.Fecha = fecha;
         equiv.Abr = abr;     
-        equiv.Plan_id = plan_id;
-        equiv.Plan_tit = plan_tit;
-        this.Add(materia_id, equiv);
+        equiv.Plan_Id = plan_id;
+        equiv.Plan_Tit = plan_tit;
+        this.Add(matcod, equiv);
     }
 }
 
 class NotCurDictionary : Dictionary<string, NotCurValue>
 {
 
-    public void Add(string materia_id, string abr, int anio, int cuatrim, string plan_id, int plan_tit)
+    public void Add(string matcod, string abr, int anio, int cuatrim, string plan_id, string plan_tit)
     {
-        NotCurValue notcur;
+        NotCurValue notcur = new NotCurValue();
         notcur.Abr = abr;
-        notcur.Profesor = profesor;
         notcur.Anio = anio;
         notcur.Cuatrim = cuatrim;
-        notcur.Plan_id = plan_id;
-        notcur.Plan_tit = plan_tit;
-        this.Add(materia_id, notcur);
+        notcur.Plan_Id = plan_id;
+        notcur.Plan_Tit = plan_tit;
+        this.Add(matcod, notcur);
     }
 }
 
  class MesaFinalDictionary : Dictionary<string, MesaFinalValue>
  {
-     public void Add(string materia_id, char turno_id, string plan_id, string profesor, char sede_id)
+     public void Add(string matcod, char turno_id, string plan_id, string profesor, char sede_id)
    {
-      MesaFinalValue mesafinal;
-      mesafinal.Turno_id = turno_id;
-      mesafinal.Plan_id = plan_id;
+      MesaFinalValue mesafinal = new MesaFinalValue();
+      mesafinal.Turno_Id = turno_id;
+      mesafinal.Plan_Id = plan_id;
       mesafinal.Profesor = profesor;
-      mesafinal.Sede_id= sede_id;
-      this.Add(materia_id, mesafinal);
+      mesafinal.Sede_Id= sede_id;
+      this.Add(matcod, mesafinal);
    }
   }
 
- class CursosDictionary : Dictionary<string, Cursosvalue>
+ class CursosDictionary : Dictionary<string, CursosValue>
  {
-   public void Add(string materia_id, char turno_id, string dia, int m_acobrar, string plan_id, int plan_tit)
+   public void Add(string matcod, char turno_id, string dia, int m_acobrar, string plan_id, int plan_tit)
     {
-      CursosValue cursos;
-      cursos.Turno_id = turno_id;
+      CursosValue cursos = new CursosValue();
+      cursos.Plan_Id = plan_id;
+      cursos.Turno_Id = turno_id;
       cursos.Dia = dia;
-      cursos.M_acobrar = m_acobrar;
-      cursos.Plan_id = plan_id;
-      this.Add(materia_id, cursos);
+      cursos.M_Acobrar = m_acobrar;
+      this.Add(matcod, cursos);
     }
  }
+
