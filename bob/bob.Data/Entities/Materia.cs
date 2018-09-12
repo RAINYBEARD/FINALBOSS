@@ -1,4 +1,4 @@
-namespace bob.Data.Entities.DB
+namespace bob.Data.Entities
 {
     using System;
     using System.Collections.Generic;

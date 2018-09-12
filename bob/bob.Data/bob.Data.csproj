@@ -60,14 +60,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\DB\Alumno.cs" />
+    <Compile Include="Dictionaries\AprDictionary.cs" />
+    <Compile Include="Dictionaries\CursosDictionary.cs" />
+    <Compile Include="Dictionaries\MesaFinalDictionary.cs" />
+    <Compile Include="Dictionaries\NotCurDictionary.cs" />
+    <Compile Include="Dictionaries\EquivDictionary.cs" />
+    <Compile Include="Dictionaries\CurDictionary.cs" />
+    <Compile Include="DTOs\Autenticacion.cs" />
+    <Compile Include="DTOs\Curso.cs" />
+    <Compile Include="DTOs\HistoriaAcademica.cs" />
+    <Compile Include="DTOs\MesaFinal.cs" />
+    <Compile Include="DTOs\PlanEstudio.cs" />
+    <Compile Include="Entities\Alumno.cs" />
     <Compile Include="CaeceDBContext.cs" />
-    <Compile Include="Entities\DB\Correlativa.cs" />
-    <Compile Include="Entities\Json\materia.cs" />
-    <Compile Include="Entities\DB\Materia.cs" />
-    <Compile Include="Entities\DB\Materia_Descripcion.cs" />
+    <Compile Include="Entities\Correlativa.cs" />
+    <Compile Include="Entities\Materia.cs" />
+    <Compile Include="Entities\Materia_Descripcion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Entities\DB\Titulo.cs" />
+    <Compile Include="Entities\Titulo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

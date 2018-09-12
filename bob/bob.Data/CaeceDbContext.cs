@@ -4,7 +4,7 @@ namespace bob.Data
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
-    using bob.Data.Entities.DB;
+    using bob.Data.Entities;
     public partial class CaeceDBContext : DbContext
     {
         public CaeceDBContext()
