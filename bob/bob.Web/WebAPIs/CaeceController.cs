@@ -96,12 +96,12 @@ namespace bob.Controllers
         [Route("GetDictionaries/{matricula}")]
         public void GetDictionaries(string matricula)
         {
-            var aprDictionary = new AprDictionary();
-            var curDictionary = new CurDictionary();
-            var equivDictionary = new EquivDictionary();
-            var notCurDictionary = new NotCurDictionary();
-            var mesaFinalDictionary = new MesaFinalDictionary();
-            var cursosDictionary = new CursosDictionary();
+             var aprDictionary = new AprDictionary();
+             var curDictionary = new CurDictionary();
+             var equivDictionary = new EquivDictionary();
+             var notCurDictionary = new NotCurDictionary();
+             var mesaFinalDictionary = new MesaFinalDictionary();
+             var cursosDictionary = new CursosDictionary();
 
             foreach (HistoriaAcademica dato in MockService.LoadJson<HistoriaAcademica>(MockMethod.HistoriaAcademica))
             {
@@ -144,6 +144,63 @@ namespace bob.Controllers
         [Route("GetCorrelatives/{matricula}")]
         public void GetCorrelatives(string matricula)
         {
+            System.Diagnostics.Debug.WriteLine("Entro en el controller Cursos");
+
+            var query1 = BuscarUltimasMateriasDelPlanDeEstudio();
+
+            foreach (var resultado0 in query1)
+            {
+                var query2 = BuscarCorrelativa(resultado0.Materia_Id);
+
+                foreach (var resultado in query2)
+                {
+                    if (resultado.Materia_Id != resultado.Codigo_Correlativa)
+                    {
+                        RecorrerCorrelativas(resultado);
+                    }
+                }
+            }
+        }
+
+        public List<Data.Entities.Correlativa> BuscarCorrelativa(int idmateria)
+        {
+            using (var context = new CaeceDBContext())
+            {
+                return context.Correlativas.Where(a => a.Materia_Id == idmateria).ToList();
+            }
+        }
+
+        public List<Data.Entities.Materia> BuscarUltimasMateriasDelPlanDeEstudio()
+        {
+            using (var context = new CaeceDBContext())
+            {
+                short ultimo_anio_de_la_carrera = (short)(context.Materias.Max(a => a.Anio));
+                return context.Materias.Where(a => a.Anio == ultimo_anio_de_la_carrera && a.Cuatrim == 2).ToList();
+            }
+        }
+
+        private void RecorrerCorrelativas(Data.Entities.Correlativa correlativa)
+        {
+            // Print the node.  
+            System.Diagnostics.Debug.WriteLine("Materia : " + correlativa.Materia_Id + " Correlativa : " + correlativa.Codigo_Correlativa);
+            //if (!this.aprDictionary.Equals(correlativa.Materia_Id))
+            //{
+            //    this.materia_ant = correlativa.Materia_Id;
+            //}
+            //else
+            //{
+            //    System.Diagnostics.Debug.WriteLine("Materia que puede cursar : " + this.materia_ant);
+            //}
+
+            var resulcorrelativa = BuscarCorrelativa(correlativa.Codigo_Correlativa);
+
+            foreach (var resultado in resulcorrelativa)
+            {
+                if (resultado.Materia_Id != resultado.Codigo_Correlativa)
+                {
+                    RecorrerCorrelativas(resultado);
+                }
+            }
 
         }
     }
