@@ -136,7 +136,16 @@ namespace bob.Controllers
             }
         }
 
+        /// <summary>
+        /// Ejemplo de llamada: http://localhost:52178/Caece/GetCorrelatives/951282 
+        /// </summary>
+        /// <param name="matricula"></param>
+        [HttpGet]
+        [Route("GetCorrelatives/{matricula}")]
+        public void GetCorrelatives(string matricula)
+        {
 
+        }
     }
 }
 
