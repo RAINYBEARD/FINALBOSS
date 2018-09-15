@@ -62,9 +62,9 @@
   <ItemGroup>
     <Compile Include="Dictionaries\AprDictionary.cs" />
     <Compile Include="Dictionaries\CursosDictionary.cs" />
-    <Compile Include="Dictionaries\MesaFinalDictionary.cs" />
+    <Compile Include="Dictionaries\MesasDictionary.cs" />
     <Compile Include="Dictionaries\NotCurDictionary.cs" />
-    <Compile Include="Dictionaries\EquivDictionary.cs" />
+    <Compile Include="Dictionaries\PenDictionary.cs" />
     <Compile Include="Dictionaries\CurDictionary.cs" />
     <Compile Include="DTOs\Autenticacion.cs" />
     <Compile Include="DTOs\Curso.cs" />

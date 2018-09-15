@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace bob.Data.Dictionaries
 {
-    public class MesaFinalDictionary : Dictionary<string, MesaFinalValue>
+    public class MesasDictionary : Dictionary<string, MesasValue>
     {
         public void Add(string matcod, char turno_id, string plan_id, string profesor, char sede_id)
         {
-            MesaFinalValue mesafinal = new MesaFinalValue();
+            MesasValue mesafinal = new MesasValue();
             mesafinal.Turno_Id = turno_id;
             mesafinal.Plan_Id = plan_id;
             mesafinal.Profesor = profesor;
@@ -19,7 +19,7 @@ namespace bob.Data.Dictionaries
         }
     }
 
-    public class MesaFinalValue
+    public class MesasValue
     {
         public char Turno_Id { get; set; }
         public string Plan_Id { get; set; }

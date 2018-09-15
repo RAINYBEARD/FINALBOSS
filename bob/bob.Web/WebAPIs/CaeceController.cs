@@ -90,6 +90,7 @@ namespace bob.Controllers
 
         /// <summary>
         /// Ejemplo de llamada: http://localhost:52178/Caece/GetDictionaries/951282 
+        /// CARGA LOS DICCIONARIOS
         /// </summary>
         /// <param name="matricula"></param>
         [HttpGet]
@@ -98,9 +99,9 @@ namespace bob.Controllers
         {
              var aprDictionary = new AprDictionary();
              var curDictionary = new CurDictionary();
-             var equivDictionary = new EquivDictionary();
+             var penDictionary = new PenDictionary();
              var notCurDictionary = new NotCurDictionary();
-             var mesaFinalDictionary = new MesaFinalDictionary();
+             var mesaFinalDictionary = new MesasDictionary();
              var cursosDictionary = new CursosDictionary();
 
             foreach (HistoriaAcademica dato in MockService.LoadJson<HistoriaAcademica>(MockMethod.HistoriaAcademica))
@@ -120,9 +121,9 @@ namespace bob.Controllers
                         curDictionary.Add(matcod, cur);
                         break;
                     case ("PEN"):
-                        EquivValue equiv = new EquivValue();
+                        PenValue equiv = new PenValue();
                         AutoMapper.Mapper.Map(dato, equiv);
-                        equivDictionary.Add(matcod, equiv);
+                        penDictionary.Add(matcod, equiv);
                         break;
                     default:
                         if ((estado_materia.Equals("   ")) || (estado_materia.Equals("?  ")))
@@ -134,17 +135,25 @@ namespace bob.Controllers
                         break;
                 }
             }
+            //ACA SE CARGAN LOS DICCIONARIOS 
+            Helpers.SessionManager.DiccionarioAprobadas = aprDictionary;
+            Helpers.SessionManager.DiccionarioCursadas = curDictionary;
+            Helpers.SessionManager.DiccionarioPendientes = penDictionary;
+            Helpers.SessionManager.DiccionarioNoCursadas = notCurDictionary;
+
         }
 
         /// <summary>
-        /// Ejemplo de llamada: http://localhost:52178/Caece/GetCorrelatives/951282 
+        /// Ejemplo de llamada: http://localhost:52178/Caece/GetCorrelativas/951282 
         /// </summary>
         /// <param name="matricula"></param>
         [HttpGet]
-        [Route("GetCorrelatives/{matricula}")]
-        public void GetCorrelatives(string matricula)
+        [Route("GetCorrelativas/{matricula}")]
+        public void GetCorrelativas(string matricula)
         {
             System.Diagnostics.Debug.WriteLine("Entro en el controller Cursos");
+            //CHEQUEAR QUE LOS DICCIONARIOS ESTEN CARGADOS ANTES DE EMPEZAR A PROCESAR
+            if(Helpers.SessionManager.DiccionarioCursadas != null);
 
             var query1 = BuscarUltimasMateriasDelPlanDeEstudio();
 
@@ -161,7 +170,7 @@ namespace bob.Controllers
                 }
             }
         }
-
+        
         public List<Data.Entities.Correlativa> BuscarCorrelativa(int idmateria)
         {
             using (var context = new CaeceDBContext())
@@ -181,6 +190,9 @@ namespace bob.Controllers
 
         private void RecorrerCorrelativas(Data.Entities.Correlativa correlativa)
         {
+            //CHEQUEAR QUE LOS DICCIONARIOS ESTEN CARGADOS ANTES DE EMPEZAR A PROCESAR
+            //if(Helpers.SessionManager.DiccionarioCursadas != null);
+
             // Print the node.  
             System.Diagnostics.Debug.WriteLine("Materia : " + correlativa.Materia_Id + " Correlativa : " + correlativa.Codigo_Correlativa);
             //if (!this.aprDictionary.Equals(correlativa.Materia_Id))

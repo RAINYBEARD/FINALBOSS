@@ -29,7 +29,7 @@ namespace bob.App_Start
         {
             CreateMap<HistoriaAcademica, AprValue>();
             CreateMap<HistoriaAcademica, CurValue>();
-            CreateMap<HistoriaAcademica, EquivValue>();
+            CreateMap<HistoriaAcademica, PenValue>();
             CreateMap<HistoriaAcademica, NotCurValue>();
         }
     }
@@ -39,7 +39,7 @@ namespace bob.App_Start
             CreateMap<PlanEstudio, Materia_Descripcion>();
             CreateMap<PlanEstudio, Correlativa>();
             CreateMap<PlanEstudio, Materia>();
-            CreateMap<PlanEstudio, Titulo>().ForMember(dest=> dest.Tit_Des, opts=> opts.MapFrom(src=>src.abr_titulo));
+            CreateMap<PlanEstudio, Titulo>().ForMember(dest => dest.Tit_Des, opts => opts.MapFrom(src => src.abr_titulo));
         }
     }
 }

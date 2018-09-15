@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace bob.Data.Dictionaries
 {
-    public class EquivDictionary : Dictionary<string, EquivValue>
+    public class PenDictionary : Dictionary<string, PenValue>
     {
 
         public void Add(string matcod, string fecha, string abr, string plan_id, string plan_tit)
         {
-            EquivValue equiv = new EquivValue();
+            PenValue equiv = new PenValue();
             equiv.Fecha = fecha;
             equiv.Abr = abr;
             equiv.Plan_Id = plan_id;
@@ -20,7 +20,7 @@ namespace bob.Data.Dictionaries
         }
     }
 
-    public class EquivValue
+    public class PenValue
     {
         public string Fecha { get; set; }
         public string Abr { get; set; }

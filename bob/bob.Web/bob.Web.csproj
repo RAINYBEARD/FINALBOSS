@@ -156,6 +156,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Helpers\SessionManager.cs" />
     <Compile Include="WebAPIs\CaeceController.cs" />
     <Compile Include="WebAPIs\AuthenticationController.cs" />
     <Compile Include="Global.asax.cs">
