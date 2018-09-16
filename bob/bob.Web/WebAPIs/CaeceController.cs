@@ -206,8 +206,16 @@ namespace bob.Controllers
 
                 //Dictionary key = matcod = 8015/10S, value = AprValue  = {Abr, etc, etc} 
 
+                // Busco las correlativas dentro del diccionario de las materias no cursadas
                 if (SessionManager.DiccionarioNoCursadas.ContainsKey(correlativa.Materia_Id + "/" + correlativa.Plan_Id))
                 {
+                    // Verifico asignaturas que requieren cantidad de materias aprobadas
+                    if (correlativa.Codigo_Correlativa < 100 && correlativa.Codigo_Correlativa <= (SessionManager.DiccionarioAprobadas.Count() + SessionManager.DiccionarioCursadas.Count()) )
+                    {
+                        materias_a_cursar.Add(correlativa.Materia_Id);
+                    }
+
+                    // Almaceno la materia para evaluar si la correlativa es la que le resta cursar al alumno
                     materia_ant = correlativa.Materia_Id;
 
                     var resulcorrelativa = BuscarCorrelativa(correlativa.Codigo_Correlativa);
@@ -216,6 +224,7 @@ namespace bob.Controllers
                     {
                         if (resultado.Materia_Id != resultado.Codigo_Correlativa)
                         {
+                            // Hago llamada recursiva para recorrer el arbol de materias correlativas
                             BuscarMateriasACursar(resultado, ref materias_a_cursar,materia_ant);
                         }
                     }
