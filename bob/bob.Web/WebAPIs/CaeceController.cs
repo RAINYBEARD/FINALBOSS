@@ -158,6 +158,7 @@ namespace bob.Controllers
             //CHEQUEAR QUE LOS DICCIONARIOS ESTEN CARGADOS ANTES DE EMPEZAR A PROCESAR
             //if(Helpers.SessionManager.DiccionarioCursadas != null);
             List<int> materias_a_cursar = new List<int>();
+            int materia_ant = 0;
             var query1 = BuscarUltimasMateriasDelPlanDeEstudio();
 
             foreach (var resultado0 in query1)
@@ -168,7 +169,7 @@ namespace bob.Controllers
                 {
                     if (resultado.Materia_Id != resultado.Codigo_Correlativa)
                     {
-                        BuscarMateriasACursar(resultado,ref materias_a_cursar);
+                        BuscarMateriasACursar(resultado,ref materias_a_cursar,materia_ant);
                     }
                 }
             }
@@ -195,7 +196,7 @@ namespace bob.Controllers
             }
         }
 
-        private void BuscarMateriasACursar(Data.Entities.Correlativa correlativa,ref List<int> materias_a_cursar)
+        private void BuscarMateriasACursar(Data.Entities.Correlativa correlativa,ref List<int> materias_a_cursar,int materia_ant)
         {
             //CHEQUEAR QUE LOS DICCIONARIOS ESTEN CARGADOS ANTES DE EMPEZAR A PROCESAR
             if (SessionManager.DiccionarioCursadas != null)
@@ -204,10 +205,10 @@ namespace bob.Controllers
                 //System.Diagnostics.Debug.WriteLine("Materia : " + correlativa.Materia_Id + " Correlativa : " + correlativa.Codigo_Correlativa);
 
                 //Dictionary key = matcod = 8015/10S, value = AprValue  = {Abr, etc, etc} 
+
                 if (SessionManager.DiccionarioNoCursadas.ContainsKey(correlativa.Materia_Id + "/" + correlativa.Plan_Id))
                 {
-                    if (!materias_a_cursar.Contains(correlativa.Materia_Id))
-                            materias_a_cursar.Add(correlativa.Materia_Id);
+                    materia_ant = correlativa.Materia_Id;
 
                     var resulcorrelativa = BuscarCorrelativa(correlativa.Codigo_Correlativa);
 
@@ -215,10 +216,14 @@ namespace bob.Controllers
                     {
                         if (resultado.Materia_Id != resultado.Codigo_Correlativa)
                         {
-                            BuscarMateriasACursar(resultado, ref materias_a_cursar);
+                            BuscarMateriasACursar(resultado, ref materias_a_cursar,materia_ant);
                         }
                     }
-
+                }
+                else
+                {
+                    if (!materias_a_cursar.Contains(materia_ant))
+                        materias_a_cursar.Add(materia_ant);
                 }
             }
         }
