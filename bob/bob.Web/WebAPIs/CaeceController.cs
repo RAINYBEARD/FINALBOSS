@@ -158,21 +158,34 @@ namespace bob.Controllers
             //CHEQUEAR QUE LOS DICCIONARIOS ESTEN CARGADOS ANTES DE EMPEZAR A PROCESAR
             //if(Helpers.SessionManager.DiccionarioCursadas != null);
             List<int> materias_a_cursar = new List<int>();
+            List<Data.Entities.Correlativa> materias_para_buscar_correlativas = new List<Data.Entities.Correlativa>();
             int materia_ant = 0;
-            var query1 = BuscarUltimasMateriasDelPlanDeEstudio();
 
-            foreach (var resultado0 in query1)
+            foreach (var resultado0 in SessionManager.DiccionarioNoCursadas)
             {
-                var query2 = BuscarCorrelativa(resultado0.Materia_Id);
+                // Descompongo la materiaid del planid
+                string[] matriculaid = resultado0.Key.Split(new Char[] { '/' });
+                var query2 = BuscarCorrelativa(int.Parse(matriculaid[0]));
+
+                // Evaluacion para la materias que no tienen correlativas
+                if (query2.Count == 1)
+                    materias_a_cursar.Add(query2[0].Materia_Id);
 
                 foreach (var resultado in query2)
                 {
                     if (resultado.Materia_Id != resultado.Codigo_Correlativa)
                     {
-                        BuscarMateriasACursar(resultado,ref materias_a_cursar,materia_ant);
+                        // Elimino los resultados repetidos
+                        if (!materias_para_buscar_correlativas.Any(x => x.Materia_Id == resultado.Materia_Id))
+                            materias_para_buscar_correlativas.Add(resultado);
                     }
                 }
             }
+            foreach (var materia in materias_para_buscar_correlativas)
+             {
+                System.Diagnostics.Debug.WriteLine("Busco correlativas de la materia : " + materia.Materia_Id);
+                BuscarMateriasACursar(materia, ref materias_a_cursar, materia_ant);
+             }
             foreach (var materia_a_cursar in materias_a_cursar)
             {
                 System.Diagnostics.Debug.WriteLine("Materia que puede cursar : " + materia_a_cursar);
