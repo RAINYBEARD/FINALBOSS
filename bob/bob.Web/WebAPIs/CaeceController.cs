@@ -146,12 +146,12 @@ namespace bob.Controllers
         }
 
         /// <summary>
-        /// Ejemplo de llamada: http://localhost:52178/Caece/GetCorrelativas/951282 
+        /// Ejemplo de llamada: http://localhost:52178/Caece/GetMateriasACursar/951282 
         /// </summary>
         /// <param name="matricula"></param>
         [HttpGet]
-        [Route("GetCorrelativas/{matricula}")]
-        public void GetCorrelativas(string matricula)
+        [Route("GetMateriasACursar/{matricula}")]
+        public void GetMateriasACursar(string matricula)
         {
             GetDictionaries(matricula);
             System.Diagnostics.Debug.WriteLine("Entro en el controller Cursos");
@@ -183,7 +183,7 @@ namespace bob.Controllers
             }
             foreach (var materia in materias_para_buscar_correlativas)
              {
-                System.Diagnostics.Debug.WriteLine("Busco correlativas de la materia : " + materia.Materia_Id);
+                //System.Diagnostics.Debug.WriteLine("Busco correlativas de la materia : " + materia.Materia_Id);
                 BuscarMateriasACursar(materia, ref materias_a_cursar, materia_ant);
              }
             foreach (var materia_a_cursar in materias_a_cursar)
@@ -232,20 +232,28 @@ namespace bob.Controllers
                     materia_ant = correlativa.Materia_Id;
 
                     var resulcorrelativa = BuscarCorrelativa(correlativa.Codigo_Correlativa);
-
+                    bool flag_materia_a_cursar = true;
                     foreach (var resultado in resulcorrelativa)
                     {
                         if (resultado.Materia_Id != resultado.Codigo_Correlativa)
                         {
+                            if (!SessionManager.DiccionarioAprobadas.ContainsKey(resultado.Materia_Id + "/" + resultado.Plan_Id) && !SessionManager.DiccionarioCursadas.ContainsKey(resultado.Materia_Id + "/" + resultado.Plan_Id))
+                            {
+                                flag_materia_a_cursar = false;
+                            }
+
                             // Hago llamada recursiva para recorrer el arbol de materias correlativas
-                            BuscarMateriasACursar(resultado, ref materias_a_cursar,materia_ant);
+                            BuscarMateriasACursar(resultado, ref materias_a_cursar, materia_ant);
+
                         }
                     }
-                }
-                else
-                {
-                    if (!materias_a_cursar.Contains(materia_ant))
-                        materias_a_cursar.Add(materia_ant);
+
+                    if (flag_materia_a_cursar)
+                    {
+                        if (!materias_a_cursar.Contains(materia_ant))
+                            materias_a_cursar.Add(materia_ant);
+                    }
+
                 }
             }
         }
