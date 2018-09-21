@@ -97,12 +97,13 @@ namespace bob.Controllers
         [Route("GetDictionaries/{matricula}")]
         public void GetDictionaries(string matricula)
         {
-             var aprDictionary = new AprDictionary();
-             var curDictionary = new CurDictionary();
-             var penDictionary = new PenDictionary();
-             var notCurDictionary = new NotCurDictionary();
-             var mesaFinalDictionary = new MesasDictionary();
-             var cursosDictionary = new CursosDictionary();
+            var aprDictionary = new AprDictionary();
+            var curDictionary = new CurDictionary();
+            var penDictionary = new PenDictionary();
+            var repDictionary = new RepDictionary();
+            var notCurDictionary = new NotCurDictionary();
+            var mesaFinalDictionary = new MesasDictionary();
+            var cursosDictionary = new CursosDictionary();
 
             foreach (HistoriaAcademica dato in MockService.LoadJson<HistoriaAcademica>(MockMethod.HistoriaAcademica))
             {
@@ -124,6 +125,10 @@ namespace bob.Controllers
                         PenValue equiv = new PenValue();
                         AutoMapper.Mapper.Map(dato, equiv);
                         penDictionary.Add(matcod, equiv);
+                        break;
+                    case ("REP"):
+                        string fecha = dato.Fecha;
+                        repDictionary.Add(matcod, fecha);
                         break;
                     default:
                         if ((estado_materia.Equals("   ")) || (estado_materia.Equals("?  ")))
@@ -153,24 +158,26 @@ namespace bob.Controllers
         {
             System.Diagnostics.Debug.WriteLine("Entro en el controller Cursos");
             //CHEQUEAR QUE LOS DICCIONARIOS ESTEN CARGADOS ANTES DE EMPEZAR A PROCESAR
-            if(Helpers.SessionManager.DiccionarioCursadas != null);
-
-            var query1 = BuscarUltimasMateriasDelPlanDeEstudio();
-
-            foreach (var resultado0 in query1)
+            if (Helpers.SessionManager.DiccionarioCursadas != null)
             {
-                var query2 = BuscarCorrelativa(resultado0.Materia_Id);
 
-                foreach (var resultado in query2)
+                var query1 = BuscarUltimasMateriasDelPlanDeEstudio();
+
+                foreach (var resultado0 in query1)
                 {
-                    if (resultado.Materia_Id != resultado.Codigo_Correlativa)
+                    var query2 = BuscarCorrelativa(resultado0.Materia_Id);
+
+                    foreach (var resultado in query2)
                     {
-                        RecorrerCorrelativas(resultado);
+                        if (resultado.Materia_Id != resultado.Codigo_Correlativa)
+                        {
+                            RecorrerCorrelativas(resultado);
+                        }
                     }
                 }
             }
         }
-        
+
         public List<Data.Entities.Correlativa> BuscarCorrelativa(int idmateria)
         {
             using (var context = new CaeceDBContext())
@@ -215,7 +222,144 @@ namespace bob.Controllers
             }
 
         }
-    }
+
+        public class Cursado
+        {
+            public string materia_cod;
+            public DateTime fecha_cursada;
+            public DateTime fecha_vencimiento;
+            public int n_correlativas;
+            public int n_reprobadas;
+            public int n_prioridad;
+        }
+
+        public int prioridad = 0;
+
+        public void PlanificadorFinales()
+        {
+            List<Cursado> cursados = new List<Cursado>();
+            var aprDictionary = Session["APR"] as AprDictionary;
+            var curDictionary = Session["CUR"] as CurDictionary;
+            var repDictionary = Session["REP"] as RepDictionary;
+            foreach (var keyValue in curDictionary)
+            {
+                int reprobadas = 0;
+                int correlativas = 0;
+                DateTime fecur = string.Format("{Y}", DateTime.Parse(curDictionary.Fecha));
+                DateTime feven = fecur;
+                if (feven.ToString("MMMM") == "Jun")
+                {
+                    feven.AddMonths(6);
+                    feven.AddYears(1);
+                }
+                else
+                {
+                    feven.AddMonths(-6);
+                    feven.AddYears(2);
+                }
+                foreach (context.Correlativas.Any(a => a.Codigo_correlativa == curDictionary.matcod) in context.Correlativas)
+                {
+                    correlativas = correlativas + 1;
+                }
+                foreach (repDictionary.ContainsKey(materia_id))
+                {
+                    if (DateTime.Parse(repDictionary.Fecha) > fecur)
+                    {
+                        reprobadas = reprobadas + 1;
+                    }
+                }
+                cursados.Add(new Cursado() { materia_cod = matcod, fecha_cursada = fecur, fecha_vencimiento = feven, n_correlativas = correlativas, n_reprobadas = reprobadas });
+            }
+
+            cursados.ForEach(delegate (string materia_cod)
+            {
+                public static bool porVencerse(Cursado.fecha_vencimiento)
+                {
+                    return DateTime.Now < fecha_vencimiento < DateTime.Now.AddMonths(5);
+                }
+
+                if (porVencerse == true)
+                {
+                    foreach (context.Correlativas.Any(a => a.Codigo_correlativa == materia_id))
+                    {
+                        if (aprDictionary.ContainsKey(a.materia_id))
+                        {
+                            cursados[Cursado].n_prioridad = prioridad;
+                            prioridad = prioridad + 1;
+                        }
+                        else
+                        {
+                            if (curDictionary.ContainsKey(a.materia_id))
+                            {
+                                string matauxiliar = a.materia_id;
+                                string codauxiliar = cursados[Cursado].materia_cod;
+                                var obj = Cursado.Where(x => x.materia_cod == matauxiliar).FirstOrDefault;
+                                if (obj != null)
+                                {
+                                    obj.n_prioridad = prioridad;
+                                    prioridad = prioridad + 1;
+                                }
+                                var obj2 = Cursado.Where(x => x.materia_cod == codauxiliar).FirstOrDefault;
+                                if (obj2 != null)
+                                {
+                                    obj2.n_prioridad = prioridad;
+                                    prioridad = prioridad + 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+
+            cursados.ForEach(delegate (string materia_cod)
+            {
+                if (DateTime.Now == fecha_cursada) || (DateTime.Now.AddMonths(-1) == fecha_cursada)
+                {
+                    if (aprDictionary.ContainsKey(a.materia_id))
+                    {
+                        cursados[Cursado].n_prioridad = prioridad;
+                        prioridad = prioridad + 1;
+                    }
+                    else
+                    {
+
+                    }
+                }
+
+            },
+
+            cursados.ForEach(delegate (string materia_cod)
+            {
+                public static bool porVencerse(Cursado.fecha_vencimiento)
+                {
+                    return DateTime.Now < cursadosfecha_vencimiento < DateTime.Now.AddMonths(5);
+                }
+                if ((n_prioridad == null) && (porVencerse == false))
+                {
+                    if (aprDictionary.ContainsKey(a.materia_id))
+                    {
+                        cursados[Cursado].n_prioridad = prioridad;
+                        prioridad = prioridad + 1;
+                    }
+                    else
+                    {
+
+                    }
+                }
+            },
+
+            cursados.ForEach(delegate (string materia_cod)
+            {
+                if (cursados[Cursado].n_prioridad == null)
+                {
+                    cursados[Cursado].n_prioridad = prioridad;
+                    prioridad = prioridad + 1;
+                }
+            },
+
+            var cursados = (from c in cursados).orderbyAscending(x => x.cursados.n_prioridad);
+        }   
+    }      
 }
 
 

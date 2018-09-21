@@ -66,6 +66,7 @@
     <Compile Include="Dictionaries\NotCurDictionary.cs" />
     <Compile Include="Dictionaries\PenDictionary.cs" />
     <Compile Include="Dictionaries\CurDictionary.cs" />
+    <Compile Include="Dictionaries\RepDictionary.cs" />
     <Compile Include="DTOs\Autenticacion.cs" />
     <Compile Include="DTOs\Curso.cs" />
     <Compile Include="DTOs\HistoriaAcademica.cs" />
