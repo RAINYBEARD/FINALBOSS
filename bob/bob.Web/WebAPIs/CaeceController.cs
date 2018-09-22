@@ -153,6 +153,7 @@ namespace bob.Controllers
         [Route("GetMateriasACursar/{matricula}")]
         public void GetMateriasACursar(string matricula)
         {
+            var tiempoinicio=DateTime.Now;
             GetDictionaries(matricula);
             System.Diagnostics.Debug.WriteLine("Entro en el controller Cursos");
             //CHEQUEAR QUE LOS DICCIONARIOS ESTEN CARGADOS ANTES DE EMPEZAR A PROCESAR
@@ -186,10 +187,12 @@ namespace bob.Controllers
                 //System.Diagnostics.Debug.WriteLine("Busco correlativas de la materia : " + materia.Materia_Id);
                 BuscarMateriasACursar(materia, ref materias_a_cursar, materia_ant);
              }
-            foreach (var materia_a_cursar in materias_a_cursar)
-            {
-                System.Diagnostics.Debug.WriteLine("Materia que puede cursar : " + materia_a_cursar);
-            }
+            //foreach (var materia_a_cursar in materias_a_cursar)
+            //{
+            //    System.Diagnostics.Debug.WriteLine("Materia que puede cursar : " + materia_a_cursar);
+            //}
+            var tiempofin = DateTime.Now;
+            System.Diagnostics.Debug.WriteLine("tardo : " + (tiempofin-tiempoinicio));
         }
         
         public List<Data.Entities.Correlativa> BuscarCorrelativa(int idmateria)
