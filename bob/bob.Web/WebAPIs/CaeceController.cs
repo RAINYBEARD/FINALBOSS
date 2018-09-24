@@ -151,7 +151,7 @@ namespace bob.Controllers
         /// <param name="matricula"></param>
         [HttpGet]
         [Route("GetMateriasACursar/{matricula}")]
-        public void GetMateriasACursar(string matricula)
+        public List<int> GetMateriasACursar(string matricula)
         {
             var tiempoinicio=DateTime.Now;
             GetDictionaries(matricula);
@@ -193,6 +193,7 @@ namespace bob.Controllers
             //}
             var tiempofin = DateTime.Now;
             System.Diagnostics.Debug.WriteLine("tardo : " + (tiempofin-tiempoinicio));
+            return materias_a_cursar;
         }
         
         public List<Data.Entities.Correlativa> BuscarCorrelativa(int idmateria)
