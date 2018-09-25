@@ -143,6 +143,19 @@ namespace bob.Controllers
             SessionManager.DiccionarioPendientes = penDictionary;
             SessionManager.DiccionarioNoCursadas = notCurDictionary;
 
+            
+            foreach (var dato in MockService.LoadJson<Curso>(MockMethod.Cursos))
+            {
+                if (SessionManager.DiccionarioNoCursadas.ContainsKey(dato.Materia_Id + "/" + dato.Plan_Id))
+                {
+                    CursosValue curso = new CursosValue();
+                    AutoMapper.Mapper.Map(dato, curso);
+                    cursosDictionary.Add(dato.Materia_Id,curso);
+                }
+                    
+            }
+            SessionManager.DiccionarioCursos = cursosDictionary;
+
         }
 
         /// <summary>
