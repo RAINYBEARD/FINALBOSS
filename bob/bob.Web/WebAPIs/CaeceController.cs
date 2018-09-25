@@ -281,28 +281,80 @@ namespace bob.Controllers
         /// <param name="matricula"></param>
         [HttpGet]
         [Route("GetMateriasACursarCuatrimestreActual/{matricula}")]
-        public List<CursosValue> GetMateriasACursarCuatrimestreActual(string matricula)
+        public List<Curso> GetMateriasACursarCuatrimestreActual(string matricula)
         {
             GetDictionaries(matricula);
             List<string> materias_a_cursar = GetMateriasACursar(matricula);
-            List<CursosValue> materias_a_cursar_este_cuatri = new List<CursosValue>();
+            List<Curso> materias_a_cursar_este_cuatri = new List<Curso>();
+            
 
             foreach (var materia in materias_a_cursar)
             {
                 // Descompongo la materiaid del planid
-                string[] matriculaid = materia.Split(new Char[] { '/' });
+                string[] materiaid = materia.Split(new Char[] { '/' });
 
                 // Verifico los cursos que puede cursar este cuatrimestre
-                if (SessionManager.DiccionarioCursos.ContainsKey(matriculaid[0]))
+                if (SessionManager.DiccionarioCursos.ContainsKey(materiaid[0]))
                 {
+                    Curso cursomateria = new Curso();
+                    cursomateria.Materia_Id = materiaid[0];
+                    cursomateria.Dia = SessionManager.DiccionarioCursos[materiaid[0]].Dia;
+                    cursomateria.M_Acobrar = SessionManager.DiccionarioCursos[materiaid[0]].m_acobrar;
+                    cursomateria.Plan_Id = SessionManager.DiccionarioCursos[materiaid[0]].Plan_Id;
+                    cursomateria.Turno_Id = SessionManager.DiccionarioCursos[materiaid[0]].Turno_Id;
+
                     // Agrego a la lista los cursos a los cuales se puede inscribir
-                    materias_a_cursar_este_cuatri.Add(SessionManager.DiccionarioCursos[matriculaid[0]]);                    
-                    System.Diagnostics.Debug.WriteLine("Materia que puede cursar este cuatri : " + SessionManager.DiccionarioCursos[matriculaid[0]].Dia);
+                    materias_a_cursar_este_cuatri.Add(cursomateria);                    
+                    //System.Diagnostics.Debug.WriteLine("Materia que puede cursar este cuatri : " + SessionManager.DiccionarioCursos[materiaid[0]].Dia);
                 }
             }
             return materias_a_cursar_este_cuatri;
         }
 
+        public List<Curso> MostrarMateriasACursarCuatrimestreActual(string matricula,string filtrodias,int filtrocantdias,string modo)
+        {
+            List<Curso> materias_a_cursar_este_cuatri = GetMateriasACursarCuatrimestreActual(matricula);
+            List<Curso> mostrar_materias_a_cursar_este_cuatri = new List<Curso>();
+            string dias_a_cursar = "0000000";
+
+            if (modo == "manual")
+            {
+                foreach (var materia in materias_a_cursar_este_cuatri)
+                {
+                    for (int i = 0; i < 7; i++)
+                    {
+                        if (filtrodias.Substring(i, 1) == "1" && materia.Dia.Substring(i,1) == "1")
+                        {
+                            mostrar_materias_a_cursar_este_cuatri.Add(materia);
+                        }
+                    }
+                }
+            }
+            return mostrar_materias_a_cursar_este_cuatri;
+        }
+
+        public string ObtenerNombreMateria(int materiaid)
+        {
+            using (var context = new CaeceDBContext())
+            {
+                return context.Materias_Descripciones.First(x => x.Materia_Id == materiaid).Mat_Des;
+            }
+        }
+
+        /// <summary>
+        /// Ejemplo de llamada: http://localhost:52178/Caece/Prueba/1000000 
+        /// </summary>
+        /// <param name="matricula"></param>
+        [HttpGet]
+        [Route("Prueba/{filtrodias}")]
+        public void Prueba(string filtrodias)
+        {
+            List<Curso> materias = MostrarMateriasACursarCuatrimestreActual("951282", "0010000", 1, "manual");
+            foreach (var materia in materias)
+            {
+                System.Diagnostics.Debug.WriteLine("Materia a cursar : " + ObtenerNombreMateria(int.Parse(materia.Materia_Id)));
+            }
+        }
     }
 }
 

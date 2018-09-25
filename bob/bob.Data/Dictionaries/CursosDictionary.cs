@@ -14,7 +14,7 @@ namespace bob.Data.Dictionaries
             cursos.Plan_Id = plan_id;
             cursos.Turno_Id = turno_id;
             cursos.Dia = dia;
-            cursos.M_Acobrar = m_acobrar;
+            cursos.m_acobrar = m_acobrar;
             this.Add(matcod, cursos);
         }
     }
@@ -24,6 +24,6 @@ namespace bob.Data.Dictionaries
         public string Plan_Id { get; set; }
         public char Turno_Id { get; set; }
         public string Dia { get; set; }
-        public int M_Acobrar { get; set; }
+        public int m_acobrar { get; set; }
     }
 }
