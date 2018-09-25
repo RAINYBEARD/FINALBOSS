@@ -227,7 +227,13 @@ namespace bob.Controllers
 
         public int prioridad = 0;
 
-        public void PlanificadorFinales()
+        /// <summary>
+        /// Ejemplo de llamada: http://localhost:52178/Caece/PlanificadorFinales/951282 
+        /// </summary>
+        /// <param name="matricula"></param>
+        [HttpGet]
+        [Route("PlanificadorFinales/{matricula}")]
+        public List<CursadoStatus> PlanificadorFinales()
         {
             List<CursadoStatus> cursados = new List<CursadoStatus>();
             var aprDictionary = Session["APR"] as AprDictionary;
@@ -258,108 +264,70 @@ namespace bob.Controllers
                 }
 
                 if (repDictionary.ContainsKey(entry.Key))
-                { 
-                    reprobadas = true;
+                {
+                    string fechareprobado;
+                    repDictionary.TryGetValue(entry.Key, out fechareprobado);
+
+                    if (DateTime.Parse(fechareprobado) > DateTime.Parse(entry.Value.Fecha))
+                    {
+                        reprobadas = true;
+                    }
                 }
                 //Usar AutoMapper
                 cursados.Add(new CursadoStatus() { materia_cod = entry.Key, fecha_cursada = fecur, fecha_vencimiento = feven, n_correlativas = correlativas, reprobado = reprobadas });
             }
-            //CURSADOS 
-            //materia_cod string (Key)
-            //fecha de cursada DateTime
-            //fecha de vencimiento DateTime
-            //Lista<objetosCorrelativa>
-            //reprobado Boolean
-            //prioridad int
 
-            //Si la materia esta en condiciones para rendir el final (Correlativas para atras)
-            //Criterios: 
-            //Traba la Carrera (Correlativas para adelante)
-            //Materias que se vencen
+            foreach (CursadoStatus cur in cursados)
+            {
+                foreach (Correlativa corr in context.Correlativas)
+                {
+                    if (corr.Materia_Id+ "/" + corr.Plan_Id == cur.materia_cod)
+                    {
+                        if ((!aprDictionary.ContainsKey(cur.materia_cod)) && (!curDictionary.ContainsKey(cur.materia_cod)))
+                        {
+                            cursados.Remove(cur);
+                        }
+                    }
+                }
+            }
 
-    //        cursados.ForEach(delegate (string materia_cod)
-    //        {
-    //            if (porVencerse == true)
-    //            {
-    //                foreach (context.Correlativas.Any(a => a.Codigo_correlativa == materia_cod))
-    //                {
-    //                    if (aprDictionary.ContainsKey(a.materia_id))
-    //                    {
-    //                        cursados[Cursado].n_prioridad = prioridad;
-    //                        prioridad = prioridad + 1;
-    //                    }
-    //                    else
-    //                    {
-    //                        if (curDictionary.ContainsKey(a.materia_id))
-    //                        {
-    //                            string matauxiliar = a.materia_id;
-    //                            string codauxiliar = cursados[Cursado].materia_cod;
-    //                            var obj = Cursado.Where(x => x.materia_cod == matauxiliar).FirstOrDefault;
-    //                            if (obj != null)
-    //                            {
-    //                                obj.n_prioridad = prioridad;
-    //                                prioridad = prioridad + 1;
-    //                            }
-    //                            var obj2 = Cursado.Where(x => x.materia_cod == codauxiliar).FirstOrDefault;
-    //                            if (obj2 != null)
-    //                            {
-    //                                obj2.n_prioridad = prioridad;
-    //                                prioridad = prioridad + 1;
-    //                            }
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        },
+            return cursados;
+        } 
 
-    //        cursados.ForEach(delegate (string materia_cod)
-    //        {
-    //            if (DateTime.Now == fecha_cursada) || (DateTime.Now.AddMonths(-1) == fecha_cursada)
-    //            {
-    //                if (aprDictionary.ContainsKey(a.materia_id))
-    //                {
-    //                    cursados[Cursado].n_prioridad = prioridad;
-    //                    prioridad = prioridad + 1;
-    //                }
-    //                else
-    //                {
+        public List<CursadoStatus> FinalesPorVecimiento()
+        {
+            List<CursadoStatus> Ls = PlanificadorFinales();
+            //int prioridad = 1;
+            //foreach (CursadoStatus curr in Ls)
+            //{
+            //    if((DateTime.Now == curr.fecha_vencimiento) || (DateTime.Now.AddMonths(1) == curr.fecha_vencimiento))
+            //    {
+            //        curr.n_prioridad = prioridad;
+            //        prioridad = prioridad + 1;
 
-    //                }
-    //            }
+            //    }
+            //    else
+            //    {
+            //        Ls.Remove(curr);
+            //    }
+            //}
+            Ls.OrderByDescending(p => p.fecha_vencimiento);
 
-    //        },
+            return Ls;
 
-    //        cursados.ForEach(delegate (string materia_cod)
-    //        {
-    //            public static bool porVencerse(Cursado.fecha_vencimiento)
-    //            {
-    //                return DateTime.Now < cursadosfecha_vencimiento < DateTime.Now.AddMonths(5);
-    //            }
-    //            if ((n_prioridad == null) && (porVencerse == false))
-    //            {
-    //                if (aprDictionary.ContainsKey(a.materia_id))
-    //                {
-    //                    cursados[Cursado].n_prioridad = prioridad;
-    //                    prioridad = prioridad + 1;
-    //                }
-    //                else
-    //                {
 
-    //                }
-    //            }
-    //        },
+        }
 
-    //        cursados.ForEach(delegate (string materia_cod)
-    //        {
-    //            if (cursados[Cursado].n_prioridad == null)
-    //            {
-    //                cursados[Cursado].n_prioridad = prioridad;
-    //                prioridad = prioridad + 1;
-    //            }
-    //        },
+        public List<CursadoStatus> FinalesPorCorrelativas()
+        {
+            List<CursadoStatus> Ls = PlanificadorFinales();         
+            Ls.OrderByDescending(p => p.n_correlativas);
 
-    //        var cursados = (from c in cursados).orderbyAscending(x => x.cursados.n_prioridad);
-        }   
+            return Ls;
+        }
+
+
+
     }      
 }
 
