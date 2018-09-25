@@ -137,23 +137,23 @@ namespace bob.Controllers
                         break;
                 }
             }
+
+            foreach (var dato in MockService.LoadJson<Curso>(MockMethod.Cursos))
+            {
+                if (notCurDictionary.ContainsKey(dato.Materia_Id + "/" + dato.Plan_Id))
+                {
+                    CursosValue curso = new CursosValue();
+                    AutoMapper.Mapper.Map(dato, curso);
+                    cursosDictionary.Add(dato.Materia_Id, curso);
+                }
+
+            }
+
             //ACA SE CARGAN LOS DICCIONARIOS 
             SessionManager.DiccionarioAprobadas = aprDictionary;
             SessionManager.DiccionarioCursadas = curDictionary;
             SessionManager.DiccionarioPendientes = penDictionary;
             SessionManager.DiccionarioNoCursadas = notCurDictionary;
-
-            
-            foreach (var dato in MockService.LoadJson<Curso>(MockMethod.Cursos))
-            {
-                if (SessionManager.DiccionarioNoCursadas.ContainsKey(dato.Materia_Id + "/" + dato.Plan_Id))
-                {
-                    CursosValue curso = new CursosValue();
-                    AutoMapper.Mapper.Map(dato, curso);
-                    cursosDictionary.Add(dato.Materia_Id,curso);
-                }
-                    
-            }
             SessionManager.DiccionarioCursos = cursosDictionary;
 
         }
@@ -281,20 +281,26 @@ namespace bob.Controllers
         /// <param name="matricula"></param>
         [HttpGet]
         [Route("GetMateriasACursarCuatrimestreActual/{matricula}")]
-        public void GetMateriasACursarCuatrimestreActual(string matricula)
+        public List<CursosValue> GetMateriasACursarCuatrimestreActual(string matricula)
         {
             GetDictionaries(matricula);
             List<string> materias_a_cursar = GetMateriasACursar(matricula);
+            List<CursosValue> materias_a_cursar_este_cuatri = new List<CursosValue>();
 
             foreach (var materia in materias_a_cursar)
             {
                 // Descompongo la materiaid del planid
                 string[] matriculaid = materia.Split(new Char[] { '/' });
+
+                // Verifico los cursos que puede cursar este cuatrimestre
                 if (SessionManager.DiccionarioCursos.ContainsKey(matriculaid[0]))
                 {
-                    System.Diagnostics.Debug.WriteLine("Materia que puede cursar este cuatri : " + materia);
+                    // Agrego a la lista los cursos a los cuales se puede inscribir
+                    materias_a_cursar_este_cuatri.Add(SessionManager.DiccionarioCursos[matriculaid[0]]);                    
+                    System.Diagnostics.Debug.WriteLine("Materia que puede cursar este cuatri : " + SessionManager.DiccionarioCursos[matriculaid[0]].Dia);
                 }
             }
+            return materias_a_cursar_este_cuatri;
         }
 
     }
