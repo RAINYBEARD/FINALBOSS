@@ -365,7 +365,7 @@ namespace bob.Controllers
         }
 
         /// <summary>
-        /// Ejemplo de llamada: http://localhost:52178/Caece/Prueba/1000000 
+        /// Ejemplo de llamada: http://localhost:52178/Caece/Prueba/?filtrodias=1000000
         /// </summary>
         /// <param name="matricula"></param>
         [HttpGet]
@@ -373,7 +373,7 @@ namespace bob.Controllers
         public void Prueba(string filtrodias)
         {
             //List<Curso> materias = MostrarMateriasACursarCuatrimestreActual("951282", "0010000", 1, "manual");
-            List<Curso> materias = MostrarMateriasACursarCuatrimestreActual("951282", "1110000", 1, "manual");
+            List<Curso> materias = MostrarMateriasACursarCuatrimestreActual("951282", filtrodias, 1, "manual");
 
             foreach (var materia in materias)
             {
