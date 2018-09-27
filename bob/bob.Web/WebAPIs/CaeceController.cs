@@ -332,11 +332,56 @@ namespace bob.Controllers
             }
         }
 
+        static string ReplaceAtIndex(int i, char value, string word)
+        {
+            char[] letters = word.ToCharArray();
+            letters[i] = value;
+            return string.Join("", letters);
+        }
+
+        public bool AgregarDiasACursar(string dia_materia,ref string dias_a_cursar, int filtrocantdias)
+        {
+            int i = 0;
+            List<int> dias = new List<int>();
+            int cant_dias = 0;
+            while ( i<7 && ((dia_materia.Substring(i, 1) == "1" && dias_a_cursar.Substring(i, 1) == "0") ||
+                            (dia_materia.Substring(i, 1) == "0" && dias_a_cursar.Substring(i, 1) == "0") ||
+                            (dia_materia.Substring(i, 1) == "0" && dias_a_cursar.Substring(i, 1) == "1")))
+            {
+                if (dia_materia.Substring(i, 1) == "1" && dias_a_cursar.Substring(i, 1) == "0")
+                    dias.Add(i);
+                i++;
+            }
+            for (int j = 0; j < 7; j++)
+            {
+                if (dias_a_cursar.Substring(j, 1) != "0")
+                    cant_dias++;
+            }
+
+            // Le sumo la cantidad de dias de la materia nueva
+            cant_dias = cant_dias + dias.Count();
+
+            if (i == 7 && (cant_dias <= filtrocantdias))
+            {
+                foreach (var indice in dias)
+                {
+                    dias_a_cursar = ReplaceAtIndex(indice, '1', dias_a_cursar);
+                }
+                
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public List<Curso> MostrarMateriasACursarCuatrimestreActual(string matricula,string filtrodias,int filtrocantdias,string modo)
         {
             List<Curso> materias_a_cursar_este_cuatri = GetMateriasACursarCuatrimestreActual(matricula);
             List<Curso> mostrar_materias_a_cursar_este_cuatri = new List<Curso>();
-            string dias_a_cursar = "0000000";
+            List<Curso> aux_materias_a_cursar = new List<Curso>();
+            string dias_que_cursa = "0000000";
 
             if (modo == "manual")
             {
@@ -347,9 +392,38 @@ namespace bob.Controllers
                     //int cantidad_dias_que_se_cursa_materia = auxdiasacursar.Length - 1;
 
                     // Verifico si el filtro de dias en los cuales se cursa una materia machea con la cantidad de dias que se cursa la materia
-                    if (VerificarFiltroDias(filtrodias,materia.Dia))
+                    if (VerificarFiltroDias(filtrodias, materia.Dia))
                     {
                         mostrar_materias_a_cursar_este_cuatri.Add(materia);
+                    }
+                }
+            }
+            else
+            {
+                if (modo == "auto")
+                {
+                    foreach (var materia in materias_a_cursar_este_cuatri)
+                    {
+                        // Para contar cantidad de dias que se cursa una materia
+                        string[] auxdiasacursar = materia.Dia.Split(new Char[] { '1' });
+                        int cantidad_dias_que_se_cursa_materia = auxdiasacursar.Length - 1;
+                        
+                        if (cantidad_dias_que_se_cursa_materia > 1 && AgregarDiasACursar(materia.Dia, ref dias_que_cursa, filtrocantdias))
+                        {
+                            mostrar_materias_a_cursar_este_cuatri.Insert(0, materia);
+                        }
+                        else
+                        {
+                                aux_materias_a_cursar.Add(materia);
+                        }
+                        
+                    }
+                    foreach (var materia in aux_materias_a_cursar)
+                    {
+                        if (AgregarDiasACursar(materia.Dia, ref dias_que_cursa, filtrocantdias))
+                        {
+                            mostrar_materias_a_cursar_este_cuatri.Add(materia);
+                        }
                     }
                 }
             }
@@ -372,8 +446,8 @@ namespace bob.Controllers
         [Route("Prueba/{filtrodias}")]
         public void Prueba(string filtrodias)
         {
-            //List<Curso> materias = MostrarMateriasACursarCuatrimestreActual("951282", "0010000", 1, "manual");
-            List<Curso> materias = MostrarMateriasACursarCuatrimestreActual("951282", filtrodias, 1, "manual");
+            List<Curso> materias = MostrarMateriasACursarCuatrimestreActual("951282", filtrodias, 7, "auto");
+            //List<Curso> materias = MostrarMateriasACursarCuatrimestreActual("951282", filtrodias, 1, "manual");
 
             foreach (var materia in materias)
             {
