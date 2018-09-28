@@ -408,7 +408,7 @@ namespace bob.Controllers
                         string[] auxdiasacursar = materia.Dia.Split(new Char[] { '1' });
                         int cantidad_dias_que_se_cursa_materia = auxdiasacursar.Length - 1;
                         
-                        if (cantidad_dias_que_se_cursa_materia > 1 && AgregarDiasACursar(materia.Dia, ref dias_que_cursa, filtrocantdias))
+                        if (cantidad_dias_que_se_cursa_materia > 1 && AgregarDiasACursar(materia.Dia, ref dias_que_cursa, filtrocantdias) && VerificarFiltroDias(filtrodias, materia.Dia))
                         {
                             mostrar_materias_a_cursar_este_cuatri.Insert(0, materia);
                         }
@@ -420,7 +420,7 @@ namespace bob.Controllers
                     }
                     foreach (var materia in aux_materias_a_cursar)
                     {
-                        if (AgregarDiasACursar(materia.Dia, ref dias_que_cursa, filtrocantdias))
+                        if (AgregarDiasACursar(materia.Dia, ref dias_que_cursa, filtrocantdias) && VerificarFiltroDias(filtrodias, materia.Dia))
                         {
                             mostrar_materias_a_cursar_este_cuatri.Add(materia);
                         }
