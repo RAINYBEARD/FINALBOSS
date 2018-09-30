@@ -262,7 +262,7 @@ namespace bob.Controllers
                 {
                     correlativas = correlativas + 1;
                 }
-
+                //Si se reprobo o no
                 if (repDictionary.ContainsKey(entry.Key))
                 {
                     string fechareprobado;
@@ -293,7 +293,7 @@ namespace bob.Controllers
 
             return cursados;
         } 
-
+        //Orden por fecha de vencimiento
         public List<CursadoStatus> FinalesPorVecimiento()
         {
             List<CursadoStatus> Ls = PlanificadorFinales();
@@ -317,7 +317,7 @@ namespace bob.Controllers
 
 
         }
-
+        //Orden por numero de correlativas asociadas
         public List<CursadoStatus> FinalesPorCorrelativas()
         {
             List<CursadoStatus> Ls = PlanificadorFinales();         
