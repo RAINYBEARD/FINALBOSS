@@ -438,22 +438,22 @@ namespace bob.Controllers
             }
         }
 
-        /// <summary>
-        /// Ejemplo de llamada: http://localhost:52178/Caece/Prueba/?filtrodias=1000000&filtrocantdias=1
-        /// </summary>
-        /// <param name="matricula"></param>
-        [HttpGet]
-        [Route("Prueba/{filtrodias}/{filtrocantdias}")]
-        public void Prueba(string filtrodias, int filtrocantdias)
-        {
-            List<Curso> materias = MostrarMateriasACursarCuatrimestreActual("951282", filtrodias, filtrocantdias, "auto");
-            //List<Curso> materias = MostrarMateriasACursarCuatrimestreActual("951282", filtrodias, 1, "manual");
+        ///// <summary>
+        ///// Ejemplo de llamada: http://localhost:52178/Caece/Prueba/?filtrodias=1000000&filtrocantdias=1
+        ///// </summary>
+        ///// <param name="matricula"></param>
+        //[HttpGet]
+        //[Route("Prueba/{filtrodias}/{filtrocantdias}")]
+        //public void Prueba(string filtrodias, int filtrocantdias)
+        //{
+        //    List<Curso> materias = MostrarMateriasACursarCuatrimestreActual("951282", filtrodias, filtrocantdias, "auto");
+        //    //List<Curso> materias = MostrarMateriasACursarCuatrimestreActual("951282", filtrodias, 1, "manual");
 
-            foreach (var materia in materias)
-            {
-                System.Diagnostics.Debug.WriteLine("Materia a cursar : " + ObtenerNombreMateria(int.Parse(materia.Materia_Id)));
-            }
-        }
+        //    foreach (var materia in materias)
+        //    {
+        //        System.Diagnostics.Debug.WriteLine("Materia a cursar : " + ObtenerNombreMateria(int.Parse(materia.Materia_Id)));
+        //    }
+        //}
     }
 }
 
