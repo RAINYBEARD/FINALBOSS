@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Threading;
 using bob.Data;
 using bob.Data.DTOs;
 using bob.Data.Dictionaries;
@@ -198,8 +199,10 @@ namespace bob.Controllers
             foreach (var materia in materias_para_buscar_correlativas)
              {
                 //System.Diagnostics.Debug.WriteLine("Busco correlativas de la materia : " + materia.Materia_Id);
-                BuscarMateriasACursar(materia, ref materias_a_cursar, materia_ant);
-             }
+                //BuscarMateriasACursar(materia, ref materias_a_cursar, materia_ant);
+                Thread t = new Thread(() => BuscarMateriasACursar(materia, ref materias_a_cursar, materia_ant));
+                t.Start();
+            }
             //foreach (var materia_a_cursar in materias_a_cursar)
             //{
             //    System.Diagnostics.Debug.WriteLine("Materia que puede cursar : " + materia_a_cursar);
@@ -258,10 +261,8 @@ namespace bob.Controllers
                             {
                                 flag_materia_a_cursar = false;
                             }
-
                             // Hago llamada recursiva para recorrer el arbol de materias correlativas
                             BuscarMateriasACursar(resultado, ref materias_a_cursar, materia_ant);
-
                         }
                     }
 
