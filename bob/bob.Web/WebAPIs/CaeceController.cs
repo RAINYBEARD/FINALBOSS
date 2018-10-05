@@ -169,6 +169,10 @@ namespace bob.Controllers
         {
             var tiempoinicio=DateTime.Now;
             GetDictionaries(matricula);
+            //using (var context = new CaeceDBContext())
+            //{
+            //    var dicCorrelativas = context.Correlativas.Where(a => a.Titulo_Id == 7290 && a.Plan_Tit == "10Z").ToDictionary(x => x.Materia_Id, x => x.Codigo_Correlativa);
+            //}
             System.Diagnostics.Debug.WriteLine("Entro en el controller Cursos");
             //CHEQUEAR QUE LOS DICCIONARIOS ESTEN CARGADOS ANTES DE EMPEZAR A PROCESAR
             //if(Helpers.SessionManager.DiccionarioCursadas != null);
@@ -199,9 +203,9 @@ namespace bob.Controllers
             foreach (var materia in materias_para_buscar_correlativas)
              {
                 //System.Diagnostics.Debug.WriteLine("Busco correlativas de la materia : " + materia.Materia_Id);
-                //BuscarMateriasACursar(materia, ref materias_a_cursar, materia_ant);
-                Thread t = new Thread(() => BuscarMateriasACursar(materia, ref materias_a_cursar, materia_ant));
-                t.Start();
+                BuscarMateriasACursar(materia, ref materias_a_cursar, materia_ant);
+                //Thread t = new Thread(() => BuscarMateriasACursar(materia, ref materias_a_cursar, materia_ant));
+                //t.Start();
             }
             //foreach (var materia_a_cursar in materias_a_cursar)
             //{
@@ -439,22 +443,22 @@ namespace bob.Controllers
             }
         }
 
-        ///// <summary>
-        ///// Ejemplo de llamada: http://localhost:52178/Caece/Prueba/?filtrodias=1000000&filtrocantdias=1
-        ///// </summary>
-        ///// <param name="matricula"></param>
-        //[HttpGet]
-        //[Route("Prueba/{filtrodias}/{filtrocantdias}")]
-        //public void Prueba(string filtrodias, int filtrocantdias)
-        //{
-        //    List<Curso> materias = MostrarMateriasACursarCuatrimestreActual("951282", filtrodias, filtrocantdias, "auto");
-        //    //List<Curso> materias = MostrarMateriasACursarCuatrimestreActual("951282", filtrodias, 1, "manual");
+        /// <summary>
+        /// Ejemplo de llamada: http://localhost:52178/Caece/Prueba/?filtrodias=1000000&filtrocantdias=1
+        /// </summary>
+        /// <param name="matricula"></param>
+        [HttpGet]
+        [Route("Prueba/{filtrodias}/{filtrocantdias}")]
+        public void Prueba(string filtrodias, int filtrocantdias)
+        {
+            List<Curso> materias = MostrarMateriasACursarCuatrimestreActual("951282", filtrodias, filtrocantdias, "auto");
+            //List<Curso> materias = MostrarMateriasACursarCuatrimestreActual("951282", filtrodias, 1, "manual");
 
-        //    foreach (var materia in materias)
-        //    {
-        //        System.Diagnostics.Debug.WriteLine("Materia a cursar : " + ObtenerNombreMateria(int.Parse(materia.Materia_Id)));
-        //    }
-        //}
+            foreach (var materia in materias)
+            {
+                System.Diagnostics.Debug.WriteLine("Materia a cursar : " + ObtenerNombreMateria(int.Parse(materia.Materia_Id)));
+            }
+        }
     }
 }
 
