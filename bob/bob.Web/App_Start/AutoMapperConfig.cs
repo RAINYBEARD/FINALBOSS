@@ -30,6 +30,7 @@ namespace bob.App_Start
             CreateMap<HistoriaAcademica, CurValue>();
             CreateMap<HistoriaAcademica, PenValue>();
             CreateMap<HistoriaAcademica, NotCurValue>();
+            CreateMap<HistoriaAcademica, RepValue>();
         }
     }
 

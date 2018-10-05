@@ -9,10 +9,17 @@ namespace bob.Data.Entities
     public class CursadoStatus
     {
         public string materia_cod;
-        public DateTime fecha_cursada;
-        public DateTime fecha_vencimiento;
+        public string fecha_cursada;
+        public string fecha_vencimiento;
+        public string abr;
         public int n_correlativas;
         public bool reprobado;
-        public int n_prioridad;
+        public List<CorrelativasCursadas> correlativascursadas;
+    }
+
+    public class CorrelativasCursadas
+    {
+        public string materia_cod;
+        public string abr;
     }
 }

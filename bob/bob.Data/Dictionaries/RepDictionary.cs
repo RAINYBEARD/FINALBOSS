@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace bob.Data.Dictionaries
 {
-    public class RepDictionary : Dictionary<string, string>
+    public class RepDictionary : Dictionary<string, RepValue>
     {
-        public new void Add(string matcod, string fecha)
-        {
-            this.Add(matcod, fecha);
-        }
-    }
 
+    }
+    public class RepValue
+    {
+        public string Fecha { get; set; }
+    }
 }

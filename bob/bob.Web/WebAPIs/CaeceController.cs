@@ -10,6 +10,7 @@ using bob.CaeceWS;
 using System.Web.Configuration;
 using bob.Mocks;
 using bob.Data.Entities;
+using bob.Helpers;
 
 namespace bob.Controllers
 {
@@ -129,8 +130,9 @@ namespace bob.Controllers
                         penDictionary.Add(matcod, equiv);
                         break;
                     case ("REP"):
-                        string fecha = dato.Fecha;
-                        repDictionary.Add(matcod, fecha);
+                        RepValue rep = new RepValue();
+                        AutoMapper.Mapper.Map(dato, rep);
+                        repDictionary.Add(matcod, rep);
                         break;
                     default:
                         if ((estado_materia.Equals("   ")) || (estado_materia.Equals("?  ")))
@@ -147,7 +149,7 @@ namespace bob.Controllers
             Helpers.SessionManager.DiccionarioCursadas = curDictionary;
             Helpers.SessionManager.DiccionarioPendientes = penDictionary;
             Helpers.SessionManager.DiccionarioNoCursadas = notCurDictionary;
-
+            Helpers.SessionManager.DiccionarioReprobadas = repDictionary;
         }
 
         /// <summary>
@@ -225,110 +227,115 @@ namespace bob.Controllers
 
         }
 
-        public int prioridad = 0;
-
         /// <summary>
         /// Ejemplo de llamada: http://localhost:52178/Caece/PlanificadorFinales/951282 
         /// </summary>
         /// <param name="matricula"></param>
         [HttpGet]
         [Route("PlanificadorFinales/{matricula}")]
-        public List<CursadoStatus> PlanificadorFinales()
+        public List<CursadoStatus> PlanificadorFinales(string matricula)
         {
+            GetDictionaries(matricula);
             List<CursadoStatus> cursados = new List<CursadoStatus>();
-            var aprDictionary = Session["APR"] as AprDictionary;
-            var curDictionary = Session["CUR"] as CurDictionary;
-            var repDictionary = Session["REP"] as RepDictionary;
+            var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
+            var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
+            var repDictionary = SessionManager.DiccionarioReprobadas as RepDictionary;
             foreach (KeyValuePair<string, CurValue> entry in curDictionary)
             {
                 bool reprobadas = false;
                 int correlativas = 0;
-                string fechaauxiliar = string.Format("Y", DateTime.Parse(entry.Value.Fecha));
-                DateTime fecur = DateTime.Parse(fechaauxiliar);
-                DateTime feven = DateTime.Parse(fechaauxiliar);
+                DateTime fechaauxiliar = DateTime.Parse(entry.Value.Fecha);
+                string fecur = fechaauxiliar.ToString("MMMM yyyy");
+                string feven = fechaauxiliar.ToString("MMMM yyyy"); 
                 //Fecha de Vencimiento
-                if (feven.ToString("MMMM") == "Jun")
+                if (fechaauxiliar.Month == 6)
                 {
-                    feven.AddMonths(6);
-                    feven.AddYears(1);
+                    fechaauxiliar = fechaauxiliar.AddMonths(6);
+                    fechaauxiliar = fechaauxiliar.AddYears(1);
+                    feven = fechaauxiliar.ToString("MMMM yyyy");
                 }
                 else
                 {
-                    feven.AddMonths(-6);
-                    feven.AddYears(2);
-                }
+                    if (fechaauxiliar.Month == 7)
+                    {
+                        fechaauxiliar = fechaauxiliar.AddMonths(5);
+                        fechaauxiliar = fechaauxiliar.AddYears(1);
+                        feven = fechaauxiliar.ToString("MMMM yyyy");
+                    }
+                    else
+                    {
+                        fechaauxiliar = fechaauxiliar.AddMonths(-6);
+                        fechaauxiliar = fechaauxiliar.AddYears(2);
+                        feven = fechaauxiliar.ToString("MMMM yyyy");
+                    }
+                }               
                 //Numero de Correlativas de la Materia Cursada
-                foreach (Correlativa corr in  context.Correlativas.Where(a => (a.Codigo_Correlativa+"/"+ a.Plan_Id) == entry.Key)) 
+                foreach (Correlativa corr in context.Correlativas.Where(a => (a.Codigo_Correlativa + "/" + a.Plan_Id) == entry.Key))
                 {
-                    correlativas = correlativas + 1;
+                    correlativas++;
                 }
                 //Si se reprobo o no
                 if (repDictionary.ContainsKey(entry.Key))
                 {
-                    string fechareprobado;
-                    repDictionary.TryGetValue(entry.Key, out fechareprobado);
-
-                    if (DateTime.Parse(fechareprobado) > DateTime.Parse(entry.Value.Fecha))
+                    if (DateTime.Parse(repDictionary[entry.Key].Fecha) > DateTime.Parse(entry.Value.Fecha))
                     {
                         reprobadas = true;
                     }
                 }
                 //Usar AutoMapper
-                cursados.Add(new CursadoStatus() { materia_cod = entry.Key, fecha_cursada = fecur, fecha_vencimiento = feven, n_correlativas = correlativas, reprobado = reprobadas });
+                cursados.Add(new CursadoStatus() { materia_cod = entry.Key, fecha_cursada = fecur, fecha_vencimiento = feven, abr = entry.Value.Abr, n_correlativas = correlativas, reprobado = reprobadas });
             }
-
+            //Filtro materias que no se pueden rendir aunque esten cursadas
             foreach (CursadoStatus cur in cursados)
             {
-                foreach (Correlativa corr in context.Correlativas)
+                foreach (Correlativa corr in context.Correlativas.Where(x => x.Materia_Id + '/' + x.Plan_Id == cur.materia_cod))
                 {
-                    if (corr.Materia_Id+ "/" + corr.Plan_Id == cur.materia_cod)
+                    if ((!aprDictionary.ContainsKey(cur.materia_cod)) && (!curDictionary.ContainsKey(cur.materia_cod)))
                     {
-                        if ((!aprDictionary.ContainsKey(cur.materia_cod)) && (!curDictionary.ContainsKey(cur.materia_cod)))
-                        {
-                            cursados.Remove(cur);
-                        }
+                        cursados.Remove(cur);
                     }
                 }
+
             }
-
+            //Agrego sublista de correlativas cursadas pero no aprobadas de las materias que se pueden rendir
+            int i = 0;
+            foreach (CursadoStatus cur in cursados)
+            {
+                List<CorrelativasCursadas> correlativa = new List<CorrelativasCursadas>();
+                foreach (Correlativa corr in context.Correlativas.Where(x => x.Materia_Id + '/' + x.Plan_Id == cur.materia_cod))
+                {
+                    if (curDictionary.ContainsKey(cur.materia_cod))
+                    {
+                        string materia_cursada = cur.materia_cod;
+                        string abreviatura = curDictionary[cur.materia_cod].Abr;
+                        correlativa.Add(new CorrelativasCursadas() { materia_cod = materia_cursada, abr = abreviatura });
+                    }
+                }
+                cursados[i].correlativascursadas = correlativa;
+                i++;
+            }
             return cursados;
-        } 
+        }
         //Orden por fecha de vencimiento
-        public List<CursadoStatus> FinalesPorVecimiento()
+        public List<CursadoStatus> FinalesPorVecimiento(string matricula)
         {
-            List<CursadoStatus> Ls = PlanificadorFinales();
-            //int prioridad = 1;
-            //foreach (CursadoStatus curr in Ls)
-            //{
-            //    if((DateTime.Now == curr.fecha_vencimiento) || (DateTime.Now.AddMonths(1) == curr.fecha_vencimiento))
-            //    {
-            //        curr.n_prioridad = prioridad;
-            //        prioridad = prioridad + 1;
-
-            //    }
-            //    else
-            //    {
-            //        Ls.Remove(curr);
-            //    }
-            //}
+            List<CursadoStatus> Ls = PlanificadorFinales(matricula);   
             Ls.OrderByDescending(p => p.fecha_vencimiento);
-
+        
             return Ls;
-
-
+        
+        
         }
         //Orden por numero de correlativas asociadas
-        public List<CursadoStatus> FinalesPorCorrelativas()
+        public List<CursadoStatus> FinalesPorCorrelativas(string matricula)
         {
-            List<CursadoStatus> Ls = PlanificadorFinales();         
+            List<CursadoStatus> Ls = PlanificadorFinales(matricula);
             Ls.OrderByDescending(p => p.n_correlativas);
-
+        
             return Ls;
         }
-
-
-
-    }      
+        
+    }
 }
 
 
