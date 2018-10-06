@@ -14,6 +14,19 @@ namespace bob.Helpers
         private const string DiccionarioNoCursadasKey = "NOT_CUR";
         private const string DiccionarioCursosKey = "CURSOS";
         private const string DiccionarioMesasFinalKey = "MESAS_FINAL";
+        private const string DiccionarioCorrelativasKey = "CORR";
+
+        public static CorrDictionary DiccionarioCorr
+        {
+            get
+            {
+                return GetFromSession<CorrDictionary>(DiccionarioCorrelativasKey);
+            }
+            set
+            {
+                SetInSession(DiccionarioCorrelativasKey, value);
+            }
+        }
 
         public static AprDictionary DiccionarioAprobadas
         {

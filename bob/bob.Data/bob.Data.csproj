@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dictionaries\CorrDictionary.cs" />
     <Compile Include="Dictionaries\AprDictionary.cs" />
     <Compile Include="Dictionaries\CursosDictionary.cs" />
     <Compile Include="Dictionaries\MesasDictionary.cs" />

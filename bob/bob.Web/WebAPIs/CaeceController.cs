@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Threading;
 using bob.Data;
+using bob.Data.Entities;
 using bob.Data.DTOs;
 using bob.Data.Dictionaries;
 using Newtonsoft.Json.Linq;
@@ -159,6 +160,38 @@ namespace bob.Controllers
 
         }
 
+        public void CargarDiccionarioDeCorrelativas()
+        {
+            var context = new CaeceDBContext();
+            // Modificar lo hardcodeado
+            var listCorrelativas = context.Correlativas.Where(a => a.Titulo_Id == 7290 && a.Plan_Tit == "10Z").ToList();
+
+            var existentes = new List<CorrValue>();
+            var dicCorrelativas = new CorrDictionary();
+
+            foreach (var correl in listCorrelativas)
+            {
+                var corr = new CorrValue();
+                AutoMapper.Mapper.Map(correl, corr);
+
+                if (!dicCorrelativas.ContainsKey(correl.Materia_Id))
+                {
+                    var listCorrel = new List<CorrValue>();
+                    listCorrel.Add(corr);
+                    dicCorrelativas.Add(correl.Materia_Id, listCorrel);
+                }
+                else
+                {
+                    if (dicCorrelativas.TryGetValue(correl.Materia_Id, out existentes))
+                    {
+                        existentes.Add(corr);
+                        dicCorrelativas[correl.Materia_Id] = existentes;
+                    }
+                }
+            }
+            SessionManager.DiccionarioCorr = dicCorrelativas;
+        }
+
         /// <summary>
         /// Ejemplo de llamada: http://localhost:52178/Caece/GetMateriasACursar/951282 
         /// </summary>
@@ -169,15 +202,13 @@ namespace bob.Controllers
         {
             var tiempoinicio=DateTime.Now;
             GetDictionaries(matricula);
-            //using (var context = new CaeceDBContext())
-            //{
-            //    var dicCorrelativas = context.Correlativas.Where(a => a.Titulo_Id == 7290 && a.Plan_Tit == "10Z").ToDictionary(x => x.Materia_Id, x => x.Codigo_Correlativa);
-            //}
+            CargarDiccionarioDeCorrelativas();
+
             System.Diagnostics.Debug.WriteLine("Entro en el controller Cursos");
             //CHEQUEAR QUE LOS DICCIONARIOS ESTEN CARGADOS ANTES DE EMPEZAR A PROCESAR
             //if(Helpers.SessionManager.DiccionarioCursadas != null);
             List<string> materias_a_cursar = new List<string>();
-            List<Data.Entities.Correlativa> materias_para_buscar_correlativas = new List<Data.Entities.Correlativa>();
+            List<CorrValue> materias_para_buscar_correlativas = new List<CorrValue>();
             string materia_ant = "";
 
             foreach (var resultado0 in SessionManager.DiccionarioNoCursadas)
@@ -188,14 +219,14 @@ namespace bob.Controllers
 
                 // Evaluacion para la materias que no tienen correlativas
                 if (query2.Count == 1)
-                    materias_a_cursar.Add(query2[0].Materia_Id +"/"+query2[0].Plan_Id);
+                    materias_a_cursar.Add(query2[0].materia_id +"/"+query2[0].plan_id);
 
                 foreach (var resultado in query2)
                 {
-                    if (resultado.Materia_Id != resultado.Codigo_Correlativa)
+                    if (resultado.materia_id != resultado.codigo_correlativa)
                     {
                         // Elimino los resultados repetidos
-                        if (!materias_para_buscar_correlativas.Any(x => x.Materia_Id == resultado.Materia_Id))
+                        if (!materias_para_buscar_correlativas.Any(x => x.materia_id == resultado.materia_id))
                             materias_para_buscar_correlativas.Add(resultado);
                     }
                 }
@@ -216,11 +247,16 @@ namespace bob.Controllers
             return materias_a_cursar;
         }
 
-        public List<Data.Entities.Correlativa> BuscarCorrelativa(int idmateria)
+        public List<CorrValue> BuscarCorrelativa(int idmateria)
         {
-            using (var context = new CaeceDBContext())
+            if (idmateria > 100)
             {
-                return context.Correlativas.Where(a => a.Materia_Id == idmateria).ToList();
+                return SessionManager.DiccionarioCorr[idmateria];
+            }
+            else
+            {
+                var lcorr = new List<CorrValue>();
+                return lcorr;
             }
         }
 
@@ -233,7 +269,7 @@ namespace bob.Controllers
             }
         }
 
-        private void BuscarMateriasACursar(Data.Entities.Correlativa correlativa,ref List<string> materias_a_cursar,string materia_ant)
+        private void BuscarMateriasACursar(CorrValue correlativa,ref List<string> materias_a_cursar,string materia_ant)
         {
             //CHEQUEAR QUE LOS DICCIONARIOS ESTEN CARGADOS ANTES DE EMPEZAR A PROCESAR
             if (SessionManager.DiccionarioCursadas != null)
@@ -244,24 +280,24 @@ namespace bob.Controllers
                 //Dictionary key = matcod = 8015/10S, value = AprValue  = {Abr, etc, etc} 
 
                 // Busco las correlativas dentro del diccionario de las materias no cursadas
-                if (SessionManager.DiccionarioNoCursadas.ContainsKey(correlativa.Materia_Id + "/" + correlativa.Plan_Id))
+                if (SessionManager.DiccionarioNoCursadas.ContainsKey(correlativa.materia_id + "/" + correlativa.plan_id))
                 {
                     // Verifico asignaturas que requieren cantidad de materias aprobadas
-                    if (correlativa.Codigo_Correlativa < 100 && correlativa.Codigo_Correlativa <= (SessionManager.DiccionarioAprobadas.Count() + SessionManager.DiccionarioCursadas.Count()) )
+                    if (correlativa.codigo_correlativa < 100 && correlativa.codigo_correlativa <= (SessionManager.DiccionarioAprobadas.Count() + SessionManager.DiccionarioCursadas.Count()) )
                     {
-                        materias_a_cursar.Add(correlativa.Materia_Id + "/" + correlativa.Plan_Id);
+                        materias_a_cursar.Add(correlativa.materia_id + "/" + correlativa.plan_id);
                     }
 
                     // Almaceno la materia para evaluar si la correlativa es la que le resta cursar al alumno
-                    materia_ant = correlativa.Materia_Id + "/" + correlativa.Plan_Id;
+                    materia_ant = correlativa.materia_id + "/" + correlativa.plan_id;
 
-                    var resulcorrelativa = BuscarCorrelativa(correlativa.Codigo_Correlativa);
+                    var resulcorrelativa = BuscarCorrelativa(correlativa.codigo_correlativa);
                     bool flag_materia_a_cursar = true;
                     foreach (var resultado in resulcorrelativa)
                     {
-                        if (resultado.Materia_Id != resultado.Codigo_Correlativa)
+                        if (resultado.materia_id != resultado.codigo_correlativa)
                         {
-                            if (!SessionManager.DiccionarioAprobadas.ContainsKey(resultado.Materia_Id + "/" + resultado.Plan_Id) && !SessionManager.DiccionarioCursadas.ContainsKey(resultado.Materia_Id + "/" + resultado.Plan_Id))
+                            if (!SessionManager.DiccionarioAprobadas.ContainsKey(resultado.materia_id + "/" + resultado.plan_id) && !SessionManager.DiccionarioCursadas.ContainsKey(resultado.materia_id + "/" + resultado.plan_id))
                             {
                                 flag_materia_a_cursar = false;
                             }
