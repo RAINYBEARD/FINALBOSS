@@ -158,13 +158,16 @@ namespace bob.Controllers
             SessionManager.DiccionarioNoCursadas = notCurDictionary;
             SessionManager.DiccionarioCursos = cursosDictionary;
 
+            // OJO QUE ESTA HARCODEADO CAMBIAR ESTO
+            SessionManager.TituloId = 7290;
+            SessionManager.PlanTit = "10Z";
         }
 
         public void CargarDiccionarioDeCorrelativas()
         {
             var context = new CaeceDBContext();
             // Modificar lo hardcodeado
-            var listCorrelativas = context.Correlativas.Where(a => a.Titulo_Id == 7290 && a.Plan_Tit == "10Z").ToList();
+            var listCorrelativas = context.Correlativas.Where(a => a.Titulo_Id == SessionManager.TituloId && a.Plan_Tit == SessionManager.PlanTit).ToList();
 
             var existentes = new List<CorrValue>();
             var dicCorrelativas = new CorrDictionary();

@@ -15,6 +15,8 @@ namespace bob.Helpers
         private const string DiccionarioCursosKey = "CURSOS";
         private const string DiccionarioMesasFinalKey = "MESAS_FINAL";
         private const string DiccionarioCorrelativasKey = "CORR";
+        private const string TituloIdKey = "TIT_ID";
+        private const string PlanTitKey = "PLAN_TIT";
 
         public static CorrDictionary DiccionarioCorr
         {
@@ -25,6 +27,30 @@ namespace bob.Helpers
             set
             {
                 SetInSession(DiccionarioCorrelativasKey, value);
+            }
+        }
+
+        public static int TituloId
+        {
+            get
+            {
+                return GetFromSession<int>(TituloIdKey);
+            }
+            set
+            {
+                SetInSession(TituloIdKey, value);
+            }
+        }
+
+        public static string PlanTit
+        {
+            get
+            {
+                return GetFromSession<string>(PlanTitKey);
+            }
+            set
+            {
+                SetInSession(PlanTitKey, value);
             }
         }
 
