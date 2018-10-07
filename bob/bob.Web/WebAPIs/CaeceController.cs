@@ -454,6 +454,101 @@ namespace bob.Controllers
         //        System.Diagnostics.Debug.WriteLine("Materia a cursar : " + ObtenerNombreMateria(int.Parse(materia.Materia_Id)));
         //    }
         //}
+
+
+        public Estadisticas PorcentajeAprobado(string matricula)
+        {
+            GetDictionaries(matricula);
+
+            var estadistica = new Estadisticas();
+
+            estadistica.Aprobadas = SessionManager.DiccionarioAprobadas.Count;
+
+            estadistica.Total = SessionManager.DiccionarioAprobadas.Count + SessionManager.DiccionarioCursadas.Count + SessionManager.DiccionarioNoCursadas.Count + SessionManager.DiccionarioPendientes.Count;
+
+            var aux = (estadistica.Aprobadas * 100);
+
+            estadistica.Porcentaje_Aprobado = decimal.Divide(aux, estadistica.Total);
+
+            estadistica.Porcentaje_Faltante = 100 - estadistica.Porcentaje_Aprobado;
+
+            return estadistica;
+        }
+
+        public Estadisticas PorcentajeCursado(string matricula)
+        {
+            GetDictionaries(matricula);
+
+            var estadistica = new Estadisticas();
+
+            estadistica.Aprobadas = SessionManager.DiccionarioAprobadas.Count + SessionManager.DiccionarioCursadas.Count;
+
+            estadistica.Total = SessionManager.DiccionarioAprobadas.Count + SessionManager.DiccionarioCursadas.Count + SessionManager.DiccionarioNoCursadas.Count + SessionManager.DiccionarioPendientes.Count;
+
+            var aux = ((estadistica.Aprobadas) * 100);
+
+            estadistica.Porcentaje_Aprobado = decimal.Divide(aux, estadistica.Total);
+
+            estadistica.Porcentaje_Faltante = 100 - estadistica.Porcentaje_Aprobado;
+
+            return estadistica;
+
+        }
+
+
+
+        public List<AprobadasPorAnio> EstadisticaPorAnio(string matricula)
+        {
+            GetDictionaries(matricula);
+
+            List<AprobadasPorAnio> Ls = new List<AprobadasPorAnio>();
+
+            foreach (KeyValuePair<string, AprValue> entry in SessionManager.DiccionarioAprobadas)
+            {
+                int fecha = int.Parse(entry.Value.Fecha.Substring(6, 4));
+
+                var resultado = Ls.Exists(a => a.Anio == fecha);
+
+                if (resultado == true)
+                {
+                    AprobadasPorAnio Reg = Ls.Find(a => a.Anio == fecha);
+                    Reg.Aprobadas++;
+                }
+                else
+                {
+                    AprobadasPorAnio Registro = new AprobadasPorAnio();
+                    Registro.Anio = int.Parse(entry.Value.Fecha.Substring(6, 4));
+                    Registro.Aprobadas = 1;
+
+                    Ls.Add(Registro);
+                }
+
+
+            }
+            Ls.OrderBy(p => p.Anio);
+
+            return Ls;
+
+
+        }
+
+
+        public class AprobadasPorAnio
+        {
+            public int Anio { get; set; }
+            public int Aprobadas { get; set; }
+        }
+
+        public class Estadisticas
+        {
+            public int Aprobadas { get; set; }
+            public int Total { get; set; }
+            public decimal Porcentaje_Aprobado { get; set; }
+            public decimal Porcentaje_Faltante { get; set; }
+        }
+
+
+
     }
 }
 
