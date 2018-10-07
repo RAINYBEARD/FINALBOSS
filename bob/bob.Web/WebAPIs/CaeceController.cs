@@ -456,6 +456,7 @@ namespace bob.Controllers
         //}
 
 
+        //Metodo que devuelve el porcentaje aprobado de la carrera
         public Estadisticas PorcentajeAprobado(string matricula)
         {
             GetDictionaries(matricula);
@@ -475,6 +476,7 @@ namespace bob.Controllers
             return estadistica;
         }
 
+        //metodo que devuelve el porcentaje cursado de la carrera
         public Estadisticas PorcentajeCursado(string matricula)
         {
             GetDictionaries(matricula);
@@ -496,7 +498,7 @@ namespace bob.Controllers
         }
 
 
-
+        //metodo que devuelve cuantas materias aprobó por año
         public List<AprobadasPorAnio> EstadisticaPorAnio(string matricula)
         {
             GetDictionaries(matricula);
@@ -532,13 +534,14 @@ namespace bob.Controllers
 
         }
 
-
+        //clase para almacenar la cantidad de materias aprobadas por año
         public class AprobadasPorAnio
         {
             public int Anio { get; set; }
             public int Aprobadas { get; set; }
         }
 
+        //clase para devolver los datos para los porcentajes de aprobado y cursado
         public class Estadisticas
         {
             public int Aprobadas { get; set; }
