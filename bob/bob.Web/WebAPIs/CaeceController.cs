@@ -237,6 +237,7 @@ namespace bob.Controllers
         {
             GetDictionaries(matricula);
             List<CursadoStatus> cursados = new List<CursadoStatus>();
+            //List<CorrelativasCursadas> correlativa = new List<CorrelativasCursadas>();
             var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
             var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
             var repDictionary = SessionManager.DiccionarioReprobadas as RepDictionary;
@@ -268,12 +269,10 @@ namespace bob.Controllers
                         fechaauxiliar = fechaauxiliar.AddYears(2);
                         feven = fechaauxiliar.ToString("MMMM yyyy");
                     }
-                }               
-                //Numero de Correlativas de la Materia Cursada
-                foreach (Correlativa corr in context.Correlativas.Where(a => (a.Codigo_Correlativa + "/" + a.Plan_Id) == entry.Key))
-                {
-                    correlativas++;
                 }
+                correlativas = context.Correlativas.Where(a => (a.Codigo_Correlativa + "/" + a.Plan_Id) == entry.Key).ToList().Count;
+                //Numero de Correlativas de la Materia Cursada
+                
                 //Si se reprobo o no
                 if (repDictionary.ContainsKey(entry.Key))
                 {
@@ -282,15 +281,28 @@ namespace bob.Controllers
                         reprobadas = true;
                     }
                 }
+                //Agrego sublista de correlativas cursadas pero no aprobadas de las materias que se pueden rendir
+                //var correlativa_auxiliar = context.Correlativas.Where(x => (x.Materia_Id + "/" + x.Plan_Id) == entry.Key).ToList();
+                //foreach (Correlativa corr in correlativa_auxiliar)
+                //{
+                //    string materia_cursada = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
+                //    if ((curDictionary.ContainsKey(materia_cursada)) && (materia_cursada != entry.Key))
+                //    {
+                //        string abreviatura = curDictionary[entry.Key].Abr;
+                //        correlativa.Add(new CorrelativasCursadas() { materia_cod = materia_cursada, abr = abreviatura });
+                //    }
+                //}
                 //Usar AutoMapper
-                cursados.Add(new CursadoStatus() { materia_cod = entry.Key, fecha_cursada = fecur, fecha_vencimiento = feven, abr = entry.Value.Abr, n_correlativas = correlativas, reprobado = reprobadas });
+                cursados.Add(new CursadoStatus() { materia_cod = entry.Key, fecha_cursada = fecur, fecha_vencimiento = feven, abr = entry.Value.Abr, n_correlativas = correlativas, reprobado = reprobadas});
             }
             //Filtro materias que no se pueden rendir aunque esten cursadas
             foreach (CursadoStatus cur in cursados)
             {
-                foreach (Correlativa corr in context.Correlativas.Where(x => x.Materia_Id + '/' + x.Plan_Id == cur.materia_cod))
+                var correlativa_auxiliar = context.Correlativas.Where(x => (x.Materia_Id + "/" + x.Plan_Id) == cur.materia_cod).ToList();
+                foreach (Correlativa corr in correlativa_auxiliar)
                 {
-                    if ((!aprDictionary.ContainsKey(cur.materia_cod)) && (!curDictionary.ContainsKey(cur.materia_cod)))
+                    string materia_correlativa = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
+                    if ((!aprDictionary.ContainsKey(materia_correlativa)) && (!curDictionary.ContainsKey(materia_correlativa)))
                     {
                         cursados.Remove(cur);
                     }
@@ -301,17 +313,18 @@ namespace bob.Controllers
             int i = 0;
             foreach (CursadoStatus cur in cursados)
             {
-                List<CorrelativasCursadas> correlativa = new List<CorrelativasCursadas>();
-                foreach (Correlativa corr in context.Correlativas.Where(x => x.Materia_Id + '/' + x.Plan_Id == cur.materia_cod))
+                List<CorrelativasCursadas> correlativ = new List<CorrelativasCursadas>();
+                var correlativa_auxiliar = context.Correlativas.Where(x => (x.Materia_Id + "/" + x.Plan_Id) == cur.materia_cod).ToList();
+                foreach (Correlativa corr in correlativa_auxiliar)
                 {
-                    if (curDictionary.ContainsKey(cur.materia_cod))
+                    string materia_cursada = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
+                    if ((curDictionary.ContainsKey(materia_cursada)) && (materia_cursada != cur.materia_cod ))
                     {
-                        string materia_cursada = cur.materia_cod;
                         string abreviatura = curDictionary[cur.materia_cod].Abr;
-                        correlativa.Add(new CorrelativasCursadas() { materia_cod = materia_cursada, abr = abreviatura });
+                        correlativ.Add(new CorrelativasCursadas() { materia_cod = materia_cursada, abr = abreviatura });
                     }
                 }
-                cursados[i].correlativascursadas = correlativa;
+                cursados[i].correlativascursadas = correlativ;
                 i++;
             }
             return cursados;
