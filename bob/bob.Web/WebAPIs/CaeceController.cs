@@ -31,7 +31,7 @@ namespace bob.Controllers
         /// </summary>
         /// <param name="matricula"></param>
         [HttpGet]
-        [Route("GetPlanDeEstudio/{matricula}")]
+        [Route("GetPlanDeEstudio/{id}")]
         public void GetPlanDeEstudio(string matricula)
         {
             var PlanDeEstudioJSON = MockService.LoadJson<PlanEstudio>(MockMethod.PlanDeEstudio);
