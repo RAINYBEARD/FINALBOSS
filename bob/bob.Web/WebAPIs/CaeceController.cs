@@ -474,30 +474,110 @@ namespace bob.Controllers
             return mostrar_materias_a_cursar_este_cuatri;
         }
 
-        public string ObtenerNombreMateria(int materiaid)
+        /// <summary>
+        /// Devuelve el porcentaje aprobado de la carrera 
+        /// </summary>
+        /// <param name="matricula"></param>
+        /// <returns></returns>
+        public Estadisticas PorcentajeAprobado(string matricula)
         {
-            using (var context = new CaeceDBContext())
-            {
-                return context.Materias_Descripciones.First(x => x.Materia_Id == materiaid).Mat_Des;
-            }
+            GetDictionaries(matricula);
+
+            var estadistica = new Estadisticas();
+
+            estadistica.Aprobadas = SessionManager.DiccionarioAprobadas.Count;
+
+            estadistica.Total = SessionManager.DiccionarioAprobadas.Count + SessionManager.DiccionarioCursadas.Count + SessionManager.DiccionarioNoCursadas.Count + SessionManager.DiccionarioPendientes.Count;
+
+            var aux = (estadistica.Aprobadas * 100);
+
+            estadistica.Porcentaje_Aprobado = decimal.Divide(aux, estadistica.Total);
+
+            estadistica.Porcentaje_Faltante = 100 - estadistica.Porcentaje_Aprobado;
+
+            return estadistica;
         }
 
         /// <summary>
-        /// Ejemplo de llamada: http://localhost:52178/Caece/Prueba/?filtrodias=1000000&filtrocantdias=1
+        /// Devuelve el porcentaje cursado de la carrera
         /// </summary>
         /// <param name="matricula"></param>
-        [HttpGet]
-        [Route("Prueba/{filtrodias}/{filtrocantdias}")]
-        public void Prueba(string filtrodias, int filtrocantdias)
+        /// <returns></returns>
+        public Estadisticas PorcentajeCursado(string matricula)
         {
-            List<Curso> materias = MostrarMateriasACursarCuatrimestreActual("951282", filtrodias, filtrocantdias, "auto");
-            //List<Curso> materias = MostrarMateriasACursarCuatrimestreActual("951282", filtrodias, 1, "manual");
+            GetDictionaries(matricula);
 
-            foreach (var materia in materias)
-            {
-                System.Diagnostics.Debug.WriteLine("Materia a cursar : " + ObtenerNombreMateria(int.Parse(materia.Materia_Id)));
-            }
+            var estadistica = new Estadisticas();
+
+            estadistica.Aprobadas = SessionManager.DiccionarioAprobadas.Count + SessionManager.DiccionarioCursadas.Count;
+
+            estadistica.Total = SessionManager.DiccionarioAprobadas.Count + SessionManager.DiccionarioCursadas.Count + SessionManager.DiccionarioNoCursadas.Count + SessionManager.DiccionarioPendientes.Count;
+
+            var aux = ((estadistica.Aprobadas) * 100);
+
+            estadistica.Porcentaje_Aprobado = decimal.Divide(aux, estadistica.Total);
+
+            estadistica.Porcentaje_Faltante = 100 - estadistica.Porcentaje_Aprobado;
+
+            return estadistica;
+
         }
+
+        /// <summary>
+        /// Devuelve cuantas materias aprobó por año
+        /// </summary>
+        /// <param name="matricula"></param>
+        /// <returns></returns>
+        public List<AprobadasPorAnio> EstadisticaPorAnio(string matricula)
+        {
+            GetDictionaries(matricula);
+
+            List<AprobadasPorAnio> Ls = new List<AprobadasPorAnio>();
+
+            foreach (KeyValuePair<string, AprValue> entry in SessionManager.DiccionarioAprobadas)
+            {
+                int fecha = int.Parse(entry.Value.Fecha.Substring(6, 4));
+
+                var resultado = Ls.Exists(a => a.Anio == fecha);
+
+                if (resultado == true)
+                {
+                    AprobadasPorAnio Reg = Ls.Find(a => a.Anio == fecha);
+                    Reg.Aprobadas++;
+                }
+                else
+                {
+                    AprobadasPorAnio Registro = new AprobadasPorAnio();
+                    Registro.Anio = int.Parse(entry.Value.Fecha.Substring(6, 4));
+                    Registro.Aprobadas = 1;
+
+                    Ls.Add(Registro);
+                }
+            }
+            Ls.OrderBy(p => p.Anio);
+
+            return Ls;
+        }
+
+        //clase para almacenar la cantidad de materias aprobadas por año
+        public class AprobadasPorAnio
+        {
+            public int Anio { get; set; }
+            public int Aprobadas { get; set; }
+        }
+
+        //clase para devolver los datos para los porcentajes de aprobado y cursado
+        public class Estadisticas
+        {
+            public int Aprobadas { get; set; }
+            public int Total { get; set; }
+            public decimal Porcentaje_Aprobado { get; set; }
+            public decimal Porcentaje_Faltante { get; set; }
+        }
+
+
+
+
     }
 }
 
