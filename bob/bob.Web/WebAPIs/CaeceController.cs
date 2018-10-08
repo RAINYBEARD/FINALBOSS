@@ -29,7 +29,7 @@ namespace bob.Controllers
         /// </summary>
         /// <param name="matricula"></param>
         [HttpGet]
-        [Route("GetPlanDeEstudio/{matricula}")]
+        [Route("GetPlanDeEstudio/{id}")]
         public void GetPlanDeEstudio(string matricula)
         {
             var PlanDeEstudioJSON = MockService.LoadJson<PlanEstudio>(MockMethod.PlanDeEstudio);
@@ -155,7 +155,7 @@ namespace bob.Controllers
         {
             var tiempoinicio=DateTime.Now;
             GetDictionaries(matricula);
-            System.Diagnostics.Debug.WriteLine("Entro en el controller Cursos");
+            //System.Diagnostics.Debug.WriteLine("Entro en el controller Cursos");
             //CHEQUEAR QUE LOS DICCIONARIOS ESTEN CARGADOS ANTES DE EMPEZAR A PROCESAR
             //if(Helpers.SessionManager.DiccionarioCursadas != null);
             List<int> materias_a_cursar = new List<int>();
