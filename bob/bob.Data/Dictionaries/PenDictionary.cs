@@ -8,16 +8,6 @@ namespace bob.Data.Dictionaries
 {
     public class PenDictionary : Dictionary<string, PenValue>
     {
-
-        public void Add(string matcod, string fecha, string abr, string plan_id, string plan_tit)
-        {
-            PenValue equiv = new PenValue();
-            equiv.Fecha = fecha;
-            equiv.Abr = abr;
-            equiv.Plan_Id = plan_id;
-            equiv.Plan_Tit = plan_tit;
-            this.Add(matcod, equiv);
-        }
     }
 
     public class PenValue

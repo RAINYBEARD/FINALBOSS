@@ -9,19 +9,6 @@ namespace bob.Data.Dictionaries
     public class AprDictionary : Dictionary<string, AprValue>
     {
 
-        public void Add(string matcod, string fecha, string abr, int calificacion, string profesor, string acta_id, int anio, int cuatrim)
-        {
-
-            AprValue apr = new AprValue();
-            apr.Fecha = fecha;
-            apr.Abr = abr;
-            apr.Calificacion = calificacion;
-            apr.Profesor = profesor;
-            apr.Acta_Id = acta_id;
-            apr.Anio = anio;
-            apr.Cuatrim = cuatrim;
-            this.Add(matcod, apr);
-        }
     }
 
     public class AprValue

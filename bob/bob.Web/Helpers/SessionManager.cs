@@ -11,6 +11,7 @@ namespace bob.Helpers
         private const string DiccionarioAprobadasKey = "APR";
         private const string DiccionarioCursadasKey = "CUR";
         private const string DiccionarioPendientesKey = "PEN";
+        private const string DiccionarioReprobadasKey = "REP";
         private const string DiccionarioNoCursadasKey = "NOT_CUR";
         private const string DiccionarioCursosKey = "CURSOS";
         private const string DiccionarioMesasFinalKey = "MESAS_FINAL";
@@ -87,6 +88,18 @@ namespace bob.Helpers
             set
             {
                 SetInSession(DiccionarioPendientesKey, value);
+            }
+        }
+
+        public static RepDictionary DiccionarioReprobadas
+        {
+            get
+            {
+                return GetFromSession<RepDictionary>(DiccionarioReprobadasKey);
+            }
+            set
+            {
+                SetInSession(DiccionarioReprobadasKey, value);
             }
         }
 

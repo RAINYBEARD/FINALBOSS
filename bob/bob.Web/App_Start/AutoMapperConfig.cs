@@ -16,8 +16,7 @@ namespace bob.App_Start
             Mapper.Initialize(cfg =>
             {
                 cfg.AddProfile<HistoriaAcademicaProfile>();
-                cfg.AddProfile<PlanEstudioProfile>();
-                
+                cfg.AddProfile<PlanEstudioProfile>();              
             });
 
         }
@@ -31,11 +30,14 @@ namespace bob.App_Start
             CreateMap<HistoriaAcademica, CurValue>();
             CreateMap<HistoriaAcademica, PenValue>();
             CreateMap<HistoriaAcademica, NotCurValue>();
+            CreateMap<HistoriaAcademica, RepValue>();
         }
     }
 
-    public class PlanEstudioProfile : Profile {
-        public PlanEstudioProfile() {
+    public class PlanEstudioProfile : Profile
+    {
+        public PlanEstudioProfile()
+        {
             CreateMap<PlanEstudio, Materia_Descripcion>();
             CreateMap<PlanEstudio, Correlativa>();
             CreateMap<PlanEstudio, Materia>();

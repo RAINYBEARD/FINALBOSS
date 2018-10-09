@@ -67,6 +67,7 @@
     <Compile Include="Dictionaries\NotCurDictionary.cs" />
     <Compile Include="Dictionaries\PenDictionary.cs" />
     <Compile Include="Dictionaries\CurDictionary.cs" />
+    <Compile Include="Dictionaries\RepDictionary.cs" />
     <Compile Include="DTOs\Autenticacion.cs" />
     <Compile Include="DTOs\Curso.cs" />
     <Compile Include="DTOs\HistoriaAcademica.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Entities\Alumno.cs" />
     <Compile Include="CaeceDBContext.cs" />
     <Compile Include="Entities\Correlativa.cs" />
+    <Compile Include="Entities\CursadoStatus.cs" />
     <Compile Include="Entities\Materia.cs" />
     <Compile Include="Entities\Materia_Descripcion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

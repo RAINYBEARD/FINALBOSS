@@ -8,15 +8,7 @@ namespace bob.Data.Dictionaries
 {
     public class CursosDictionary : Dictionary<string, CursosValue>
     {
-        public void Add(string matcod, char turno_id, string dia, int m_acobrar, string plan_id, int plan_tit)
-        {
-            CursosValue cursos = new CursosValue();
-            cursos.Plan_Id = plan_id;
-            cursos.Turno_Id = turno_id;
-            cursos.Dia = dia;
-            cursos.m_acobrar = m_acobrar;
-            this.Add(matcod, cursos);
-        }
+       
     }
 
     public class CursosValue
@@ -24,6 +16,6 @@ namespace bob.Data.Dictionaries
         public string Plan_Id { get; set; }
         public char Turno_Id { get; set; }
         public string Dia { get; set; }
-        public int m_acobrar { get; set; }
+        public int M_Acobrar { get; set; }
     }
 }
