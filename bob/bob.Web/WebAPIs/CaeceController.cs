@@ -492,29 +492,29 @@ namespace bob.Controllers
             {
                 bool reprobadas = false;
                 int correlativas = 0;
-                DateTime fechaauxiliar = DateTime.Parse(entry.Value.Fecha);
-                string fecur = fechaauxiliar.ToString("MMMM yyyy");
-                string feven = fechaauxiliar.ToString("MMMM yyyy");
+                DateTime fechaAuxiliar = DateTime.Parse(entry.Value.Fecha);
+                string fechaDeCursada = fechaAuxiliar.ToString("MMMM yyyy");
+                string fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy");
                 //Fecha de Vencimiento
-                if (fechaauxiliar.Month == 6)
+                if (fechaAuxiliar.Month == 6)
                 {
-                    fechaauxiliar = fechaauxiliar.AddMonths(6);
-                    fechaauxiliar = fechaauxiliar.AddYears(1);
-                    feven = fechaauxiliar.ToString("MMMM yyyy");
+                    fechaAuxiliar = fechaAuxiliar.AddMonths(6);
+                    fechaAuxiliar = fechaAuxiliar.AddYears(1);
+                    fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy");
                 }
                 else
                 {
-                    if (fechaauxiliar.Month == 7)
+                    if (fechaAuxiliar.Month == 7)
                     {
-                        fechaauxiliar = fechaauxiliar.AddMonths(5);
-                        fechaauxiliar = fechaauxiliar.AddYears(1);
-                        feven = fechaauxiliar.ToString("MMMM yyyy");
+                        fechaAuxiliar = fechaAuxiliar.AddMonths(5);
+                        fechaAuxiliar = fechaAuxiliar.AddYears(1);
+                        fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy");
                     }
                     else
                     {
-                        fechaauxiliar = fechaauxiliar.AddMonths(-6);
-                        fechaauxiliar = fechaauxiliar.AddYears(2);
-                        feven = fechaauxiliar.ToString("MMMM yyyy");
+                        fechaAuxiliar = fechaAuxiliar.AddMonths(-6);
+                        fechaAuxiliar = fechaAuxiliar.AddYears(2);
+                        fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy");
                     }
                 }
                 correlativas = context.Correlativas.Where(a => (a.Codigo_Correlativa + "/" + a.Plan_Id) == entry.Key).ToList().Count;
@@ -528,25 +528,14 @@ namespace bob.Controllers
                         reprobadas = true;
                     }
                 }
-                //Agrego sublista de correlativas cursadas pero no aprobadas de las materias que se pueden rendir
-                //var correlativa_auxiliar = context.Correlativas.Where(x => (x.Materia_Id + "/" + x.Plan_Id) == entry.Key).ToList();
-                //foreach (Correlativa corr in correlativa_auxiliar)
-                //{
-                //    string materia_cursada = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
-                //    if ((curDictionary.ContainsKey(materia_cursada)) && (materia_cursada != entry.Key))
-                //    {
-                //        string abreviatura = curDictionary[entry.Key].Abr;
-                //        correlativa.Add(new CorrelativasCursadas() { materia_cod = materia_cursada, abr = abreviatura });
-                //    }
-                //}
                 //Usar AutoMapper
-                cursados.Add(new CursadoStatus() { materia_cod = entry.Key, fecha_cursada = fecur, fecha_vencimiento = feven, abr = entry.Value.Abr, n_correlativas = correlativas, reprobado = reprobadas });
+                cursados.Add(new CursadoStatus() { materiaCod = entry.Key, fechaCursada = fechaDeCursada, fechaVencimiento = fechaDeVencimiento, abr = entry.Value.Abr, nCorrelativas = correlativas, reprobado = reprobadas });
             }
             //Filtro materias que no se pueden rendir aunque esten cursadas
             foreach (CursadoStatus cur in cursados)
             {
-                var correlativa_auxiliar = context.Correlativas.Where(x => (x.Materia_Id + "/" + x.Plan_Id) == cur.materia_cod).ToList();
-                foreach (Correlativa corr in correlativa_auxiliar)
+                var correlativaAuxiliar = context.Correlativas.Where(x => (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
+                foreach (Correlativa corr in correlativaAuxiliar)
                 {
                     string materia_correlativa = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
                     if ((!aprDictionary.ContainsKey(materia_correlativa)) && (!curDictionary.ContainsKey(materia_correlativa)))
@@ -561,17 +550,17 @@ namespace bob.Controllers
             foreach (CursadoStatus cur in cursados)
             {
                 List<CorrelativasCursadas> correlativ = new List<CorrelativasCursadas>();
-                var correlativa_auxiliar = context.Correlativas.Where(x => (x.Materia_Id + "/" + x.Plan_Id) == cur.materia_cod).ToList();
-                foreach (Correlativa corr in correlativa_auxiliar)
+                var correlativaAuxiliar = context.Correlativas.Where(x => (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
+                foreach (Correlativa corr in correlativaAuxiliar)
                 {
                     string materia_cursada = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
-                    if ((curDictionary.ContainsKey(materia_cursada)) && (materia_cursada != cur.materia_cod))
+                    if ((curDictionary.ContainsKey(materia_cursada)) && (materia_cursada != cur.materiaCod))
                     {
-                        string abreviatura = curDictionary[cur.materia_cod].Abr;
-                        correlativ.Add(new CorrelativasCursadas() { materia_cod = materia_cursada, abr = abreviatura });
+                        string abreviatura = curDictionary[cur.materiaCod].Abr;
+                        correlativ.Add(new CorrelativasCursadas() { materiaCod = materia_cursada, abr = abreviatura });
                     }
                 }
-                cursados[i].correlativascursadas = correlativ;
+                cursados[i].correlativasCursadas = correlativ;
                 i++;
             }
             return cursados;
@@ -580,7 +569,7 @@ namespace bob.Controllers
         public List<CursadoStatus> FinalesPorVecimiento(string matricula)
         {
             List<CursadoStatus> Ls = PlanificadorFinales(matricula);
-            Ls.OrderByDescending(p => p.fecha_vencimiento);
+            Ls.OrderByDescending(p => p.fechaVencimiento);
 
             return Ls;
 
@@ -590,7 +579,7 @@ namespace bob.Controllers
         public List<CursadoStatus> FinalesPorCorrelativas(string matricula)
         {
             List<CursadoStatus> Ls = PlanificadorFinales(matricula);
-            Ls.OrderByDescending(p => p.n_correlativas);
+            Ls.OrderByDescending(p => p.nCorrelativas);
 
             return Ls;
         }
