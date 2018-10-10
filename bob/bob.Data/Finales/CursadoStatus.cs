@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace bob.Data.Entities
+namespace bob.Data.Finales
 {
     public class CursadoStatus
     {

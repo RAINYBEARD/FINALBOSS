@@ -7,6 +7,7 @@ using bob.Data;
 using bob.Data.Entities;
 using bob.Data.DTOs;
 using bob.Data.Dictionaries;
+using bob.Data.Finales;
 using Newtonsoft.Json.Linq;
 using bob.CaeceWS;
 using System.Web.Configuration;
@@ -484,7 +485,6 @@ namespace bob.Controllers
         {
             GetDictionaries(matricula);
             List<CursadoStatus> cursados = new List<CursadoStatus>();
-            //List<CorrelativasCursadas> correlativa = new List<CorrelativasCursadas>();
             var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
             var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
             var repDictionary = SessionManager.DiccionarioReprobadas as RepDictionary;
