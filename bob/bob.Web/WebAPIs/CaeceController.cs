@@ -211,7 +211,7 @@ namespace bob.Controllers
         [Route("GetMateriasACursar/{matricula}")]
         public List<string> GetMateriasACursar(string matricula)
         {
-            var tiempoinicio=DateTime.Now;
+            var tiempoInicio=DateTime.Now;
             SetSesionUsuario(matricula);
             CargarDiccionarioDeCorrelativas();
             List<string> materiasACursar = new List<string>();
@@ -326,8 +326,8 @@ namespace bob.Controllers
         public List<Curso> GetMateriasACursarCuatrimestreActual(string matricula)
         {
             SetSesionUsuario(matricula);
-            List<string> materias_a_cursar = GetMateriasACursar(matricula);
-            List<Curso> materias_a_cursar_este_cuatri = new List<Curso>();
+            List<string> materiasACursar = GetMateriasACursar(matricula);
+            List<Curso> materiasACursarEsteCuatri = new List<Curso>();
             
 
             foreach (var materia in materiasACursar)
