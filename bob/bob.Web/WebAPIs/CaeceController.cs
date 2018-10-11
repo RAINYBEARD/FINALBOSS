@@ -18,8 +18,9 @@ namespace bob.Controllers
     public class CaeceController : Controller
     {
         private readonly CaeceDBContext context = new CaeceDBContext();
-        //private string _token = WebConfigurationManager.AppSettings.Get("CaeceWSToken");
-        //private CaeceWS.wbsTrans caeceWS = new CaeceWS.wbsTrans();
+        private string _token = WebConfigurationManager.AppSettings.Get("CaeceWSToken");
+        private CaeceWS.wbsTrans caeceWS = new CaeceWS.wbsTrans();
+        
 
         public ActionResult Index()
         {
@@ -27,14 +28,19 @@ namespace bob.Controllers
         }
 
         /// <summary>
-        /// Ejemplo de llamada: http://localhost:52178/Caece/GetPlanDeEstudio/951282 
+        /// Ejemplo de llamada: http://localhost:52178/Caece/GetPlanDeEstudio/?matricula=951282 
         /// </summary>
         /// <param name="matricula"></param>
         [HttpGet]
-        [Route("GetPlanDeEstudio/{id}")]
+        [Route("GetPlanDeEstudio/{matricula}")]
         public void GetPlanDeEstudio(string matricula)
         {
-            var PlanDeEstudioJSON = MockService.LoadJson<PlanEstudio>(MockMethod.PlanDeEstudio);
+            // Para hacer llamada al Mock
+            //var PlanDeEstudio = MockService.LoadJson<PlanEstudio>(MockMethod.PlanDeEstudio);
+
+            // Para hacer la llamada al WS
+            var JSON = caeceWS.getPlanEstudioJSON(_token, " " + matricula); 
+            var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
 
             using (var context = new CaeceDBContext())
             {
@@ -42,7 +48,7 @@ namespace bob.Controllers
                 {
                     try
                     {
-                        foreach (PlanEstudio dato in PlanDeEstudioJSON)
+                        foreach (PlanEstudio dato in PlanDeEstudio)
                         {
                             // Cargo a la base los datos de las materias
                             bool resultado = context.Materias_Descripciones.Any(a => a.Materia_Id == dato.materia_id);
