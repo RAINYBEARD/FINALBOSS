@@ -15,6 +15,7 @@ using bob.Helpers;
 
 namespace bob.Controllers
 {
+    [RoutePrefix("api/caece/")]
     public class CaeceController : Controller
     {
         private readonly CaeceDBContext context = new CaeceDBContext();
@@ -30,9 +31,9 @@ namespace bob.Controllers
         /// Ejemplo de llamada: http://localhost:52178/Caece/GetPlanDeEstudio/951282 
         /// </summary>
         /// <param name="matricula"></param>
-        [HttpGet]
-        [Route("GetPlanDeEstudio/{id}")]
-        public void GetPlanDeEstudio(string matricula)
+        [HttpPost]
+        [Route("SavePlanDeEstudio/{id}")]
+        public void SavePlanDeEstudio(string matricula)
         {
             var PlanDeEstudioJSON = MockService.LoadJson<PlanEstudio>(MockMethod.PlanDeEstudio);
 
@@ -97,9 +98,9 @@ namespace bob.Controllers
         /// CARGA LOS DICCIONARIOS
         /// </summary>
         /// <param name="matricula"></param>
-        [HttpGet]
-        [Route("GetDictionaries/{matricula}")]
-        public void GetDictionaries(string matricula)
+        [HttpPost]
+        [Route("SetSesionUsuario/{matricula}")]
+        public void SetSesionUsuario(string matricula)
         {
              var aprDictionary = new AprDictionary();
              var curDictionary = new CurDictionary();
@@ -161,6 +162,7 @@ namespace bob.Controllers
             // OJO QUE ESTA HARCODEADO CAMBIAR ESTO
             SessionManager.TituloId = 7290;
             SessionManager.PlanTit = "10Z";
+
         }
 
         public void CargarDiccionarioDeCorrelativas()
@@ -204,7 +206,7 @@ namespace bob.Controllers
         public List<string> GetMateriasACursar(string matricula)
         {
             var tiempoinicio=DateTime.Now;
-            GetDictionaries(matricula);
+            SetSesionUsuario(matricula);
             CargarDiccionarioDeCorrelativas();
 
             System.Diagnostics.Debug.WriteLine("Entro en el controller Cursos");
@@ -327,7 +329,7 @@ namespace bob.Controllers
         [Route("GetMateriasACursarCuatrimestreActual/{matricula}")]
         public List<Curso> GetMateriasACursarCuatrimestreActual(string matricula)
         {
-            GetDictionaries(matricula);
+            SetSesionUsuario(matricula);
             List<string> materias_a_cursar = GetMateriasACursar(matricula);
             List<Curso> materias_a_cursar_este_cuatri = new List<Curso>();
             
@@ -482,7 +484,7 @@ namespace bob.Controllers
         [Route("PlanificadorFinales/{matricula}")]
         public List<CursadoStatus> PlanificadorFinales(string matricula)
         {
-            GetDictionaries(matricula);
+            SetSesionUsuario(matricula);
             List<CursadoStatus> cursados = new List<CursadoStatus>();
             //List<CorrelativasCursadas> correlativa = new List<CorrelativasCursadas>();
             var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
@@ -602,7 +604,7 @@ namespace bob.Controllers
         /// <returns></returns>
         public Estadisticas PorcentajeAprobado(string matricula)
         {
-            GetDictionaries(matricula);
+            SetSesionUsuario(matricula);
 
             var estadistica = new Estadisticas();
 
@@ -626,7 +628,7 @@ namespace bob.Controllers
         /// <returns></returns>
         public Estadisticas PorcentajeCursado(string matricula)
         {
-            GetDictionaries(matricula);
+            SetSesionUsuario(matricula);
 
             var estadistica = new Estadisticas();
 
@@ -651,7 +653,7 @@ namespace bob.Controllers
         /// <returns></returns>
         public List<AprobadasPorAnio> EstadisticaPorAnio(string matricula)
         {
-            GetDictionaries(matricula);
+            SetSesionUsuario(matricula);
 
             List<AprobadasPorAnio> Ls = new List<AprobadasPorAnio>();
 

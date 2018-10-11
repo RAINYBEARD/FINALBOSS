@@ -13,12 +13,10 @@ namespace bob
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            //routes.MapRoute(name:"Caece", url: "Caece/{action}/{matricula}", defaults: new {controller = "Caece", action= "Init", matricula = UrlParameter.Optional });
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Caece", action = "Index", id = UrlParameter.Optional }
-            );
+                url: "{controller}/{action}/{id}"
+                );
         }
     }
 }

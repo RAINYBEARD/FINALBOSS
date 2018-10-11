@@ -176,9 +176,23 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App\app.js" />
-    <Content Include="App\Arbol\arbol.component.js" />
-    <Content Include="App\Arbol\ArbolView.html" />
+    <Content Include="App\bob\app-module.js" />
+    <Content Include="App\bob\arbol\arbol.component.js" />
+    <Content Include="App\bob\arbol\arbol.component.html" />
+    <Content Include="App\bob\bob-app.component.js" />
+    <Content Include="App\bob\bob-app.component.html" />
+    <Content Include="App\bob\cursos\cursos.component.js" />
+    <Content Include="App\bob\cursos\cursos.component.html" />
+    <Content Include="App\bob\estadisticas\estadisticas.component.js" />
+    <Content Include="App\bob\estadisticas\estadisticas.component.html" />
+    <Content Include="App\bob\finales\finales.component.js" />
+    <Content Include="App\bob\finales\finales.component.html" />
+    <Content Include="App\bob\login\login.component.html" />
+    <Content Include="App\bob\login\login.component.js" />
+    <Content Include="App\bob\nav\nav.component.html" />
+    <Content Include="App\bob\nav\nav.component.js" />
+    <Content Include="App\bob\servicios\caece.service.js" />
+    <Content Include="App\Index.html" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -213,6 +227,11 @@
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </Content>
+    <Content Include="Views\Caece\Index.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
     <None Include="Web References\CaeceWS\wbsSync.disco" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -224,11 +243,6 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Content\Site.css" />
-    <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Caece\Index.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <None Include="Web References\CaeceWS\wbsSync.wsdl" />
   </ItemGroup>
   <ItemGroup>
@@ -285,11 +299,7 @@
       <CachedSettingsPropName>bob_CaeceWS_wbsTrans</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App\Cursos\" />
-    <Folder Include="App\Estadisticas\" />
-    <Folder Include="App\Finales\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
