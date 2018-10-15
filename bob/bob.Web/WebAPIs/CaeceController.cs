@@ -16,11 +16,13 @@ using bob.Helpers;
 
 namespace bob.Controllers
 {
+    [RoutePrefix("api/caece/")]
     public class CaeceController : Controller
     {
         private readonly CaeceDBContext context = new CaeceDBContext();
-        //private string _token = WebConfigurationManager.AppSettings.Get("CaeceWSToken");
-        //private CaeceWS.wbsTrans caeceWS = new CaeceWS.wbsTrans();
+        private string _token = WebConfigurationManager.AppSettings.Get("CaeceWSToken");
+        private CaeceWS.wbsTrans caeceWS = new CaeceWS.wbsTrans();
+        
 
         public ActionResult Index()
         {
@@ -28,14 +30,19 @@ namespace bob.Controllers
         }
 
         /// <summary>
-        /// Ejemplo de llamada: http://localhost:52178/Caece/GetPlanDeEstudio/951282 
+        /// Ejemplo de llamada: http://localhost:52178/Caece/SavePlanDeEstudio/?matricula=951282 
         /// </summary>
         /// <param name="matricula"></param>
-        [HttpGet]
-        [Route("GetPlanDeEstudio/{id}")]
-        public void GetPlanDeEstudio(string matricula)
+        [HttpPost]
+        [Route("SavePlanDeEstudio/{matricula}")]
+        public void SavePlanDeEstudio(string matricula)
         {
-            var PlanDeEstudioJSON = MockService.LoadJson<PlanEstudio>(MockMethod.PlanDeEstudio);
+            // Para hacer llamada al Mock
+            //var PlanDeEstudio = MockService.LoadJson<PlanEstudio>(MockMethod.PlanDeEstudio);
+
+            // Para hacer la llamada al WS
+            var JSON = caeceWS.getPlanEstudioJSON(_token, " " + matricula); 
+            var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
 
             using (var context = new CaeceDBContext())
             {
@@ -43,7 +50,7 @@ namespace bob.Controllers
                 {
                     try
                     {
-                        foreach (PlanEstudio dato in PlanDeEstudioJSON)
+                        foreach (PlanEstudio dato in PlanDeEstudio)
                         {
                             // Cargo a la base los datos de las materias
                             bool resultado = context.Materias_Descripciones.Any(a => a.Materia_Id == dato.materia_id);
@@ -94,22 +101,32 @@ namespace bob.Controllers
         }
 
         /// <summary>
-        /// Ejemplo de llamada: http://localhost:52178/Caece/GetDictionaries/951282 
+        /// Ejemplo de llamada: http://localhost:52178/Caece/GetDictionaries/?matricula=951282 
         /// CARGA LOS DICCIONARIOS
         /// </summary>
         /// <param name="matricula"></param>
-        [HttpGet]
-        [Route("GetDictionaries/{matricula}")]
-        public void GetDictionaries(string matricula)
+        [HttpPost]
+        [Route("SetSesionUsuario/{matricula}")]
+        public void SetSesionUsuario(string matricula)
         {
-             var aprDictionary = new AprDictionary();
+            // Para hacer la llamada al Mock
+            // var cursosAbiertos = MockService.LoadJson<Curso>(MockMethod.Cursos);
+            // var historiaAcademicaCompleta = MockService.LoadJson<HistoriaAcademica>(MockMethod.HistoriaAcademica);
+
+            // Para hacer la llamada al WS
+            var JSONCursos = caeceWS.getCursosAbiertosJSON(_token);
+            var cursosAbiertos = ((JArray)JObject.Parse(JSONCursos)["Cursos"]).ToObject<List<Curso>>();
+            var JSONHistoriaAcademica = caeceWS.getHistoriaAcademicaJSON(_token, matricula);
+            var historiaAcademiaCompleta = ((JArray)JObject.Parse(JSONHistoriaAcademica)["HistoriaAcademica"]).ToObject<List<HistoriaAcademica>>();
+
+            var aprDictionary = new AprDictionary();
              var curDictionary = new CurDictionary();
              var penDictionary = new PenDictionary();
              var notCurDictionary = new NotCurDictionary();
              var mesaFinalDictionary = new MesasDictionary();
              var cursosDictionary = new CursosDictionary();
 
-            foreach (HistoriaAcademica dato in MockService.LoadJson<HistoriaAcademica>(MockMethod.HistoriaAcademica))
+            foreach (HistoriaAcademica dato in historiaAcademiaCompleta)
             {
                 string estado_materia = dato.Descrip;
                 string matcod = dato.Matcod;
@@ -141,7 +158,7 @@ namespace bob.Controllers
                 }
             }
 
-            foreach (var dato in MockService.LoadJson<Curso>(MockMethod.Cursos))
+            foreach (var dato in cursosAbiertos)
             {
                 if (notCurDictionary.ContainsKey(dato.Materia_Id + "/" + dato.Plan_Id))
                 {
@@ -162,6 +179,7 @@ namespace bob.Controllers
             // OJO QUE ESTA HARCODEADO CAMBIAR ESTO
             SessionManager.TituloId = 7290;
             SessionManager.PlanTit = "10Z";
+
         }
 
         public void CargarDiccionarioDeCorrelativas()
@@ -204,58 +222,53 @@ namespace bob.Controllers
         [Route("GetMateriasACursar/{matricula}")]
         public List<string> GetMateriasACursar(string matricula)
         {
-            var tiempoinicio=DateTime.Now;
-            GetDictionaries(matricula);
+            var tiempoInicio=DateTime.Now;
+            SetSesionUsuario(matricula);
             CargarDiccionarioDeCorrelativas();
+            List<string> materiasACursar = new List<string>();
+            List<CorrValue> materiasParaBuscarCorrelativas = new List<CorrValue>();
+            string materiaAnt = "";
 
             System.Diagnostics.Debug.WriteLine("Entro en el controller Cursos");
             //CHEQUEAR QUE LOS DICCIONARIOS ESTEN CARGADOS ANTES DE EMPEZAR A PROCESAR
-            //if(Helpers.SessionManager.DiccionarioCursadas != null);
-            List<string> materias_a_cursar = new List<string>();
-            List<CorrValue> materias_para_buscar_correlativas = new List<CorrValue>();
-            string materia_ant = "";
-
-            foreach (var resultado0 in SessionManager.DiccionarioNoCursadas)
+            if (SessionManager.DiccionarioCursadas != null)
             {
-                // Descompongo la materiaid del planid
-                string[] matriculaid = resultado0.Key.Split(new Char[] { '/' });
-                var query2 = BuscarCorrelativa(int.Parse(matriculaid[0]));
 
-                // Evaluacion para la materias que no tienen correlativas
-                if (query2.Count == 1)
-                    materias_a_cursar.Add(query2[0].materia_id +"/"+query2[0].plan_id);
-
-                foreach (var resultado in query2)
+                foreach (var resultado0 in SessionManager.DiccionarioNoCursadas)
                 {
-                    if (resultado.materia_id != resultado.codigo_correlativa)
+                    // Descompongo la materiaid del planid
+                    string[] matriculaId = resultado0.Key.Split(new Char[] { '/' });
+                    var query2 = BuscarCorrelativa(int.Parse(matriculaId[0]));
+
+                    // Evaluacion para la materias que no tienen correlativas
+                    if (query2.Count == 1)
+                        materiasACursar.Add(query2[0].materia_id + "/" + query2[0].plan_id);
+
+                    foreach (var resultado in query2)
                     {
-                        // Elimino los resultados repetidos
-                        if (!materias_para_buscar_correlativas.Any(x => x.materia_id == resultado.materia_id))
-                            materias_para_buscar_correlativas.Add(resultado);
+                        if (resultado.materia_id != resultado.codigo_correlativa)
+                        {
+                            // Elimino los resultados repetidos
+                            if (!materiasParaBuscarCorrelativas.Any(x => x.materia_id == resultado.materia_id))
+                                materiasParaBuscarCorrelativas.Add(resultado);
+                        }
                     }
                 }
+                foreach (var materia in materiasParaBuscarCorrelativas)
+                {
+                    BuscarMateriasACursar(materia, ref materiasACursar, materiaAnt);
+                }
             }
-            foreach (var materia in materias_para_buscar_correlativas)
-             {
-                //System.Diagnostics.Debug.WriteLine("Busco correlativas de la materia : " + materia.Materia_Id);
-                BuscarMateriasACursar(materia, ref materias_a_cursar, materia_ant);
-                //Thread t = new Thread(() => BuscarMateriasACursar(materia, ref materias_a_cursar, materia_ant));
-                //t.Start();
-            }
-            //foreach (var materia_a_cursar in materias_a_cursar)
-            //{
-            //    System.Diagnostics.Debug.WriteLine("Materia que puede cursar : " + materia_a_cursar);
-            //}
-            var tiempofin = DateTime.Now;
-            System.Diagnostics.Debug.WriteLine("tardo : " + (tiempofin-tiempoinicio));
-            return materias_a_cursar;
+            var tiempoFin = DateTime.Now;
+            System.Diagnostics.Debug.WriteLine("tardo : " + (tiempoFin - tiempoInicio));
+            return materiasACursar;
         }
 
-        public List<CorrValue> BuscarCorrelativa(int idmateria)
+        public List<CorrValue> BuscarCorrelativa(int idMateria)
         {
-            if (idmateria > 100)
+            if (idMateria > 100)
             {
-                return SessionManager.DiccionarioCorr[idmateria];
+                return SessionManager.DiccionarioCorr[idMateria];
             }
             else
             {
@@ -268,20 +281,16 @@ namespace bob.Controllers
         {
             using (var context = new CaeceDBContext())
             {
-                short ultimo_anio_de_la_carrera = (short)(context.Materias.Max(a => a.Anio));
-                return context.Materias.Where(a => a.Anio == ultimo_anio_de_la_carrera && a.Cuatrim == 2).ToList();
+                short ultimoAnioDeLaCarrera = (short)(context.Materias.Max(a => a.Anio));
+                return context.Materias.Where(a => a.Anio == ultimoAnioDeLaCarrera && a.Cuatrim == 2).ToList();
             }
         }
 
-        private void BuscarMateriasACursar(CorrValue correlativa,ref List<string> materias_a_cursar,string materia_ant)
+        private void BuscarMateriasACursar(CorrValue correlativa,ref List<string> materiasACursar,string materiaAnt)
         {
             //CHEQUEAR QUE LOS DICCIONARIOS ESTEN CARGADOS ANTES DE EMPEZAR A PROCESAR
             if (SessionManager.DiccionarioCursadas != null)
             {
-                // Print the node.  
-                //System.Diagnostics.Debug.WriteLine("Materia : " + correlativa.Materia_Id + " Correlativa : " + correlativa.Codigo_Correlativa);
-
-                //Dictionary key = matcod = 8015/10S, value = AprValue  = {Abr, etc, etc} 
 
                 // Busco las correlativas dentro del diccionario de las materias no cursadas
                 if (SessionManager.DiccionarioNoCursadas.ContainsKey(correlativa.materia_id + "/" + correlativa.plan_id))
@@ -289,51 +298,50 @@ namespace bob.Controllers
                     // Verifico asignaturas que requieren cantidad de materias aprobadas
                     if (correlativa.codigo_correlativa < 100 && correlativa.codigo_correlativa <= (SessionManager.DiccionarioAprobadas.Count() + SessionManager.DiccionarioCursadas.Count()) )
                     {
-                        materias_a_cursar.Add(correlativa.materia_id + "/" + correlativa.plan_id);
+                        materiasACursar.Add(correlativa.materia_id + "/" + correlativa.plan_id);
                     }
 
                     // Almaceno la materia para evaluar si la correlativa es la que le resta cursar al alumno
-                    materia_ant = correlativa.materia_id + "/" + correlativa.plan_id;
+                    materiaAnt = correlativa.materia_id + "/" + correlativa.plan_id;
 
-                    var resulcorrelativa = BuscarCorrelativa(correlativa.codigo_correlativa);
-                    bool flag_materia_a_cursar = true;
-                    foreach (var resultado in resulcorrelativa)
+                    var resulCorrelativa = BuscarCorrelativa(correlativa.codigo_correlativa);
+                    bool flagMateriaACursar = true;
+                    foreach (var resultado in resulCorrelativa)
                     {
                         if (resultado.materia_id != resultado.codigo_correlativa)
                         {
                             if (!SessionManager.DiccionarioAprobadas.ContainsKey(resultado.materia_id + "/" + resultado.plan_id) && !SessionManager.DiccionarioCursadas.ContainsKey(resultado.materia_id + "/" + resultado.plan_id))
                             {
-                                flag_materia_a_cursar = false;
+                                flagMateriaACursar = false;
                             }
                             // Hago llamada recursiva para recorrer el arbol de materias correlativas
-                            BuscarMateriasACursar(resultado, ref materias_a_cursar, materia_ant);
+                            BuscarMateriasACursar(resultado, ref materiasACursar, materiaAnt);
                         }
                     }
 
-                    if (flag_materia_a_cursar)
+                    if (flagMateriaACursar)
                     {
-                        if (!materias_a_cursar.Contains(materia_ant))
-                            materias_a_cursar.Add(materia_ant);
+                        if (!materiasACursar.Contains(materiaAnt))
+                            materiasACursar.Add(materiaAnt);
                     }
-
                 }
             }
         }
 
         /// <summary>
-        /// Ejemplo de llamada: http://localhost:52178/Caece/GetMateriasACursarCuatrimestreActual/951282 
+        /// Ejemplo de llamada: http://localhost:52178/Caece/GetMateriasACursarCuatrimestreActual/?matricula=951282 
         /// </summary>
         /// <param name="matricula"></param>
         [HttpGet]
         [Route("GetMateriasACursarCuatrimestreActual/{matricula}")]
         public List<Curso> GetMateriasACursarCuatrimestreActual(string matricula)
         {
-            GetDictionaries(matricula);
-            List<string> materias_a_cursar = GetMateriasACursar(matricula);
-            List<Curso> materias_a_cursar_este_cuatri = new List<Curso>();
+            SetSesionUsuario(matricula);
+            List<string> materiasACursar = GetMateriasACursar(matricula);
+            List<Curso> materiasACursarEsteCuatri = new List<Curso>();
             
 
-            foreach (var materia in materias_a_cursar)
+            foreach (var materia in materiasACursar)
             {
                 // Descompongo la materiaid del planid
                 string[] materiaid = materia.Split(new Char[] { '/' });
@@ -349,21 +357,20 @@ namespace bob.Controllers
                     cursomateria.Turno_Id = SessionManager.DiccionarioCursos[materiaid[0]].Turno_Id;
 
                     // Agrego a la lista los cursos a los cuales se puede inscribir
-                    materias_a_cursar_este_cuatri.Add(cursomateria);                    
-                    //System.Diagnostics.Debug.WriteLine("Materia que puede cursar este cuatri : " + SessionManager.DiccionarioCursos[materiaid[0]].Dia);
+                    materiasACursarEsteCuatri.Add(cursomateria);                    
                 }
             }
-            return materias_a_cursar_este_cuatri;
+            return materiasACursarEsteCuatri;
         }
 
-        public bool VerificarFiltroDias(string filtro,string diamateria)
+        public bool VerificarFiltroDias(string filtro,string diaMateria)
         {
             int i = 0;
 
             // Verifico si el filtro de dias en los cuales se cursa una materia machea con la cantidad de dias que se cursa la materia
-            while (i < 7 && ((filtro.Substring(i, 1) == "1" && diamateria.Substring(i, 1) == "1") || 
-                             (filtro.Substring(i, 1) == "1" && diamateria.Substring(i, 1) == "0") ||
-                             (filtro.Substring(i, 1) == "0" && diamateria.Substring(i, 1) == "0")))
+            while (i < 7 && ((filtro.Substring(i, 1) == "1" && diaMateria.Substring(i, 1) == "1") || 
+                             (filtro.Substring(i, 1) == "1" && diaMateria.Substring(i, 1) == "0") ||
+                             (filtro.Substring(i, 1) == "0" && diaMateria.Substring(i, 1) == "0")))
             {
                 i++;
             }
@@ -384,33 +391,33 @@ namespace bob.Controllers
             return string.Join("", letters);
         }
 
-        public bool AgregarDiasACursar(string dia_materia,ref string dias_a_cursar, int filtrocantdias)
+        public bool AgregarDiasACursar(string diaMateria,ref string diasACursar, int filtroCantDias)
         {
             int i = 0;
             List<int> dias = new List<int>();
-            int cant_dias = 0;
-            while ( i<7 && ((dia_materia.Substring(i, 1) == "1" && dias_a_cursar.Substring(i, 1) == "0") ||
-                            (dia_materia.Substring(i, 1) == "0" && dias_a_cursar.Substring(i, 1) == "0") ||
-                            (dia_materia.Substring(i, 1) == "0" && dias_a_cursar.Substring(i, 1) == "1")))
+            int cantDias = 0;
+            while ( i<7 && ((diaMateria.Substring(i, 1) == "1" && diasACursar.Substring(i, 1) == "0") ||
+                            (diaMateria.Substring(i, 1) == "0" && diasACursar.Substring(i, 1) == "0") ||
+                            (diaMateria.Substring(i, 1) == "0" && diasACursar.Substring(i, 1) == "1")))
             {
-                if (dia_materia.Substring(i, 1) == "1" && dias_a_cursar.Substring(i, 1) == "0")
+                if (diaMateria.Substring(i, 1) == "1" && diasACursar.Substring(i, 1) == "0")
                     dias.Add(i);
                 i++;
             }
             for (int j = 0; j < 7; j++)
             {
-                if (dias_a_cursar.Substring(j, 1) != "0")
-                    cant_dias++;
+                if (diasACursar.Substring(j, 1) != "0")
+                    cantDias++;
             }
 
             // Le sumo la cantidad de dias de la materia nueva
-            cant_dias = cant_dias + dias.Count();
+            cantDias = cantDias + dias.Count();
 
-            if (i == 7 && (cant_dias <= filtrocantdias))
+            if (i == 7 && (cantDias <= filtroCantDias))
             {
                 foreach (var indice in dias)
                 {
-                    dias_a_cursar = ReplaceAtIndex(indice, '1', dias_a_cursar);
+                    diasACursar = ReplaceAtIndex(indice, '1', diasACursar);
                 }
                 
                 return true;
@@ -421,25 +428,21 @@ namespace bob.Controllers
             }
         }
 
-        public List<Curso> MostrarMateriasACursarCuatrimestreActual(string matricula,string filtrodias,int filtrocantdias,string modo)
+        public List<Curso> MostrarMateriasACursarCuatrimestreActual(string matricula,string filtroDias,int filtroCantDias,string modo)
         {
-            List<Curso> materias_a_cursar_este_cuatri = GetMateriasACursarCuatrimestreActual(matricula);
-            List<Curso> mostrar_materias_a_cursar_este_cuatri = new List<Curso>();
-            List<Curso> aux_materias_a_cursar = new List<Curso>();
-            string dias_que_cursa = "0000000";
+            List<Curso> materiasACursarEsteCuatri = GetMateriasACursarCuatrimestreActual(matricula);
+            List<Curso> mostrarMateriasACursarEsteCuatri = new List<Curso>();
+            List<Curso> auxMateriasACursar = new List<Curso>();
+            string diasQueCursa = "0000000";
 
             if (modo == "manual")
             {
-                foreach (var materia in materias_a_cursar_este_cuatri)
+                foreach (var materia in materiasACursarEsteCuatri)
                 {
-                    // Para contar cantidad de dias que se cursa una materia
-                    //string[] auxdiasacursar = materia.Dia.Split(new Char[] { '1' });
-                    //int cantidad_dias_que_se_cursa_materia = auxdiasacursar.Length - 1;
-
                     // Verifico si el filtro de dias en los cuales se cursa una materia machea con la cantidad de dias que se cursa la materia
-                    if (VerificarFiltroDias(filtrodias, materia.Dia))
+                    if (VerificarFiltroDias(filtroDias, materia.Dia))
                     {
-                        mostrar_materias_a_cursar_este_cuatri.Add(materia);
+                        mostrarMateriasACursarEsteCuatri.Add(materia);
                     }
                 }
             }
@@ -447,32 +450,32 @@ namespace bob.Controllers
             {
                 if (modo == "auto")
                 {
-                    foreach (var materia in materias_a_cursar_este_cuatri)
+                    foreach (var materia in materiasACursarEsteCuatri)
                     {
                         // Para contar cantidad de dias que se cursa una materia
                         string[] auxdiasacursar = materia.Dia.Split(new Char[] { '1' });
                         int cantidad_dias_que_se_cursa_materia = auxdiasacursar.Length - 1;
                         
-                        if (cantidad_dias_que_se_cursa_materia > 1 && AgregarDiasACursar(materia.Dia, ref dias_que_cursa, filtrocantdias) && VerificarFiltroDias(filtrodias, materia.Dia))
+                        if (cantidad_dias_que_se_cursa_materia > 1 && AgregarDiasACursar(materia.Dia, ref diasQueCursa, filtroCantDias) && VerificarFiltroDias(filtroDias, materia.Dia))
                         {
-                            mostrar_materias_a_cursar_este_cuatri.Insert(0, materia);
+                            mostrarMateriasACursarEsteCuatri.Insert(0, materia);
                         }
                         else
                         {
-                                aux_materias_a_cursar.Add(materia);
+                                auxMateriasACursar.Add(materia);
                         }
                         
                     }
-                    foreach (var materia in aux_materias_a_cursar)
+                    foreach (var materia in auxMateriasACursar)
                     {
-                        if (AgregarDiasACursar(materia.Dia, ref dias_que_cursa, filtrocantdias) && VerificarFiltroDias(filtrodias, materia.Dia))
+                        if (AgregarDiasACursar(materia.Dia, ref diasQueCursa, filtroCantDias) && VerificarFiltroDias(filtroDias, materia.Dia))
                         {
-                            mostrar_materias_a_cursar_este_cuatri.Add(materia);
+                            mostrarMateriasACursarEsteCuatri.Add(materia);
                         }
                     }
                 }
             }
-            return mostrar_materias_a_cursar_este_cuatri;
+            return mostrarMateriasACursarEsteCuatri;
         }
 
         /// <summary>
@@ -483,7 +486,7 @@ namespace bob.Controllers
         [Route("PlanificadorFinales/{matricula}")]
         public List<CursadoStatus> PlanificadorFinales(string matricula)
         {
-            GetDictionaries(matricula);
+            SetSesionUsuario(matricula);
             List<CursadoStatus> cursados = new List<CursadoStatus>();
             var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
             var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
@@ -591,7 +594,7 @@ namespace bob.Controllers
         /// <returns></returns>
         public Estadisticas PorcentajeAprobado(string matricula)
         {
-            GetDictionaries(matricula);
+            SetSesionUsuario(matricula);
 
             var estadistica = new Estadisticas();
 
@@ -615,7 +618,7 @@ namespace bob.Controllers
         /// <returns></returns>
         public Estadisticas PorcentajeCursado(string matricula)
         {
-            GetDictionaries(matricula);
+            SetSesionUsuario(matricula);
 
             var estadistica = new Estadisticas();
 
@@ -640,7 +643,7 @@ namespace bob.Controllers
         /// <returns></returns>
         public List<AprobadasPorAnio> EstadisticaPorAnio(string matricula)
         {
-            GetDictionaries(matricula);
+            SetSesionUsuario(matricula);
 
             List<AprobadasPorAnio> Ls = new List<AprobadasPorAnio>();
 
