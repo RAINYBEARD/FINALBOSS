@@ -29,7 +29,7 @@ namespace bob.Controllers
         }
 
         /// <summary>
-        /// Ejemplo de llamada: http://localhost:52178/Caece/GetPlanDeEstudio/?matricula=951282 
+        /// Ejemplo de llamada: http://localhost:52178/Caece/SavePlanDeEstudio/?matricula=951282 
         /// </summary>
         /// <param name="matricula"></param>
         [HttpPost]
@@ -100,7 +100,7 @@ namespace bob.Controllers
         }
 
         /// <summary>
-        /// Ejemplo de llamada: http://localhost:52178/Caece/GetDictionaries/951282 
+        /// Ejemplo de llamada: http://localhost:52178/Caece/GetDictionaries/?matricula=951282 
         /// CARGA LOS DICCIONARIOS
         /// </summary>
         /// <param name="matricula"></param>
@@ -108,14 +108,24 @@ namespace bob.Controllers
         [Route("SetSesionUsuario/{matricula}")]
         public void SetSesionUsuario(string matricula)
         {
-             var aprDictionary = new AprDictionary();
+            // Para hacer la llamada al Mock
+            // var cursosAbiertos = MockService.LoadJson<Curso>(MockMethod.Cursos);
+            // var historiaAcademicaCompleta = MockService.LoadJson<HistoriaAcademica>(MockMethod.HistoriaAcademica);
+
+            // Para hacer la llamada al WS
+            var JSONCursos = caeceWS.getCursosAbiertosJSON(_token);
+            var cursosAbiertos = ((JArray)JObject.Parse(JSONCursos)["Cursos"]).ToObject<List<Curso>>();
+            var JSONHistoriaAcademica = caeceWS.getHistoriaAcademicaJSON(_token, matricula);
+            var historiaAcademiaCompleta = ((JArray)JObject.Parse(JSONHistoriaAcademica)["HistoriaAcademica"]).ToObject<List<HistoriaAcademica>>();
+
+            var aprDictionary = new AprDictionary();
              var curDictionary = new CurDictionary();
              var penDictionary = new PenDictionary();
              var notCurDictionary = new NotCurDictionary();
              var mesaFinalDictionary = new MesasDictionary();
              var cursosDictionary = new CursosDictionary();
 
-            foreach (HistoriaAcademica dato in MockService.LoadJson<HistoriaAcademica>(MockMethod.HistoriaAcademica))
+            foreach (HistoriaAcademica dato in historiaAcademiaCompleta)
             {
                 string estado_materia = dato.Descrip;
                 string matcod = dato.Matcod;
@@ -147,7 +157,7 @@ namespace bob.Controllers
                 }
             }
 
-            foreach (var dato in MockService.LoadJson<Curso>(MockMethod.Cursos))
+            foreach (var dato in cursosAbiertos)
             {
                 if (notCurDictionary.ContainsKey(dato.Materia_Id + "/" + dato.Plan_Id))
                 {
@@ -318,7 +328,7 @@ namespace bob.Controllers
         }
 
         /// <summary>
-        /// Ejemplo de llamada: http://localhost:52178/Caece/GetMateriasACursarCuatrimestreActual/951282 
+        /// Ejemplo de llamada: http://localhost:52178/Caece/GetMateriasACursarCuatrimestreActual/?matricula=951282 
         /// </summary>
         /// <param name="matricula"></param>
         [HttpGet]
