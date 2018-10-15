@@ -34,14 +34,14 @@ namespace bob.Controllers
         /// </summary>
         /// <param name="matricula"></param>
         [HttpPost]
-        [Route("SavePlanDeEstudio/{matricula}")]
-        public void SavePlanDeEstudio(string matricula)
+        [Route("SavePlanDeEstudio/{id}")]
+        public void SavePlanDeEstudio(string id)
         {
             // Para hacer llamada al Mock
             //var PlanDeEstudio = MockService.LoadJson<PlanEstudio>(MockMethod.PlanDeEstudio);
 
             // Para hacer la llamada al WS
-            var JSON = caeceWS.getPlanEstudioJSON(_token, " " + matricula); 
+            var JSON = caeceWS.getPlanEstudioJSON(_token, " " + id); 
             var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
 
             using (var context = new CaeceDBContext())
