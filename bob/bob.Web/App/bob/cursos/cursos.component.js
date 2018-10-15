@@ -5,6 +5,7 @@
         controllerAs: 'vm',
         controller: function () {
             var vm = this;
+            
 
         },
         templateUrl: '/App/bob/cursos/cursos.component.html'
