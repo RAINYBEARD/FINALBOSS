@@ -19,7 +19,7 @@ namespace bob.Helpers
         private const string TituloIdKey = "TIT_ID";
         private const string PlanTitKey = "PLAN_TIT";
 
-        public static CorrDictionary DiccionarioCorr
+        public static CorrDictionary DiccionarioCorrelativas
         {
             get
             {
