@@ -2,7 +2,7 @@
     'use strict';
     var appModule = angular.module('bob', ['ui.router']);
 
-    appModule.value('apiBase', 'http://localhost:52178/api/caece/');
+    appModule.value('apiBase', 'http://localhost:52178/api/v1/caece/');
 
     appModule.config(function ($stateProvider, $urlRouterProvider) {
         var states = [

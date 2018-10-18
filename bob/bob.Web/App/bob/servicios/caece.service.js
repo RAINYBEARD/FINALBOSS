@@ -5,15 +5,36 @@
 
         var self = this;
 
-        self.getAllCourses = function () {
-            return $http.get(apiBase + 'courses')
+        self.savePlanEstudio = function (matricula) {
+            return $http.post(apiBase + 'save-plan-estudio' + '/' + matricula)
                 .then(function (result) {
                     return result.data;
                 });
         };
 
-        self.getCourse = function (courseId) {
-            return $http.get(apiBase + 'course/' + courseId + '/full')
+        self.setSesionUsuario = function (matricula) {
+            return $http.post(apiBase + 'set-sesion-usuario' + '/' + matricula)
+                .then(function (result) {
+                    return result.data;
+                });
+        };
+
+        self.getFinales = function (matricula) {
+            return $http.get(apiBase + 'get-finales' + '/' + matricula)
+                .then(function (result) {
+                    return result.data;
+                });
+        };
+
+        self.getMaterias = function (matricula) {
+            return $http.get(apiBase + 'get-materias' + '/' + matricula)
+                .then(function (result) {
+                    return result.data;
+                });
+        };
+
+        self.getEstadisticas = function (matricula) {
+            return $http.get(apiBase + 'get-estadisticas' + '/' + matricula)
                 .then(function (result) {
                     return result.data;
                 });

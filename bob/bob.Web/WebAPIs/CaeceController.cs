@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
+using System.Web.Http;
 using System.Threading;
 using bob.Data;
 using bob.Data.Entities;
+using bob.Data.Estadisticas;
 using bob.Data.DTOs;
 using bob.Data.Dictionaries;
 using bob.Data.Finales;
@@ -16,33 +17,28 @@ using bob.Helpers;
 
 namespace bob.Controllers
 {
-    [RoutePrefix("api/caece/")]
-    public class CaeceController : Controller
+    [RoutePrefix("api/v1/caece")]
+    public class CaeceController : ApiController
     {
         private readonly CaeceDBContext context = new CaeceDBContext();
         private string _token = WebConfigurationManager.AppSettings.Get("CaeceWSToken");
         private CaeceWS.wbsTrans caeceWS = new CaeceWS.wbsTrans();
-        
 
-        public ActionResult Index()
-        {
-            return View();
-        }
 
         /// <summary>
-        /// Ejemplo de llamada: http://localhost:52178/Caece/SavePlanDeEstudio/?matricula=951282 
+        /// Ejemplo de llamada: http://localhost:52178/api/v1/caece/save-plan-estudio/951282 
+        /// Guarda el Plan de Estudio de la Persona
         /// </summary>
         /// <param name="matricula"></param>
         [HttpPost]
-        [Route("SavePlanDeEstudio/{id}")]
-        public void SavePlanDeEstudio(string id)
+        [Route("save-plan-estudio/{matricula}")]
+        public void SavePlanDeEstudio(string matricula)
         {
-            // Para hacer llamada al Mock
-            //var PlanDeEstudio = MockService.LoadJson<PlanEstudio>(MockMethod.PlanDeEstudio);
-
-            // Para hacer la llamada al WS
-            var JSON = caeceWS.getPlanEstudioJSON(_token, " " + id); 
+            var JSON = caeceWS.getPlanEstudioJSON(_token, " " + matricula);
             var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
+
+            SessionManager.TituloId = PlanDeEstudio[0].titulo_id;
+            SessionManager.PlanTit = PlanDeEstudio[0].plan_tit;
 
             using (var context = new CaeceDBContext())
             {
@@ -101,30 +97,26 @@ namespace bob.Controllers
         }
 
         /// <summary>
-        /// Ejemplo de llamada: http://localhost:52178/Caece/GetDictionaries/?matricula=951282 
-        /// CARGA LOS DICCIONARIOS
+        /// Ejemplo de llamada: http://localhost:52178/api/v1/caece/set-sesion-usuario/951282
+        /// Carga los diccionarios 
         /// </summary>
         /// <param name="matricula"></param>
         [HttpPost]
-        [Route("SetSesionUsuario/{matricula}")]
+        [Route("set-sesion-usuario/{matricula}")]
         public void SetSesionUsuario(string matricula)
         {
-            // Para hacer la llamada al Mock
-            // var cursosAbiertos = MockService.LoadJson<Curso>(MockMethod.Cursos);
-            // var historiaAcademicaCompleta = MockService.LoadJson<HistoriaAcademica>(MockMethod.HistoriaAcademica);
-
             // Para hacer la llamada al WS
             var JSONCursos = caeceWS.getCursosAbiertosJSON(_token);
             var cursosAbiertos = ((JArray)JObject.Parse(JSONCursos)["Cursos"]).ToObject<List<Curso>>();
-            var JSONHistoriaAcademica = caeceWS.getHistoriaAcademicaJSON(_token, matricula);
+            var JSONHistoriaAcademica = caeceWS.getHistoriaAcademicaJSON(_token, " " + matricula);
             var historiaAcademiaCompleta = ((JArray)JObject.Parse(JSONHistoriaAcademica)["HistoriaAcademica"]).ToObject<List<HistoriaAcademica>>();
 
             var aprDictionary = new AprDictionary();
-             var curDictionary = new CurDictionary();
-             var penDictionary = new PenDictionary();
-             var notCurDictionary = new NotCurDictionary();
-             var mesaFinalDictionary = new MesasDictionary();
-             var cursosDictionary = new CursosDictionary();
+            var curDictionary = new CurDictionary();
+            var penDictionary = new PenDictionary();
+            var notCurDictionary = new NotCurDictionary();
+            var mesaFinalDictionary = new MesasDictionary();
+            var cursosDictionary = new CursosDictionary();
 
             foreach (HistoriaAcademica dato in historiaAcademiaCompleta)
             {
@@ -169,68 +161,71 @@ namespace bob.Controllers
 
             }
 
-            //ACA SE CARGAN LOS DICCIONARIOS 
             SessionManager.DiccionarioAprobadas = aprDictionary;
             SessionManager.DiccionarioCursadas = curDictionary;
             SessionManager.DiccionarioPendientes = penDictionary;
             SessionManager.DiccionarioNoCursadas = notCurDictionary;
             SessionManager.DiccionarioCursos = cursosDictionary;
 
-            // OJO QUE ESTA HARCODEADO CAMBIAR ESTO
-            SessionManager.TituloId = 7290;
-            SessionManager.PlanTit = "10Z";
-
-        }
-
-        public void CargarDiccionarioDeCorrelativas()
-        {
-            var context = new CaeceDBContext();
-            // Modificar lo hardcodeado
-            var listCorrelativas = context.Correlativas.Where(a => a.Titulo_Id == SessionManager.TituloId && a.Plan_Tit == SessionManager.PlanTit).ToList();
-
-            var existentes = new List<CorrValue>();
-            var dicCorrelativas = new CorrDictionary();
-
-            foreach (var correl in listCorrelativas)
+            #region Diccionario Correlativas
+            using (var context = new CaeceDBContext())
             {
-                var corr = new CorrValue();
-                AutoMapper.Mapper.Map(correl, corr);
+                try
+                {
+                    var listCorrelativas = context.Correlativas.Where(a => a.Titulo_Id == SessionManager.TituloId && a.Plan_Tit == SessionManager.PlanTit).ToList();
+                    var existentes = new List<CorrValue>();
+                    var dicCorrelativas = new CorrDictionary();
 
-                if (!dicCorrelativas.ContainsKey(correl.Materia_Id))
-                {
-                    var listCorrel = new List<CorrValue>();
-                    listCorrel.Add(corr);
-                    dicCorrelativas.Add(correl.Materia_Id, listCorrel);
-                }
-                else
-                {
-                    if (dicCorrelativas.TryGetValue(correl.Materia_Id, out existentes))
+                    foreach (var correlativa in listCorrelativas)
                     {
-                        existentes.Add(corr);
-                        dicCorrelativas[correl.Materia_Id] = existentes;
+                        var corr = new CorrValue();
+                        AutoMapper.Mapper.Map(correlativa, corr);
+
+                        if (!dicCorrelativas.ContainsKey(correlativa.Materia_Id))
+                        {
+                            var listCorrel = new List<CorrValue>();
+                            listCorrel.Add(corr);
+                            dicCorrelativas.Add(correlativa.Materia_Id, listCorrel);
+                        }
+                        else
+                        {
+                            if (dicCorrelativas.TryGetValue(correlativa.Materia_Id, out existentes))
+                            {
+                                existentes.Add(corr);
+                                dicCorrelativas[correlativa.Materia_Id] = existentes;
+                            }
+                        }
                     }
+                    SessionManager.DiccionarioCorrelativas = dicCorrelativas;
+                }
+                catch (Exception e)
+                {
+                    throw;
                 }
             }
-            SessionManager.DiccionarioCorr = dicCorrelativas;
+            #endregion
+
         }
+
+
+        #region Cursos
 
         /// <summary>
         /// Ejemplo de llamada: http://localhost:52178/Caece/GetMateriasACursar/951282 
         /// </summary>
         /// <param name="matricula"></param>
         [HttpGet]
-        [Route("GetMateriasACursar/{matricula}")]
+        [Route("get-materias/{matricula}")]
         public List<string> GetMateriasACursar(string matricula)
         {
-            var tiempoInicio=DateTime.Now;
-            SetSesionUsuario(matricula);
-            CargarDiccionarioDeCorrelativas();
+            var tiempoInicio = DateTime.Now;
+
             List<string> materiasACursar = new List<string>();
             List<CorrValue> materiasParaBuscarCorrelativas = new List<CorrValue>();
             string materiaAnt = "";
 
             System.Diagnostics.Debug.WriteLine("Entro en el controller Cursos");
-            //CHEQUEAR QUE LOS DICCIONARIOS ESTEN CARGADOS ANTES DE EMPEZAR A PROCESAR
+            
             if (SessionManager.DiccionarioCursadas != null)
             {
 
@@ -268,7 +263,7 @@ namespace bob.Controllers
         {
             if (idMateria > 100)
             {
-                return SessionManager.DiccionarioCorr[idMateria];
+                return SessionManager.DiccionarioCorrelativas[idMateria];
             }
             else
             {
@@ -286,7 +281,7 @@ namespace bob.Controllers
             }
         }
 
-        private void BuscarMateriasACursar(CorrValue correlativa,ref List<string> materiasACursar,string materiaAnt)
+        private void BuscarMateriasACursar(CorrValue correlativa, ref List<string> materiasACursar, string materiaAnt)
         {
             //CHEQUEAR QUE LOS DICCIONARIOS ESTEN CARGADOS ANTES DE EMPEZAR A PROCESAR
             if (SessionManager.DiccionarioCursadas != null)
@@ -296,7 +291,7 @@ namespace bob.Controllers
                 if (SessionManager.DiccionarioNoCursadas.ContainsKey(correlativa.materia_id + "/" + correlativa.plan_id))
                 {
                     // Verifico asignaturas que requieren cantidad de materias aprobadas
-                    if (correlativa.codigo_correlativa < 100 && correlativa.codigo_correlativa <= (SessionManager.DiccionarioAprobadas.Count() + SessionManager.DiccionarioCursadas.Count()) )
+                    if (correlativa.codigo_correlativa < 100 && correlativa.codigo_correlativa <= (SessionManager.DiccionarioAprobadas.Count() + SessionManager.DiccionarioCursadas.Count()))
                     {
                         materiasACursar.Add(correlativa.materia_id + "/" + correlativa.plan_id);
                     }
@@ -330,16 +325,17 @@ namespace bob.Controllers
 
         /// <summary>
         /// Ejemplo de llamada: http://localhost:52178/Caece/GetMateriasACursarCuatrimestreActual/?matricula=951282 
+        /// 
         /// </summary>
         /// <param name="matricula"></param>
+        /// <returns></returns>
         [HttpGet]
-        [Route("GetMateriasACursarCuatrimestreActual/{matricula}")]
+        [Route("get-materias/{matricula}")]
         public List<Curso> GetMateriasACursarCuatrimestreActual(string matricula)
         {
-            SetSesionUsuario(matricula);
             List<string> materiasACursar = GetMateriasACursar(matricula);
             List<Curso> materiasACursarEsteCuatri = new List<Curso>();
-            
+
 
             foreach (var materia in materiasACursar)
             {
@@ -357,18 +353,18 @@ namespace bob.Controllers
                     cursomateria.Turno_Id = SessionManager.DiccionarioCursos[materiaid[0]].Turno_Id;
 
                     // Agrego a la lista los cursos a los cuales se puede inscribir
-                    materiasACursarEsteCuatri.Add(cursomateria);                    
+                    materiasACursarEsteCuatri.Add(cursomateria);
                 }
             }
             return materiasACursarEsteCuatri;
         }
 
-        public bool VerificarFiltroDias(string filtro,string diaMateria)
+        public bool VerificarFiltroDias(string filtro, string diaMateria)
         {
             int i = 0;
 
             // Verifico si el filtro de dias en los cuales se cursa una materia machea con la cantidad de dias que se cursa la materia
-            while (i < 7 && ((filtro.Substring(i, 1) == "1" && diaMateria.Substring(i, 1) == "1") || 
+            while (i < 7 && ((filtro.Substring(i, 1) == "1" && diaMateria.Substring(i, 1) == "1") ||
                              (filtro.Substring(i, 1) == "1" && diaMateria.Substring(i, 1) == "0") ||
                              (filtro.Substring(i, 1) == "0" && diaMateria.Substring(i, 1) == "0")))
             {
@@ -391,12 +387,12 @@ namespace bob.Controllers
             return string.Join("", letters);
         }
 
-        public bool AgregarDiasACursar(string diaMateria,ref string diasACursar, int filtroCantDias)
+        public bool AgregarDiasACursar(string diaMateria, ref string diasACursar, int filtroCantDias)
         {
             int i = 0;
             List<int> dias = new List<int>();
             int cantDias = 0;
-            while ( i<7 && ((diaMateria.Substring(i, 1) == "1" && diasACursar.Substring(i, 1) == "0") ||
+            while (i < 7 && ((diaMateria.Substring(i, 1) == "1" && diasACursar.Substring(i, 1) == "0") ||
                             (diaMateria.Substring(i, 1) == "0" && diasACursar.Substring(i, 1) == "0") ||
                             (diaMateria.Substring(i, 1) == "0" && diasACursar.Substring(i, 1) == "1")))
             {
@@ -419,7 +415,7 @@ namespace bob.Controllers
                 {
                     diasACursar = ReplaceAtIndex(indice, '1', diasACursar);
                 }
-                
+
                 return true;
             }
             else
@@ -428,7 +424,7 @@ namespace bob.Controllers
             }
         }
 
-        public List<Curso> MostrarMateriasACursarCuatrimestreActual(string matricula,string filtroDias,int filtroCantDias,string modo)
+        public List<Curso> MostrarMateriasACursarCuatrimestreActual(string matricula, string filtroDias, int filtroCantDias, string modo)
         {
             List<Curso> materiasACursarEsteCuatri = GetMateriasACursarCuatrimestreActual(matricula);
             List<Curso> mostrarMateriasACursarEsteCuatri = new List<Curso>();
@@ -455,16 +451,16 @@ namespace bob.Controllers
                         // Para contar cantidad de dias que se cursa una materia
                         string[] auxdiasacursar = materia.Dia.Split(new Char[] { '1' });
                         int cantidad_dias_que_se_cursa_materia = auxdiasacursar.Length - 1;
-                        
+
                         if (cantidad_dias_que_se_cursa_materia > 1 && AgregarDiasACursar(materia.Dia, ref diasQueCursa, filtroCantDias) && VerificarFiltroDias(filtroDias, materia.Dia))
                         {
                             mostrarMateriasACursarEsteCuatri.Insert(0, materia);
                         }
                         else
                         {
-                                auxMateriasACursar.Add(materia);
+                            auxMateriasACursar.Add(materia);
                         }
-                        
+
                     }
                     foreach (var materia in auxMateriasACursar)
                     {
@@ -477,13 +473,15 @@ namespace bob.Controllers
             }
             return mostrarMateriasACursarEsteCuatri;
         }
+        #endregion
 
+        #region Finales
         /// <summary>
         /// Ejemplo de llamada: http://localhost:52178/Caece/PlanificadorFinales/951282 
         /// </summary>
         /// <param name="matricula"></param>
         [HttpGet]
-        [Route("PlanificadorFinales/{matricula}")]
+        [Route("get-finales/{matricula}")]
         public List<CursadoStatus> PlanificadorFinales(string matricula)
         {
             SetSesionUsuario(matricula);
@@ -568,6 +566,8 @@ namespace bob.Controllers
             }
             return cursados;
         }
+
+        //ESTO NO VA ACA VA EN EL CONTROLLER DE ANGULAR
         //Orden por fecha de vencimiento
         public List<CursadoStatus> FinalesPorVecimiento(string matricula)
         {
@@ -575,9 +575,9 @@ namespace bob.Controllers
             Ls.OrderByDescending(p => p.fechaVencimiento);
 
             return Ls;
-
-
         }
+
+        //ESTO NO VA ACA VA EN EL CONTROLLER DE ANGULAR 
         //Orden por numero de correlativas asociadas
         public List<CursadoStatus> FinalesPorCorrelativas(string matricula)
         {
@@ -586,7 +586,10 @@ namespace bob.Controllers
 
             return Ls;
         }
+        #endregion
 
+        //POR QUÉ ESTO SON 3 METODOS, TODOS TIENEN ESTADISTICAS, MEJOR DEVOLVER TODO EN UNA RESPUESTA
+        #region Estadisticas
         /// <summary>
         /// Devuelve el porcentaje aprobado de la carrera 
         /// </summary>
@@ -618,7 +621,6 @@ namespace bob.Controllers
         /// <returns></returns>
         public Estadisticas PorcentajeCursado(string matricula)
         {
-            SetSesionUsuario(matricula);
 
             var estadistica = new Estadisticas();
 
@@ -643,7 +645,6 @@ namespace bob.Controllers
         /// <returns></returns>
         public List<AprobadasPorAnio> EstadisticaPorAnio(string matricula)
         {
-            SetSesionUsuario(matricula);
 
             List<AprobadasPorAnio> Ls = new List<AprobadasPorAnio>();
 
@@ -671,23 +672,7 @@ namespace bob.Controllers
 
             return Ls;
         }
-
-        //clase para almacenar la cantidad de materias aprobadas por año
-        public class AprobadasPorAnio
-        {
-            public int Anio { get; set; }
-            public int Aprobadas { get; set; }
-        }
-
-        //clase para devolver los datos para los porcentajes de aprobado y cursado
-        public class Estadisticas
-        {
-            public int Aprobadas { get; set; }
-            public int Total { get; set; }
-            public decimal Porcentaje_Aprobado { get; set; }
-            public decimal Porcentaje_Faltante { get; set; }
-        }
-
+        #endregion
     }
 }
 

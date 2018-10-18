@@ -6,6 +6,8 @@
         controller: function () {
             var vm = this;
 
+
+
         },
         templateUrl: '/App/bob/finales/finales.component.html'
     });
