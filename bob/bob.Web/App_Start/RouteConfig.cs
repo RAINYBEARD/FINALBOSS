@@ -12,11 +12,20 @@ namespace bob
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            //routes.MapMvcAttributeRoutes();
+            //routes.LowercaseUrls = true;
 
             routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}"
-                );
+                name: "API",
+                url: "api/v1/caece/{action}/{id}",
+                defaults: new { controller = "caece", action = UrlParameter.Optional, id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+              name: "Default",
+              url: "{controller}/{action}/{id}",
+              defaults: new {controller = "caece", action = UrlParameter.Optional, id=UrlParameter.Optional }
+           );
         }
     }
 }

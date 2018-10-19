@@ -76,6 +76,8 @@
     <Compile Include="Entities\Alumno.cs" />
     <Compile Include="CaeceDBContext.cs" />
     <Compile Include="Entities\Correlativa.cs" />
+    <Compile Include="Estadisticas\Estadisticas.cs" />
+    <Compile Include="Estadisticas\AprobadasPorAnio.cs" />
     <Compile Include="Finales\CursadoStatus.cs" />
     <Compile Include="Entities\Materia.cs" />
     <Compile Include="Entities\Materia_Descripcion.cs" />
