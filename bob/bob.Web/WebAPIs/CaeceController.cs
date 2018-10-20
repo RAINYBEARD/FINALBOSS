@@ -278,6 +278,14 @@ namespace bob.Controllers
             }
         }
 
+        public string ObtenerNombreMateria(int materiaid)
+        {
+            using (var context = new CaeceDBContext())
+            {
+                return context.Materias_Descripciones.First(x => x.Materia_Id == materiaid).Mat_Des;
+            }
+        }
+
         private void BuscarMateriasACursar(CorrValue correlativa, ref List<string> materiasACursar, string materiaAnt)
         {
             //CHEQUEAR QUE LOS DICCIONARIOS ESTEN CARGADOS ANTES DE EMPEZAR A PROCESAR
