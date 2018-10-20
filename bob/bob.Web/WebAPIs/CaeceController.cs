@@ -489,7 +489,6 @@ namespace bob.Controllers
         [Route("get-finales/{matricula}")]
         public List<CursadoStatus> PlanificadorFinales(string matricula)
         {
-            SetSesionUsuario(matricula);
             List<CursadoStatus> cursados = new List<CursadoStatus>();
             var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
             var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
