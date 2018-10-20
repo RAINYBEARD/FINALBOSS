@@ -1,5 +1,6 @@
 ﻿<h2>CURSOS</h2>
-<table class="table table-bordered">
+<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()">
+<table class="table">
     <thead>
         <tr>
             <th align="left" scope="col">Materia</th>
@@ -12,14 +13,14 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <th align="left" scope="row">Fisica 2</th>
-            <td align="center"></td>
-            <td align="center"></td>
-            <td align="center">X</td>
-            <td align="center"></td>
-            <td align="center"></td>
-            <td align="center">X</td>
+        <tr ng-repeat="curso in vm.cursos">
+            <th scope="row">Fisica 2</th>
+            <td></td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+            <td></td>
+            <td>X</td>
         </tr>
         <tr>
             <th align="left" scope="row">Quimica</th>
