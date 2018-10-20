@@ -357,6 +357,7 @@ namespace bob.Controllers
                     cursomateria.M_Acobrar = curso.M_Acobrar;
                     cursomateria.Plan_Id = curso.Plan_Id;
                     cursomateria.Turno_Id = curso.Turno_Id;
+                    cursomateria.Abr = ObtenerNombreMateria(int.Parse(materiaid));
                     
                     // Agrego a la lista los cursos a los cuales se puede inscribir
                     materiasACursarEsteCuatri.Add(cursomateria);
