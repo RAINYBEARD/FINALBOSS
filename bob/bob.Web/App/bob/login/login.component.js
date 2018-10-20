@@ -9,8 +9,10 @@
             vm.submit = submit;
 
             function submit() {
-                caeceService.savePlanEstudio(vm.matricula);
-                caeceService.setSesionUsuario(vm.matricula);
+                caeceService.savePlanEstudio(vm.matricula).then(function (response) {
+                    caeceService.setSesionUsuario(vm.matricula);
+                });
+
             }
         },
 
