@@ -26,8 +26,8 @@
                 });
         };
 
-        self.getMaterias = function (matricula) {
-            return $http.get(apiBase + 'get-materias' + '/' + matricula)
+        self.getCursos = function (matricula) {
+            return $http.get(apiBase + 'get-cursos' + '/' + matricula)
                 .then(function (result) {
                     return result.data;
                 });
