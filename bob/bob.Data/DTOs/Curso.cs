@@ -16,5 +16,7 @@ namespace bob.Data.DTOs
         public char Turno_Id { get; set; }
         public string Dia { get; set; }
         public int M_Acobrar { get; set; }
+        public string Abr { get; set; }
+
     }
 }

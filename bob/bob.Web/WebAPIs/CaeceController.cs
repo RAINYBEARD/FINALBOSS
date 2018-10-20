@@ -214,8 +214,6 @@ namespace bob.Controllers
         /// Ejemplo de llamada: http://localhost:52178/Caece/GetMateriasACursar/951282 
         /// </summary>
         /// <param name="matricula"></param>
-        [HttpGet]
-        [Route("get-materias/{matricula}")]
         public List<string> GetMateriasACursar(string matricula)
         {
             var tiempoInicio = DateTime.Now;
@@ -281,6 +279,14 @@ namespace bob.Controllers
             }
         }
 
+        public string ObtenerNombreMateria(int materiaid)
+        {
+            using (var context = new CaeceDBContext())
+            {
+                return context.Materias_Descripciones.First(x => x.Materia_Id == materiaid).Mat_Des;
+            }
+        }
+
         private void BuscarMateriasACursar(CorrValue correlativa, ref List<string> materiasACursar, string materiaAnt)
         {
             //CHEQUEAR QUE LOS DICCIONARIOS ESTEN CARGADOS ANTES DE EMPEZAR A PROCESAR
@@ -330,8 +336,8 @@ namespace bob.Controllers
         /// <param name="matricula"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("get-materias/{matricula}")]
-        public List<Curso> GetMateriasACursarCuatrimestreActual(string matricula)
+        [Route("get-cursos/{matricula}")]
+        public List<Curso> GetCursosCuatrimestreActual(string matricula)
         {
             List<string> materiasACursar = GetMateriasACursar(matricula);
             List<Curso> materiasACursarEsteCuatri = new List<Curso>();
@@ -340,18 +346,19 @@ namespace bob.Controllers
             foreach (var materia in materiasACursar)
             {
                 // Descompongo la materiaid del planid
-                string[] materiaid = materia.Split(new Char[] { '/' });
+                string materiaid = materia.Split(new Char[] { '/' })[0];
 
                 // Verifico los cursos que puede cursar este cuatrimestre
-                if (SessionManager.DiccionarioCursos.ContainsKey(materiaid[0]))
+                if (SessionManager.DiccionarioCursos.ContainsKey(materiaid))
                 {
+                    var curso = SessionManager.DiccionarioCursos[materiaid];
                     Curso cursomateria = new Curso();
-                    cursomateria.Materia_Id = materiaid[0];
-                    cursomateria.Dia = SessionManager.DiccionarioCursos[materiaid[0]].Dia;
-                    cursomateria.M_Acobrar = SessionManager.DiccionarioCursos[materiaid[0]].M_Acobrar;
-                    cursomateria.Plan_Id = SessionManager.DiccionarioCursos[materiaid[0]].Plan_Id;
-                    cursomateria.Turno_Id = SessionManager.DiccionarioCursos[materiaid[0]].Turno_Id;
-
+                    cursomateria.Materia_Id = materiaid;
+                    cursomateria.Dia = curso.Dia;
+                    cursomateria.M_Acobrar = curso.M_Acobrar;
+                    cursomateria.Plan_Id = curso.Plan_Id;
+                    cursomateria.Turno_Id = curso.Turno_Id;
+                    
                     // Agrego a la lista los cursos a los cuales se puede inscribir
                     materiasACursarEsteCuatri.Add(cursomateria);
                 }
@@ -426,7 +433,7 @@ namespace bob.Controllers
 
         public List<Curso> MostrarMateriasACursarCuatrimestreActual(string matricula, string filtroDias, int filtroCantDias, string modo)
         {
-            List<Curso> materiasACursarEsteCuatri = GetMateriasACursarCuatrimestreActual(matricula);
+            List<Curso> materiasACursarEsteCuatri = GetCursosCuatrimestreActual(matricula);
             List<Curso> mostrarMateriasACursarEsteCuatri = new List<Curso>();
             List<Curso> auxMateriasACursar = new List<Curso>();
             string diasQueCursa = "0000000";
