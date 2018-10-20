@@ -12,6 +12,7 @@ namespace bob.Data.Finales
         public string fechaCursada;
         public string fechaVencimiento;
         public string abr;
+        public string descrip;
         public int nCorrelativas;
         public bool reprobado;
         public List<CorrelativasCursadas> correlativasCursadas;

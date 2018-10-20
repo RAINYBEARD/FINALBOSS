@@ -134,6 +134,11 @@ namespace bob.Controllers
                         AutoMapper.Mapper.Map(dato, cur);
                         curDictionary.Add(matcod, cur);
                         break;
+                    case ("EQP"):
+                        CurValue cur2 = new CurValue();
+                        AutoMapper.Mapper.Map(dato, cur2);
+                        curDictionary.Add(matcod, cur2);
+                        break;
                     case ("PEN"):
                         PenValue equiv = new PenValue();
                         AutoMapper.Mapper.Map(dato, equiv);
@@ -524,13 +529,22 @@ namespace bob.Controllers
                 //Si se reprobo o no
                 if (repDictionary.ContainsKey(entry.Key))
                 {
-                    if (DateTime.Parse(repDictionary[entry.Key].Fecha) > DateTime.Parse(entry.Value.Fecha))
+                    switch (entry.Value.Descrip)
                     {
-                        reprobadas = true;
+                        case ("EQP"):
+                            reprobadas = true;
+                            break;
+                        default:
+                            if (DateTime.Parse(repDictionary[entry.Key].Fecha) > DateTime.Parse(entry.Value.Fecha))
+                            {
+                                reprobadas = true;
+                            }
+                            break;
+
                     }
                 }
                 //Usar AutoMapper
-                cursados.Add(new CursadoStatus() { materiaCod = entry.Key, fechaCursada = fechaDeCursada, fechaVencimiento = fechaDeVencimiento, abr = entry.Value.Abr, nCorrelativas = correlativas, reprobado = reprobadas });
+                cursados.Add(new CursadoStatus() { materiaCod = entry.Key, fechaCursada = fechaDeCursada, fechaVencimiento = fechaDeVencimiento, abr = entry.Value.Abr, descrip = entry.Value.Descrip, nCorrelativas = correlativas, reprobado = reprobadas });
             }
             //Filtro materias que no se pueden rendir aunque esten cursadas
             foreach (CursadoStatus cur in cursados)
@@ -565,26 +579,6 @@ namespace bob.Controllers
                 i++;
             }
             return cursados;
-        }
-
-        //ESTO NO VA ACA VA EN EL CONTROLLER DE ANGULAR
-        //Orden por fecha de vencimiento
-        public List<CursadoStatus> FinalesPorVecimiento(string matricula)
-        {
-            List<CursadoStatus> Ls = PlanificadorFinales(matricula);
-            Ls.OrderByDescending(p => p.fechaVencimiento);
-
-            return Ls;
-        }
-
-        //ESTO NO VA ACA VA EN EL CONTROLLER DE ANGULAR 
-        //Orden por numero de correlativas asociadas
-        public List<CursadoStatus> FinalesPorCorrelativas(string matricula)
-        {
-            List<CursadoStatus> Ls = PlanificadorFinales(matricula);
-            Ls.OrderByDescending(p => p.nCorrelativas);
-
-            return Ls;
         }
         #endregion
 

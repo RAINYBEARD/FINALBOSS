@@ -1,1 +1,58 @@
-﻿<h2>FINALES</h2>
+﻿<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()">
+
+<style>
+    .btn {
+        background-color: #008CBA;
+        border: 2px solid #555555;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        -webkit-transition-duration: 0.4s;
+        transition-duration: 0.4s;
+    }
+
+        .btn:hover {
+            background-color: #4CAF50; /* Green */
+            color: white;
+        }
+
+        .btn.active {
+            background-color: #666;
+            color: white;
+        }
+</style>
+
+    <h2>FINALES</h2>
+    <script src="finales.component.js"></script>
+
+    <div id="myBtnContainer">
+        <button class="btn active"> Vencimiento</button>
+        <button class="btn"> Número de Correlativas</button>
+        <button class="btn"> Equivalencias Parciales</button>
+    </div>
+    <table class="table table-striped table-dark">
+        <thead>
+            <tr>
+                <th scope="col">Materia</th>
+                <th scope="col">Fecha de Vencimiento</th>
+                <th scope="col">Último Intento</th>
+                <th scope="col">Correlativas Previas sin Aprobar</th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="finales in vm.finales">
+            <tr>
+                <td>{{finales.abr}}</td>
+                <td>{{finales.fechaVencimiento}}</td>
+                <td>{{finales.reprobado}}</td>
+                <td>
+                    <ul>
+                        <li ng-repeat="n in vm.finales.correlativasCursadas">n.abr</li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
