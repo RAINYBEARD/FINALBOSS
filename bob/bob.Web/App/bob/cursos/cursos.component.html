@@ -15,12 +15,12 @@
     <tbody>
         <tr ng-repeat="curso in vm.cursos">
             <th align="left" scope="row">{{curso.Abr}}</th>
-            <td align="center" ng-if="curso.Dia == '1000000'">X</td><td align="center" ng-if="curso.Dia != '1000000'"></td>
-            <td align="center" ng-if="curso.Dia == '0100000'">X</td><td align="center" ng-if="curso.Dia != '0100000'"></td>
-            <td align="center" ng-if="curso.Dia == '0010000'">X</td><td align="center" ng-if="curso.Dia != '0010000'"></td>
+            <td align="center" ng-if="curso.Dia.substr(0,1) == '1'">X</td><td align="center" ng-if="curso.Dia.substr(0,1) != '1'"></td>
+            <td align="center" ng-if="curso.Dia.substr(1,1) == '1'">X</td><td align="center" ng-if="curso.Dia.substr(1,1) != '1'"></td>
+            <td align="center" ng-if="curso.Dia.substr(2,1) == '1'">X</td><td align="center" ng-if="curso.Dia.substr(2,1) != '1'"></td>
             <td align="center" ng-if="curso.Dia == '0001000'">X</td><td align="center" ng-if="curso.Dia != '0001000'"></td>
             <td align="center" ng-if="curso.Dia == '0000100'">X</td><td align="center" ng-if="curso.Dia != '0000100'"></td>
-            <td align="center" ng-if="curso.Dia == '0000010'">X</td><td align="center" ng-if="curso.Dia != '0000010'"></td>
+            <td align="center" ng-if="curso.Dia.substr(5,1) == '1'">X</td><td align="center" ng-if="curso.Dia.substr(5,1) != '1'"></td>
         </tr>
     </tbody>
 </table>
