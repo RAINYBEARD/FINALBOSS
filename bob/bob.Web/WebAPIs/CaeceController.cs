@@ -14,6 +14,7 @@ using bob.CaeceWS;
 using System.Web.Configuration;
 using bob.Mocks;
 using bob.Helpers;
+using System.Globalization;
 
 namespace bob.Controllers
 {
@@ -496,95 +497,115 @@ namespace bob.Controllers
         [Route("get-finales/{matricula}")]
         public List<CursadoStatus> PlanificadorFinales(string matricula)
         {
-            List<CursadoStatus> cursados = new List<CursadoStatus>();
-            var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
-            var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
-            var repDictionary = SessionManager.DiccionarioReprobadas as RepDictionary;
-            foreach (KeyValuePair<string, CurValue> entry in curDictionary)
+            try
             {
-                bool reprobadas = false;
-                int correlativas = 0;
-                DateTime fechaAuxiliar = DateTime.Parse(entry.Value.Fecha);
-                string fechaDeCursada = fechaAuxiliar.ToString("MMMM yyyy");
-                string fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy");
-                //Fecha de Vencimiento
-                if (fechaAuxiliar.Month == 6)
+                List<CursadoStatus> cursados = new List<CursadoStatus>();
+                var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
+                var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
+                var repDictionary = SessionManager.DiccionarioReprobadas as RepDictionary;
+                foreach (KeyValuePair<string, CurValue> entry in curDictionary)
                 {
-                    fechaAuxiliar = fechaAuxiliar.AddMonths(6);
-                    fechaAuxiliar = fechaAuxiliar.AddYears(1);
-                    fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy");
-                }
-                else
-                {
-                    if (fechaAuxiliar.Month == 7)
+                    bool reprobadas = false;
+                    int correlativas = 0;
+
+                    DateTime fechaAuxiliar = DateTime.ParseExact(entry.Value.Fecha, "dd/MM/yyyy", null);
+                    string fechaDeCursada = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
+                    string fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
+                    //Fecha de Vencimiento
+                    if (fechaAuxiliar.Month == 6)
                     {
-                        fechaAuxiliar = fechaAuxiliar.AddMonths(5);
+                        fechaAuxiliar = fechaAuxiliar.AddMonths(6);
                         fechaAuxiliar = fechaAuxiliar.AddYears(1);
-                        fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy");
+                        fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
                     }
                     else
                     {
-                        fechaAuxiliar = fechaAuxiliar.AddMonths(-6);
-                        fechaAuxiliar = fechaAuxiliar.AddYears(2);
-                        fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy");
-                    }
-                }
-                correlativas = context.Correlativas.Where(a => (a.Codigo_Correlativa + "/" + a.Plan_Id) == entry.Key).ToList().Count;
-                //Numero de Correlativas de la Materia Cursada
-
-                //Si se reprobo o no
-                if (repDictionary.ContainsKey(entry.Key))
-                {
-                    switch (entry.Value.Descrip)
-                    {
-                        case ("EQP"):
-                            reprobadas = true;
-                            break;
-                        default:
-                            if (DateTime.Parse(repDictionary[entry.Key].Fecha) > DateTime.Parse(entry.Value.Fecha))
+                        if (fechaAuxiliar.Month == 7)
+                        {
+                            fechaAuxiliar = fechaAuxiliar.AddMonths(5);
+                            fechaAuxiliar = fechaAuxiliar.AddYears(1);
+                            fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
+                        }
+                        else
+                        { if (fechaAuxiliar.Month == 11)
                             {
-                                reprobadas = true;
+                                fechaAuxiliar = fechaAuxiliar.AddMonths(-4);
+                                fechaAuxiliar = fechaAuxiliar.AddYears(2);
+                                fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
                             }
-                            break;
+                            else
+                            {
+                                fechaAuxiliar = fechaAuxiliar.AddMonths(-5);
+                                fechaAuxiliar = fechaAuxiliar.AddYears(2);
+                                fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
+                            }
+                        }
+                    }
+                    correlativas = context.Correlativas.Where(a => (a.Codigo_Correlativa + "/" + a.Plan_Id) == entry.Key).ToList().Count;
+                    //Numero de Correlativas de la Materia Cursada
 
-                    }
-                }
-                //Usar AutoMapper
-                cursados.Add(new CursadoStatus() { materiaCod = entry.Key, fechaCursada = fechaDeCursada, fechaVencimiento = fechaDeVencimiento, abr = entry.Value.Abr, descrip = entry.Value.Descrip, nCorrelativas = correlativas, reprobado = reprobadas });
-            }
-            //Filtro materias que no se pueden rendir aunque esten cursadas
-            foreach (CursadoStatus cur in cursados)
-            {
-                var correlativaAuxiliar = context.Correlativas.Where(x => (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
-                foreach (Correlativa corr in correlativaAuxiliar)
-                {
-                    string materia_correlativa = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
-                    if ((!aprDictionary.ContainsKey(materia_correlativa)) && (!curDictionary.ContainsKey(materia_correlativa)))
-                    {
-                        cursados.Remove(cur);
-                    }
-                }
+                    //Si se reprobo o no
+                   
+                        if ( (repDictionary != null) && (repDictionary.ContainsKey(entry.Key)))
+                        {
+                            switch (entry.Value.Descrip)
+                            {
+                                case ("EQP"):
+                                    reprobadas = true;
+                                    break;
+                                default:
+                                    if (DateTime.Parse(repDictionary[entry.Key].Fecha) > DateTime.Parse(entry.Value.Fecha))
+                                    {
+                                        reprobadas = true;
+                                    }
+                                    break;
 
-            }
-            //Agrego sublista de correlativas cursadas pero no aprobadas de las materias que se pueden rendir
-            int i = 0;
-            foreach (CursadoStatus cur in cursados)
-            {
-                List<CorrelativasCursadas> correlativ = new List<CorrelativasCursadas>();
-                var correlativaAuxiliar = context.Correlativas.Where(x => (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
-                foreach (Correlativa corr in correlativaAuxiliar)
-                {
-                    string materia_cursada = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
-                    if ((curDictionary.ContainsKey(materia_cursada)) && (materia_cursada != cur.materiaCod))
-                    {
-                        string abreviatura = curDictionary[cur.materiaCod].Abr;
-                        correlativ.Add(new CorrelativasCursadas() { materiaCod = materia_cursada, abr = abreviatura });
-                    }
+                            }
+                        }
+
+                    //Usar AutoMapper
+                    cursados.Add(new CursadoStatus() { materiaCod = entry.Key, fechaCursada = fechaDeCursada, fechaVencimiento = fechaDeVencimiento, abr = entry.Value.Abr, descrip = entry.Value.Descrip, nCorrelativas = correlativas, reprobado = reprobadas });
                 }
-                cursados[i].correlativasCursadas = correlativ;
-                i++;
+                //Filtro materias que no se pueden rendir aunque esten cursadas
+                foreach (CursadoStatus cur in cursados)
+                {
+                    var correlativaAuxiliar = context.Correlativas.Where(x => (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
+                    foreach (Correlativa corr in correlativaAuxiliar)
+                    {
+                        string materia_correlativa = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
+                        if ((!aprDictionary.ContainsKey(materia_correlativa)) && (!curDictionary.ContainsKey(materia_correlativa)))
+                        {
+                            cursados.Remove(cur);
+                        }
+                    }
+
+                }
+                //Agrego sublista de correlativas cursadas pero no aprobadas de las materias que se pueden rendir
+                int i = 0;
+                foreach (CursadoStatus cur in cursados)
+                {
+                    List<CorrelativasCursadas> correlativ = new List<CorrelativasCursadas>();
+                    var correlativaAuxiliar = context.Correlativas.Where(x => (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
+                    foreach (Correlativa corr in correlativaAuxiliar)
+                    {
+                        string materia_cursada = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
+                        if ((curDictionary.ContainsKey(materia_cursada)) && (materia_cursada != cur.materiaCod))
+                        {
+                            string abreviatura = curDictionary[cur.materiaCod].Abr;
+                            correlativ.Add(new CorrelativasCursadas() { materiaCod = materia_cursada, abr = abreviatura });
+                        }
+                    }
+                    cursados[i].correlativasCursadas = correlativ;
+                    i++;
+                }
+                return cursados;
             }
-            return cursados;
+            catch (Exception e)
+            {
+
+                throw;
+            }
+            
         }
         #endregion
 
