@@ -118,6 +118,7 @@ namespace bob.Controllers
             var notCurDictionary = new NotCurDictionary();
             var mesaFinalDictionary = new MesasDictionary();
             var cursosDictionary = new CursosDictionary();
+            var repDictionary = new RepDictionary();
 
             foreach (HistoriaAcademica dato in historiaAcademiaCompleta)
             {
@@ -144,6 +145,18 @@ namespace bob.Controllers
                         PenValue equiv = new PenValue();
                         AutoMapper.Mapper.Map(dato, equiv);
                         penDictionary.Add(matcod, equiv);
+                        break;
+                    case ("REP"):
+                        if ((repDictionary != null) && (repDictionary.ContainsKey(matcod)))
+                        {
+                            repDictionary[matcod].Fecha = dato.Fecha;
+                        }
+                        else
+                        {
+                            RepValue rep = new RepValue();
+                            AutoMapper.Mapper.Map(dato, rep);
+                            repDictionary.Add(matcod, rep);
+                        }
                         break;
                     default:
                         if ((estado_materia.Equals("   ")) || (estado_materia.Equals("?  ")))
@@ -172,6 +185,7 @@ namespace bob.Controllers
             SessionManager.DiccionarioPendientes = penDictionary;
             SessionManager.DiccionarioNoCursadas = notCurDictionary;
             SessionManager.DiccionarioCursos = cursosDictionary;
+            SessionManager.DiccionarioReprobadas = repDictionary;
 
             #region Diccionario Correlativas
             using (var context = new CaeceDBContext())
@@ -546,7 +560,7 @@ namespace bob.Controllers
 
                     //Si se reprobo o no
                    
-                        if ( (repDictionary != null) && (repDictionary.ContainsKey(entry.Key)))
+                        if ((repDictionary != null) && (repDictionary.ContainsKey(entry.Key)))
                         {
                             switch (entry.Value.Descrip)
                             {
@@ -554,7 +568,7 @@ namespace bob.Controllers
                                     reprobadas = true;
                                     break;
                                 default:
-                                    if (DateTime.Parse(repDictionary[entry.Key].Fecha) > DateTime.Parse(entry.Value.Fecha))
+                                    if (DateTime.ParseExact(repDictionary[entry.Key].Fecha, "dd/MM/yyyy", null) > DateTime.ParseExact(entry.Value.Fecha, "dd/MM/yyyy", null))
                                     {
                                         reprobadas = true;
                                     }
