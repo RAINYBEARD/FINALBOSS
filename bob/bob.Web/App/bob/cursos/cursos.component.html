@@ -1,33 +1,5 @@
-﻿<h2>CURSOS</h2>
-<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()"><input type="button" value="filtrar" ng-click="vm.filtrar()">
-<span>Cant de Dias : </span> <input type="number" name="cantdias" min="1" max="6" step="1" value="6">
-<table class="table">
-    <thead>
-        <tr>
-            <th align="left" scope="col">Materia</th>
-            <th align="center" scope="col">Lunes</th>
-            <th align="center" scope="col">Martes</th>
-            <th align="center" scope="col">Miercoles</th>
-            <th align="center" scope="col">Jueves</th>
-            <th align="center" scope="col">Viernes</th>
-            <th align="center" scope="col">Sabado</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="curso in vm.cursos | orderBy:'-Dia' | filter:filtrar">
-            <th align="left" scope="row">{{curso.Abr}}</th>
-            <td align="center" ng-if="curso.Dia.substr(0,1) == '1'">X</td>
-            <td align="center" ng-if="curso.Dia.substr(0,1) != '1'"></td>
-            <td align="center" ng-if="curso.Dia.substr(1,1) == '1'">X</td>
-            <td align="center" ng-if="curso.Dia.substr(1,1) != '1'"></td>
-            <td align="center" ng-if="curso.Dia.substr(2,1) == '1'">X</td>
-            <td align="center" ng-if="curso.Dia.substr(2,1) != '1'"></td>
-            <td align="center" ng-if="curso.Dia.substr(3,1) == '1'">X</td>
-            <td align="center" ng-if="curso.Dia.substr(3,1) != '1'"></td>
-            <td align="center" ng-if="curso.Dia.substr(4,1) == '1'">X</td>
-            <td align="center" ng-if="curso.Dia.substr(4,1) != '1'"></td>
-            <td align="center" ng-if="curso.Dia.substr(5,1) == '1'">X</td>
-            <td align="center" ng-if="curso.Dia.substr(5,1) != '1'"></td>
-        </tr>
-    </tbody>
-</table>
+﻿<div>
+    <a ui-sref='cursos-automatico'>Cursos Automatico</a>
+    &nbsp;|&nbsp;
+    <a ui-sref='cursos-manual'>Cursos Manual</a>
+</div>

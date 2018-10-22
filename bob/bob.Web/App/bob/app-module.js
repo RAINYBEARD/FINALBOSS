@@ -12,6 +12,11 @@
                 template: '<cursos></cursos>'
             },
             {
+                name: 'cursos-automatico',
+                url: '/cursos-automatico',
+                template: '<cursos></cursos>'
+            },
+            {
                 name: 'finales',
                 url: '/finales',
                 template: '<finales></finales>'
