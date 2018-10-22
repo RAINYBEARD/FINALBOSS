@@ -12,8 +12,9 @@
             function submit() {
                 caeceService.getCursos(vm.matricula).then(function (response) {
                     vm.cursos = response;
-                });
+                });   
             }
+
         },
         templateUrl: '/App/bob/cursos/cursos.component.html'
     });
