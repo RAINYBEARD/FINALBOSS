@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    angular.module('bob').component('cursos', {
+    angular.module('bob').component('cursosManual', {
         controllerAs: 'vm',
         controller: function (caeceService) {
             var vm = this;
@@ -17,7 +17,7 @@
             }
 
             function filtrar() {
-                return vm.cursos == vm.cursos.item == 2;
+                return vm.cursos === vm.cursos.item === 2;
             }
 
 
