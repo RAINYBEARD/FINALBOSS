@@ -555,7 +555,7 @@ namespace bob.Controllers
                             }
                         }
                     }
-                    correlativas = context.Correlativas.Where(a => (a.Codigo_Correlativa + "/" + a.Plan_Id) == entry.Key).ToList().Count;
+                    correlativas = context.Correlativas.Where(a => a.Titulo_Id == SessionManager.TituloId && a.Plan_Tit == SessionManager.PlanTit && ( a.Codigo_Correlativa + "/" + a.Plan_Id) == entry.Key).ToList().Count;
                     //Numero de Correlativas de la Materia Cursada
 
                     //Si se reprobo o no
@@ -583,7 +583,7 @@ namespace bob.Controllers
                 //Filtro materias que no se pueden rendir aunque esten cursadas
                 foreach (CursadoStatus cur in cursados)
                 {
-                    var correlativaAuxiliar = context.Correlativas.Where(x => (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
+                    var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
                     foreach (Correlativa corr in correlativaAuxiliar)
                     {
                         string materia_correlativa = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
@@ -599,7 +599,7 @@ namespace bob.Controllers
                 foreach (CursadoStatus cur in cursados)
                 {
                     List<CorrelativasCursadas> correlativ = new List<CorrelativasCursadas>();
-                    var correlativaAuxiliar = context.Correlativas.Where(x => (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
+                    var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
                     foreach (Correlativa corr in correlativaAuxiliar)
                     {
                         string materia_cursada = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
