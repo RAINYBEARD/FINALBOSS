@@ -5,11 +5,11 @@
         background-color: #008CBA;
         border: 2px solid #555555;
         color: white;
-        padding: 15px 32px;
+        padding: 10px 16px;
         text-align: center;
         text-decoration: none;
         display: inline-block;
-        font-size: 16px;
+        font-size: 12px;
         -webkit-transition-duration: 0.4s;
         transition-duration: 0.4s;
     }
@@ -20,21 +20,23 @@
         }
 
         .btn.active {
-            background-color: #666;
+            background-color: #0000FF;
             color: white;
         }
 </style>
 
     <h2>FINALES</h2>
     <script src="finales.component.js"></script>
-
     <div id="myBtnContainer">
-        <button class="btn active"> Vencimiento</button>
+        <button class="btn"> Vencimiento</button>
         <button class="btn"> Número de Correlativas</button>
         <button class="btn"> Equivalencias Parciales</button>
+        <button class="btn"> Último Intento</button>
     </div>
+
     <table class="table table-striped table-dark">
         <thead>
+            <tr></tr>
             <tr>
                 <th scope="col">Materia</th>
                 <th scope="col">Fecha de Vencimiento</th>
@@ -49,7 +51,7 @@
                 <td>{{finales.reprobado}}</td>
                 <td>
                     <ul>
-                        <li ng-repeat="n in vm.finales.correlativasCursadas">n.abr</li>
+                        <li ng-repeat="n in finales.correlativasCursadas">{{n.abr}}</li>
                     </ul>
                 </td>
             </tr>

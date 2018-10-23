@@ -519,7 +519,7 @@ namespace bob.Controllers
                 var repDictionary = SessionManager.DiccionarioReprobadas as RepDictionary;
                 foreach (KeyValuePair<string, CurValue> entry in curDictionary)
                 {
-                    bool reprobadas = false;
+                    string reprobadas = "No";
                     int correlativas = 0;
 
                     DateTime fechaAuxiliar = DateTime.ParseExact(entry.Value.Fecha, "dd/MM/yyyy", null);
@@ -565,12 +565,12 @@ namespace bob.Controllers
                             switch (entry.Value.Descrip)
                             {
                                 case ("EQP"):
-                                    reprobadas = true;
+                                    reprobadas = "Si";
                                     break;
                                 default:
                                     if (DateTime.ParseExact(repDictionary[entry.Key].Fecha, "dd/MM/yyyy", null) > DateTime.ParseExact(entry.Value.Fecha, "dd/MM/yyyy", null))
                                     {
-                                        reprobadas = true;
+                                        reprobadas = "Si";
                                     }
                                     break;
 
@@ -605,7 +605,7 @@ namespace bob.Controllers
                         string materia_cursada = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
                         if ((curDictionary.ContainsKey(materia_cursada)) && (materia_cursada != cur.materiaCod))
                         {
-                            string abreviatura = curDictionary[cur.materiaCod].Abr;
+                            string abreviatura = curDictionary[materia_cursada].Abr;
                             correlativ.Add(new CorrelativasCursadas() { materiaCod = materia_cursada, abr = abreviatura });
                         }
                     }
