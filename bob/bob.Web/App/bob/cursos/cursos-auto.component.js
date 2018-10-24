@@ -19,10 +19,8 @@
             function filtrar() {
                 return vm.cursos === vm.cursos.item === 2;
             }
-
-
         },
-
+        //https://plnkr.co/edit/YPn9lZOX1vlalgjinwXK?p=preview
         templateUrl: '/App/bob/cursos/cursos-auto.component.html'
     });
 
