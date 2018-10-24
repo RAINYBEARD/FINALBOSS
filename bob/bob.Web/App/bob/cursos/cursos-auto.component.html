@@ -5,16 +5,16 @@
     <thead>
         <tr>
             <th align="left" scope="col">Materia</th>
-            <th align="center" scope="col">Lunes</th>
-            <th align="center" scope="col">Martes</th>
-            <th align="center" scope="col">Miercoles</th>
-            <th align="center" scope="col">Jueves</th>
-            <th align="center" scope="col">Viernes</th>
-            <th align="center" scope="col">Sabado</th>
+            <th align="center" scope="col"><p align="center">Lunes</p><p align="center"><input type="checkbox" name="cblunes" value="lunes"></p></th>
+            <th align="center" scope="col"><p align="center">Martes</p><p align="center"><input type="checkbox" name="cbmartes" value="martes"></p></th>
+            <th align="center" scope="col"><p align="center">Miercoles</p><p align="center"><input type="checkbox" name="cbmiercoles" value="miercoles"></p></th>
+            <th align="center" scope="col"><p align="center">Jueves</p><p align="center"><input type="checkbox" name="cbjueves" value="jueves"></p></th>
+            <th align="center" scope="col"><p align="center">Viernes</p><p align="center"><input type="checkbox" name="cbviernes" value="viernes"></p></th>
+            <th align="center" scope="col"><p align="center">Sabado</p><p align="center"><input type="checkbox" name="cbsabado" value="sabado"></p></th>
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="curso in vm.cursos | orderBy:'-Dia' | filter:filtrar">
+        <tr ng-repeat="curso in vm.cursos | orderBy:'-Dia'">
             <th align="left" scope="row">{{curso.Abr}}</th>
             <td align="center" ng-if="curso.Dia.substr(0,1) == '1'">X</td>
             <td align="center" ng-if="curso.Dia.substr(0,1) != '1'"></td>
