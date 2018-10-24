@@ -120,53 +120,61 @@ namespace bob.Controllers
             var cursosDictionary = new CursosDictionary();
             var repDictionary = new RepDictionary();
 
-            foreach (HistoriaAcademica dato in historiaAcademiaCompleta)
+            try
             {
-                string estado_materia = dato.Descrip;
-                string matcod = dato.Matcod;
-                switch (estado_materia)
+                foreach (HistoriaAcademica dato in historiaAcademiaCompleta)
                 {
-                    case ("APR"):
-                        AprValue apr = new AprValue();
-                        AutoMapper.Mapper.Map(dato, apr);
-                        aprDictionary.Add(matcod, apr);
-                        break;
-                    case ("CUR"):
-                        CurValue cur = new CurValue();
-                        AutoMapper.Mapper.Map(dato, cur);
-                        curDictionary.Add(matcod, cur);
-                        break;
-                    case ("EQP"):
-                        CurValue cur2 = new CurValue();
-                        AutoMapper.Mapper.Map(dato, cur2);
-                        curDictionary.Add(matcod, cur2);
-                        break;
-                    case ("PEN"):
-                        PenValue equiv = new PenValue();
-                        AutoMapper.Mapper.Map(dato, equiv);
-                        penDictionary.Add(matcod, equiv);
-                        break;
-                    case ("REP"):
-                        if ((repDictionary != null) && (repDictionary.ContainsKey(matcod)))
-                        {
-                            repDictionary[matcod].Fecha = dato.Fecha;
-                        }
-                        else
-                        {
-                            RepValue rep = new RepValue();
-                            AutoMapper.Mapper.Map(dato, rep);
-                            repDictionary.Add(matcod, rep);
-                        }
-                        break;
-                    default:
-                        if ((estado_materia.Equals("   ")) || (estado_materia.Equals("?  ")))
-                        {
-                            NotCurValue notcur = new NotCurValue();
-                            AutoMapper.Mapper.Map(dato, notcur);
-                            notCurDictionary.Add(matcod, notcur);
-                        }
-                        break;
+                    string estado_materia = dato.Descrip;
+                    string matcod = dato.Matcod;
+                    switch (estado_materia)
+                    {
+                        case ("APR"):
+                            AprValue apr = new AprValue();
+                            AutoMapper.Mapper.Map(dato, apr);
+                            aprDictionary.Add(matcod, apr);
+                            break;
+                        case ("CUR"):
+                            CurValue cur = new CurValue();
+                            AutoMapper.Mapper.Map(dato, cur);
+                            curDictionary.Add(matcod, cur);
+                            break;
+                        case ("EQP"):
+                            CurValue cur2 = new CurValue();
+                            AutoMapper.Mapper.Map(dato, cur2);
+                            curDictionary.Add(matcod, cur2);
+                            break;
+                        case ("PEN"):
+                            PenValue equiv = new PenValue();
+                            AutoMapper.Mapper.Map(dato, equiv);
+                            penDictionary.Add(matcod, equiv);
+                            break;
+                        case ("REP"):
+                            if ((repDictionary != null) && (repDictionary.ContainsKey(matcod)))
+                            {
+                                repDictionary[matcod].Fecha = dato.Fecha;
+                            }
+                            else
+                            {
+                                RepValue rep = new RepValue();
+                                AutoMapper.Mapper.Map(dato, rep);
+                                repDictionary.Add(matcod, rep);
+                            }
+                            break;
+                        default:
+                            if ((estado_materia.Equals("   ")) || (estado_materia.Equals("?  ")))
+                            {
+                                NotCurValue notcur = new NotCurValue();
+                                AutoMapper.Mapper.Map(dato, notcur);
+                                notCurDictionary.Add(matcod, notcur);
+                            }
+                            break;
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+
+                throw;
             }
 
             foreach (var dato in cursosAbiertos)
@@ -581,8 +589,11 @@ namespace bob.Controllers
                     cursados.Add(new CursadoStatus() { materiaCod = entry.Key, fechaCursada = fechaDeCursada, fechaVencimiento = fechaDeVencimiento, abr = entry.Value.Abr, descrip = entry.Value.Descrip, nCorrelativas = correlativas, reprobado = reprobadas });
                 }
                 //Filtro materias que no se pueden rendir aunque esten cursadas
-                foreach (CursadoStatus cur in cursados)
+                int totalCursadas = cursados.Count;
+                int z = 0;
+                while (z < totalCursadas)
                 {
+                    CursadoStatus cur = cursados[z];
                     var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
                     foreach (Correlativa corr in correlativaAuxiliar)
                     {
@@ -590,10 +601,15 @@ namespace bob.Controllers
                         if ((!aprDictionary.ContainsKey(materia_correlativa)) && (!curDictionary.ContainsKey(materia_correlativa)))
                         {
                             cursados.Remove(cur);
+                            totalCursadas = cursados.Count;
+                        }
+                        else
+                        {
+                            z++;
                         }
                     }
-
                 }
+
                 //Agrego sublista de correlativas cursadas pero no aprobadas de las materias que se pueden rendir
                 int i = 0;
                 foreach (CursadoStatus cur in cursados)
