@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace bob.Data.Dictionaries
 {
-    public class CorrDictionary : Dictionary<int, List<CorrValue>>
+    public class CorrDictionary : Dictionary<string, List<CorrValue>>
     {
         
     }
