@@ -11,6 +11,7 @@ namespace bob.Data.Finales
         public string materiaCod;
         public string fechaCursada;
         public string fechaVencimiento;
+        public bool porVencerse;
         public string abr;
         public string descrip;
         public int nCorrelativas;

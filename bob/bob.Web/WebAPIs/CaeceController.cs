@@ -529,6 +529,7 @@ namespace bob.Controllers
                 {
                     string reprobadas = "No";
                     int correlativas = 0;
+                    bool vencimiento = false;
 
                     DateTime fechaAuxiliar = DateTime.ParseExact(entry.Value.Fecha, "dd/MM/yyyy", null);
                     string fechaDeCursada = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
@@ -566,6 +567,12 @@ namespace bob.Controllers
                     correlativas = context.Correlativas.Where(a => a.Titulo_Id == SessionManager.TituloId && a.Plan_Tit == SessionManager.PlanTit && ( a.Codigo_Correlativa + "/" + a.Plan_Id) == entry.Key).ToList().Count;
                     //Numero de Correlativas de la Materia Cursada
 
+                    //Chequea si la materia se esta por vencer
+                    if (fechaDeVencimiento == DateTime.Now.ToString("MMMM yyyy", new CultureInfo("es-ES")) || fechaDeVencimiento == DateTime.Now.AddMonths(-1).ToString("MMMM yyyy", new CultureInfo("es-ES")))
+                    {
+                        vencimiento = true;
+                    }             
+                    
                     //Si se reprobo o no
                    
                         if ((repDictionary != null) && (repDictionary.ContainsKey(entry.Key)))
@@ -586,7 +593,7 @@ namespace bob.Controllers
                         }
 
                     //Usar AutoMapper
-                    cursados.Add(new CursadoStatus() { materiaCod = entry.Key, fechaCursada = fechaDeCursada, fechaVencimiento = fechaDeVencimiento, abr = entry.Value.Abr, descrip = entry.Value.Descrip, nCorrelativas = correlativas, reprobado = reprobadas });
+                    cursados.Add(new CursadoStatus() { materiaCod = entry.Key, fechaCursada = fechaDeCursada, fechaVencimiento = fechaDeVencimiento, porVencerse = vencimiento, abr = entry.Value.Abr, descrip = entry.Value.Descrip, nCorrelativas = correlativas, reprobado = reprobadas });
                 }
                 //Filtro materias que no se pueden rendir aunque esten cursadas
                 int totalCursadas = cursados.Count;
