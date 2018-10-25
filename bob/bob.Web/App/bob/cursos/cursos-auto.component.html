@@ -1,21 +1,20 @@
 ﻿<h2>CURSOS AUTOMATICO</h2>
-<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()"><input type="button" value="filtrar" ng-click="vm.filtrar()">
-<span>Cant de Dias : </span> <input type="number" name="cantdias" min="1" max="6" step="1" value="6">
-<input ng-model="searchText">
+<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()">
+<span>Cant de Dias : </span> <input type="number" name="cantdias" min="1" max="6" step="1" value="6" ng-model="cantdiasLimit">
 <table class="table">
     <thead>
         <tr>
             <th align="left" scope="col">Materia</th>
-            <th align="center" scope="col"><p align="center">Lunes </p><p align="center"><input type="checkbox" name="cblunes" value="lunes"></p></th>
-            <th align="center" scope="col"><p align="center">Martes</p><p align="center"><input type="checkbox" name="cbmartes" value="martes"></p></th>
-            <th align="center" scope="col"><p align="center">Miercoles</p><p align="center"><input type="checkbox" name="cbmiercoles" value="miercoles"></p></th>
-            <th align="center" scope="col"><p align="center">Jueves</p><p align="center"><input type="checkbox" name="cbjueves" value="jueves"></p></th>
-            <th align="center" scope="col"><p align="center">Viernes</p><p align="center"><input type="checkbox" name="cbviernes" value="viernes"></p></th>
-            <th align="center" scope="col"><p align="center">Sabado</p><p align="center"><input type="checkbox" name="cbsabado" value="sabado"></p></th>
+            <th align="center" scope="col"><p align="center">Lunes </p><p align="center"><input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.lun"></p></th>
+            <th align="center" scope="col"><p align="center">Martes</p><p align="center"><input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.mar"></p></th>
+            <th align="center" scope="col"><p align="center">Miercoles</p><p align="center"><input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.mie"></p></th>
+            <th align="center" scope="col"><p align="center">Jueves</p><p align="center"><input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.jue"></p></th>
+            <th align="center" scope="col"><p align="center">Viernes</p><p align="center"><input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.vie"></p></th>
+            <th align="center" scope="col"><p align="center">Sabado</p><p align="center"><input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.sab"></p></th>
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="curso in vm.cursos | orderBy:'-Dia' | filter:searchText">
+        <tr ng-repeat="curso in vm.cursos | orderBy:'-Dia' | cursosfilter:vm.checkboxModel.lun+vm.checkboxModel.mar+vm.checkboxModel.mie+vm.checkboxModel.jue+vm.checkboxModel.vie+vm.checkboxModel.sab+'0' ">
             <th align="left" scope="row">{{curso.Abr}}</th>
             <td align="center" ng-if="curso.Dia.substr(0,1) == '1'">X</td>
             <td align="center" ng-if="curso.Dia.substr(0,1) != '1'"></td>
@@ -32,3 +31,8 @@
         </tr>
     </tbody>
 </table>
+<li ng-repeat="person in vm.people |  icfilter:'W'">
+    {{ person.name +", " + person.age }}
+</li>
+{{vm.filtro}}
+{{vm.checkboxModel.lun}}
