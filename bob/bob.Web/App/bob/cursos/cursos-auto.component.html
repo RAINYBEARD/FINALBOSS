@@ -1,6 +1,6 @@
 ﻿<h2>CURSOS AUTOMATICO</h2>
 <span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()">
-<span>Cant de Dias : </span> <input type="number" name="cantdias" min="1" max="6" step="1" value="6" ng-model="vm.cantdiasLimit.valor">
+<span>Cant de Dias : </span> <input type="number" name="cantdias" min="1" max="6" step="1" value="6" ng-model="vm.filtroCantDias.valor">
 <table class="table">
     <thead>
         <tr>
@@ -14,7 +14,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="curso in vm.cursos | orderBy:'-Dia' | cursosfilter2:vm.checkboxModel.lun+vm.checkboxModel.mar+vm.checkboxModel.mie+vm.checkboxModel.jue+vm.checkboxModel.vie+vm.checkboxModel.sab+'0' ">
+        <tr ng-repeat="curso in vm.cursos | orderBy:'-Dia' | cursosfilter:vm.checkboxModel.lun+vm.checkboxModel.mar+vm.checkboxModel.mie+vm.checkboxModel.jue+vm.checkboxModel.vie+vm.checkboxModel.sab+'0':vm.filtroCantDias.valor ">
             <th align="left" scope="row">{{curso.Abr}}</th>
             <td align="center" ng-if="curso.Dia.substr(0,1) == '1'">X</td>
             <td align="center" ng-if="curso.Dia.substr(0,1) != '1'"></td>
@@ -31,6 +31,3 @@
         </tr>
     </tbody>
 </table>
-<li ng-repeat="person in vm.people |  icfilter:'W'">
-    {{ person.name +", " + person.age }}
-</li>
