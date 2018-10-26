@@ -9,6 +9,7 @@
             vm.cursos;
             vm.submit = submit;
             vm.seleccionmateria = seleccionmateria;
+            vm.materiasSeleccionadas = [];
 
             vm.checkboxModel = {
                 lun: '1',
@@ -32,7 +33,18 @@
             }
 
             function seleccionmateria(materiaid) {
-                    console.log(materiaid);
+                var idx = vm.materiasSeleccionadas.indexOf(materiaid);
+                if (vm.materiasSeleccionadas.indexOf(materiaid) == -1) {
+                        console.log('Pushing: ', materiaid)
+                        vm.materiasSeleccionadas.push(materiaid);
+                        console.log(vm.materiasSeleccionadas);
+                } else {
+                        vm.materiasSeleccionadas.splice(idx, 1);
+                        console.log(vm.materiasSeleccionadas);
+                }
+                angular.forEach(vm.materiasSeleccionadas, function (materiaSeleccionada) {
+                    console.log(materiaSeleccionada);
+                });
             }
 
         },
