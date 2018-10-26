@@ -14,7 +14,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="curso in vm.cursos | orderBy:'-Dia' | cursosfilter:vm.checkboxModel.lun+vm.checkboxModel.mar+vm.checkboxModel.mie+vm.checkboxModel.jue+vm.checkboxModel.vie+vm.checkboxModel.sab+'0':vm.filtroCantDias.valor ">
+        <tr ng-repeat="curso in vm.cursos | orderBy:'-Dia' | cursosfilterauto:vm.checkboxModel.lun+vm.checkboxModel.mar+vm.checkboxModel.mie+vm.checkboxModel.jue+vm.checkboxModel.vie+vm.checkboxModel.sab+'0':vm.filtroCantDias.valor ">
             <th align="left" scope="row">{{curso.Abr}}</th>
             <td align="center" ng-if="curso.Dia.substr(0,1) == '1'">X</td>
             <td align="center" ng-if="curso.Dia.substr(0,1) != '1'"></td>

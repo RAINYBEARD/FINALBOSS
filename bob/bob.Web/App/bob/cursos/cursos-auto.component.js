@@ -36,7 +36,7 @@
         templateUrl: '/App/bob/cursos/cursos-auto.component.html'
     })
 
-    angular.module('bob').filter('cursosfilter', function () {
+    angular.module('bob').filter('cursosfilterauto', function () {
         return function (cursos, filtro, filtroCantDias) {
             var out = [];
             var diasQueCursa = '0000000';
