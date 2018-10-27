@@ -550,17 +550,28 @@ namespace bob.Controllers
                             fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
                         }
                         else
-                        { if (fechaAuxiliar.Month == 11)
+                        {
+                            if (fechaAuxiliar.Month == 8)
                             {
-                                fechaAuxiliar = fechaAuxiliar.AddMonths(-4);
-                                fechaAuxiliar = fechaAuxiliar.AddYears(2);
+                                fechaAuxiliar = fechaAuxiliar.AddMonths(4);
+                                fechaAuxiliar = fechaAuxiliar.AddYears(1);
                                 fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
                             }
+
                             else
                             {
-                                fechaAuxiliar = fechaAuxiliar.AddMonths(-5);
-                                fechaAuxiliar = fechaAuxiliar.AddYears(2);
-                                fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
+                                if (fechaAuxiliar.Month == 11)
+                                {
+                                    fechaAuxiliar = fechaAuxiliar.AddMonths(-4);
+                                    fechaAuxiliar = fechaAuxiliar.AddYears(2);
+                                    fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
+                                }
+                                else
+                                {
+                                    fechaAuxiliar = fechaAuxiliar.AddMonths(-5);
+                                    fechaAuxiliar = fechaAuxiliar.AddYears(2);
+                                    fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
+                                }
                             }
                         }
                     }
@@ -568,7 +579,7 @@ namespace bob.Controllers
                     //Numero de Correlativas de la Materia Cursada
 
                     //Chequea si la materia se esta por vencer
-                    if (fechaDeVencimiento == DateTime.Now.ToString("MMMM yyyy", new CultureInfo("es-ES")) || fechaDeVencimiento == DateTime.Now.AddMonths(-1).ToString("MMMM yyyy", new CultureInfo("es-ES")))
+                    if (fechaDeVencimiento == DateTime.Now.ToString("MMMM yyyy", new CultureInfo("es-ES")) || fechaDeVencimiento == DateTime.Now.AddMonths(1).ToString("MMMM yyyy", new CultureInfo("es-ES")))
                     {
                         vencimiento = true;
                     }             

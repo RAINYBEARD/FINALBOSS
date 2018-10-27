@@ -2,27 +2,76 @@
 
 <style>
     .btn {
-        background-color: #008CBA;
-        border: 2px solid #555555;
-        color: white;
-        padding: 10px 16px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
+        background: #1AAB8A;
+        padding: 10px 25px;
+        color: #fff;
+        float: left;
+        position: relative;
+        height: 35px;
         font-size: 12px;
-        -webkit-transition-duration: 0.4s;
-        transition-duration: 0.4s;
+        cursor: pointer;
+        outline: none;
     }
 
-        .btn:hover {
-            background-color: #4CAF50; /* Green */
-            color: white;
-        }
+    .btn:hover {
+        background-color: #4CAF50; /* Green */
+        color: white;
+    }
 
-        .btn.active {
-            background-color: #0000FF;
-            color: white;
-        }
+    .btn:active {
+        top: 1px;
+    }
+
+    .btn:focus {
+        color: #4CAF50;
+        border-color: currentColor;
+        background-color: white;
+    }
+
+    #finales table {
+        text-align: center;
+        position: fixed;
+        border-collapse: collapse;
+        padding: 10px;
+        border: 0;
+    }
+
+    #finales th {
+        background-color: forestgreen;
+        color: #fff;
+        font-size: 16px;
+        padding: 10px;
+        font-weight: bold;
+        border: 0;
+    }
+
+    #finales td {
+        padding: 10px;
+    }
+
+    #finales tbody:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #finales tbody:nth-child(odd) {
+        background-color: #ddd;
+    }
+    
+    #finales tr:hover {
+        background-color: antiquewhite;
+    }
+
+    .a {
+        position: absolute;
+        right: -400px;
+        bottom: 100px;
+    }
+
+    .b {
+        position: absolute;
+        right: -400px;
+        bottom: -100px;
+    }
 </style>
 
 <h2>FINALES</h2>
@@ -35,9 +84,9 @@
 </div>
 
 
-    <table class="table table-striped table-dark">
-        <thead>
-            <tr></tr>
+    <table id="finales" class="table-bordered thead-dark">
+        <thead class="thead">
+
             <tr>
                 <th scope="col">Materia</th>
                 <th scope="col">Fecha de Vencimiento</th>
@@ -48,7 +97,7 @@
         <tbody ng-repeat="finales in vm.finales | orderBy: vm.orden | filter: vm.filtro ">
             <tr>
                 <td>{{finales.abr}}</td>
-                <td>{{finales.fechaVencimiento}}</td>
+                <td>{{finales.fechaVencimiento | uppercase}}</td>
                 <td>{{finales.reprobado}}</td>
                 <td>
                     <ul>
@@ -60,13 +109,13 @@
     </table>
 
 
-<h6>Equivalencias Parciales por Rendir</h6>
-<ul>
+<h6 class="a">Equivalencias Parciales por Rendir</h6>
+<ul class="a">
     <li ng-repeat="finales in vm.finales | filter: {'descrip' : 'EQP'}"> {{finales.abr}}</li>
 </ul>
 
 
-<h6>Finales Proximos a Vencerse</h6>
-<ul>
-    <li ng-repeat="finales in vm.finales | filter: {'vencimiento' : 'true' }">{{finales.abr}}</li>
+<h6 class="b">Finales Proximos a Vencerse</h6>
+<ul class="b">
+    <li ng-repeat="finales in vm.finales | filter: {'vencimiento' : 'true' }">{{finales.abr}} {{finales.fechaVencimiento | uppercase}}</li>
 </ul>
