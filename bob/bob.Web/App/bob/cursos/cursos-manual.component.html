@@ -15,7 +15,7 @@
     </thead>
     <tbody>
         <tr ng-repeat="curso in vm.cursos | orderBy:'-Dia' | cursosfiltermanual:vm.checkboxModel.lun+vm.checkboxModel.mar+vm.checkboxModel.mie+vm.checkboxModel.jue+vm.checkboxModel.vie+vm.checkboxModel.sab+'0'">
-            <td align="left" scope="row"><input type="checkbox" ng-checked="vm.materiasSeleccionadas.indexOf(curso.Materia_Id) > -1" ng-click="vm.seleccionmateria(curso.Materia_Id)" /></td>
+            <td align="left" scope="row"><input type="checkbox" ng-disabled="curso.Materia_Id" ng-checked="vm.materiasSeleccionadas.indexOf(curso.Materia_Id) > -1" ng-click="vm.seleccionmateria(curso.Materia_Id)" /></td>
             <th align="left" scope="row">{{curso.Abr}}</th>
             <td align="center" ng-if="curso.Dia.substr(0,1) == '1'">X</td>
             <td align="center" ng-if="curso.Dia.substr(0,1) != '1'"></td>

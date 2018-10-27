@@ -35,16 +35,20 @@
             function seleccionmateria(materiaid) {
                 var idx = vm.materiasSeleccionadas.indexOf(materiaid);
                 if (vm.materiasSeleccionadas.indexOf(materiaid) == -1) {
-                        console.log('Pushing: ', materiaid)
+                        console.log('Pushing: ', materiaid);
+                        console.log('Contenido de variable idx : ', idx);
+
+                        //console.log('dia de la materia que habilito : ', );
                         vm.materiasSeleccionadas.push(materiaid);
                         console.log(vm.materiasSeleccionadas);
                 } else {
-                        vm.materiasSeleccionadas.splice(idx, 1);
+                    vm.materiasSeleccionadas.splice(idx, 1);
+                    console.log('Contenido de variable idx : ', idx);
                         console.log(vm.materiasSeleccionadas);
                 }
-                angular.forEach(vm.materiasSeleccionadas, function (materiaSeleccionada) {
-                    console.log(materiaSeleccionada);
-                });
+                //angular.forEach(vm.materiasSeleccionadas, function (materiaSeleccionada) {
+                //    console.log(materiaSeleccionada);
+                //});
             }
 
         },
