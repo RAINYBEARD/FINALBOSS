@@ -11,6 +11,7 @@
             vm.seleccionmateria = seleccionmateria;
             vm.materiasSeleccionadas = [];
             vm.trabarMateria = trabarMateria;
+            vm.deseleccionaritems = deseleccionaritems;
             vm.checkboxModel = {
                 lun: '1',
                 mar: '1',
@@ -20,6 +21,7 @@
                 sab: '1',
                 dom: '0'
             };
+            vm.mismoDia = false;
 
             vm.filtro = vm.checkboxModel.lun + vm.checkboxModel.mar + vm.checkboxModel.mie + vm.checkboxModel.jue + vm.checkboxModel.vie + vm.checkboxModel.sab + vm.checkboxModel.dom;
 
@@ -29,23 +31,45 @@
                 });
             }
 
+            function deseleccionaritems() {
+                vm.materiasSeleccionadas.forEach(function (item, key) {
+                    if (vm.checkboxModel.lun === '0' && item.Dia[0] === '1') {
+                        vm.materiasSeleccionadas.splice(key, 1);
+                    }
+                    if (vm.checkboxModel.mar === '0' && item.Dia[1] === '1') {
+                        vm.materiasSeleccionadas.splice(key, 1);
+                    }
+                    if (vm.checkboxModel.mie === '0' && item.Dia[2] === '1') {
+                        vm.materiasSeleccionadas.splice(key, 1);
+                    }
+                    if (vm.checkboxModel.jue === '0' && item.Dia[3] === '1') {
+                        vm.materiasSeleccionadas.splice(key, 1);
+                    }
+                    if (vm.checkboxModel.vie === '0' && item.Dia[4] === '1') {
+                        vm.materiasSeleccionadas.splice(key, 1);
+                    }
+                    if (vm.checkboxModel.sab === '0' && item.Dia[5] === '1') {
+                        vm.materiasSeleccionadas.splice(key, 1);
+                    }
+                });
+                
+                
+            }
+
             function trabarMateria(curso) {
-                var mismoDia = false;
-                //if (vm.materiasSeleccionadas.length > 0) {
+                vm.mismoDia = false;
+
                     vm.materiasSeleccionadas.forEach(function (item, key) {
                         for (var i = 0; i < curso.Dia.length; i++) {
                             if (curso.Materia_Id !== item.Materia_Id && curso.Dia[i] === '1' && curso.Dia[i] === item.Dia[i]) {
-                                mismoDia = true;
+                                vm.mismoDia = true;
                                 break;
                             }
                         }
                     });
-                //} else {
-                //    mismoDia = false;
-                //}
-                return mismoDia;
-            }
 
+                return vm.mismoDia;
+            }
 
             function seleccionmateria(curso) {
                 var idx = vm.materiasSeleccionadas.indexOf(curso);
@@ -53,7 +77,6 @@
                     console.log('Pushing: ', curso.Materia_Id);
                     console.log('Contenido de variable idx : ', idx);
 
-                    //console.log('dia de la materia que habilito : ', );
                     vm.materiasSeleccionadas.push(curso);
                     console.log(vm.materiasSeleccionadas);
                 } else {
@@ -61,9 +84,6 @@
                     console.log('Contenido de variable idx : ', idx);
                     console.log(vm.materiasSeleccionadas);
                 }
-                //angular.forEach(vm.materiasSeleccionadas, function (materiaSeleccionada) {
-                //    console.log(materiaSeleccionada);
-                //});
             }
 
         },
@@ -74,7 +94,7 @@
     angular.module('bob').filter('cursosfiltermanual', function () {
         return function (cursos, filtro) {
             var out = [];
-
+            console.log('Materias Seleccionadas: ',cursos);
             angular.forEach(cursos, function (curso) {
                 var i = 0;
                 while (i < 7 && (((filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '1') ||
