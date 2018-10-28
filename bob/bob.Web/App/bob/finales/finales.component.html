@@ -92,6 +92,7 @@
                 <th scope="col">Fecha de Vencimiento</th>
                 <th scope="col">Último Intento</th>
                 <th scope="col">Correlativas Previas sin Aprobar</th>
+                <th scope="col">Correlativas Que Destraba</th>
             </tr>
         </thead>
         <tbody ng-repeat="finales in vm.finales | orderBy: vm.orden | filter: vm.filtro ">
@@ -102,6 +103,11 @@
                 <td>
                     <ul>
                         <li ng-repeat="n in finales.correlativasCursadas">{{n.abr}}</li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li ng-repeat="n in finales.correlativasFuturas">{{n.abr}}</li>
                     </ul>
                 </td>
             </tr>

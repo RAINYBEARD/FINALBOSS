@@ -16,6 +16,7 @@ namespace bob.Data.Finales
         public string descrip;
         public int nCorrelativas;
         public string reprobado;
+        public List<CorrelativasCursadas> correlativasFuturas;
         public List<CorrelativasCursadas> correlativasCursadas;
     }
 

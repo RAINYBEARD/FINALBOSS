@@ -525,6 +525,7 @@ namespace bob.Controllers
                 var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
                 var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
                 var repDictionary = SessionManager.DiccionarioReprobadas as RepDictionary;
+                var notCurDictionary = SessionManager.DiccionarioNoCursadas as NotCurDictionary;
                 foreach (KeyValuePair<string, CurValue> entry in curDictionary)
                 {
                     string reprobadas = "No";
@@ -612,7 +613,7 @@ namespace bob.Controllers
                 while (z < totalCursadas)
                 {
                     CursadoStatus cur = cursados[z];
-                    var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
+                    var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();                 
                     foreach (Correlativa corr in correlativaAuxiliar)
                     {
                         string materia_correlativa = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
@@ -633,17 +634,54 @@ namespace bob.Controllers
                 foreach (CursadoStatus cur in cursados)
                 {
                     List<CorrelativasCursadas> correlativ = new List<CorrelativasCursadas>();
+                    List<CorrelativasCursadas> correlativ2 = new List<CorrelativasCursadas>();
                     var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
+                    var correlativaAuxiliar2 = context.Correlativas.Where(y => y.Titulo_Id == SessionManager.TituloId && y.Plan_Tit == SessionManager.PlanTit && (y.Codigo_Correlativa + "/" + y.Plan_Id) == cur.materiaCod).ToList();
                     foreach (Correlativa corr in correlativaAuxiliar)
                     {
-                        string materia_cursada = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
-                        if ((curDictionary.ContainsKey(materia_cursada)) && (materia_cursada != cur.materiaCod))
+                        string materiaCursada = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
+                        if ((curDictionary.ContainsKey(materiaCursada)) && (materiaCursada != cur.materiaCod))
                         {
-                            string abreviatura = curDictionary[materia_cursada].Abr;
-                            correlativ.Add(new CorrelativasCursadas() { materiaCod = materia_cursada, abr = abreviatura });
+                            string abreviatura = curDictionary[materiaCursada].Abr;
+                            correlativ.Add(new CorrelativasCursadas() { materiaCod = materiaCursada, abr = abreviatura });
                         }
                     }
+                    foreach (Correlativa corr in correlativaAuxiliar2)
+                    {
+                        string materiaNoCursada = (corr.Materia_Id + "/" + corr.Plan_Id);
+                        bool correlativasHechas = true;
+                        var correlativaAuxiliar3 = context.Correlativas.Where(w => w.Titulo_Id == SessionManager.TituloId && w.Plan_Tit == SessionManager.PlanTit && w.Codigo_Correlativa + "/" + w.Plan_Id == materiaNoCursada).ToList();
+                        foreach (Correlativa corr2 in correlativaAuxiliar3)
+                        {
+                            if ((!curDictionary.ContainsKey(corr2.Codigo_Correlativa + "/" + corr2.Plan_Id)) && (!aprDictionary.ContainsKey(corr2.Codigo_Correlativa + "/" + corr2.Plan_Id) && (corr2.Codigo_Correlativa + "/" + corr2.Plan_Id != materiaNoCursada)))
+                            {
+                                correlativasHechas = false;
+                            }
+                        }
+                        if ((correlativasHechas == true) && (materiaNoCursada != cur.materiaCod))
+                        {
+                            string abreviatura;
+                            if (aprDictionary.ContainsKey(materiaNoCursada))
+                            {
+                                abreviatura = notCurDictionary[materiaNoCursada].Abr;
+                            }
+                            else
+                            {
+                                if (curDictionary.ContainsKey(materiaNoCursada)) 
+                                {
+                                    abreviatura = curDictionary[materiaNoCursada].Abr;
+                                }
+                                else
+                                {
+                                    abreviatura = notCurDictionary[materiaNoCursada].Abr;
+                                }
+                            }
+                            correlativ2.Add(new CorrelativasCursadas() { materiaCod = materiaNoCursada, abr = abreviatura });
+                        }
+                       
+                    }
                     cursados[i].correlativasCursadas = correlativ;
+                    cursados[i].correlativasFuturas = correlativ2;
                     i++;
                 }
                 return cursados;
