@@ -1,5 +1,4 @@
 ﻿<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()">
-
 <style>
     .btn {
         background: #1AAB8A;
@@ -28,7 +27,7 @@
         background-color: white;
     }
 
-    #finales table {
+    #finales table{       
         text-align: center;
         position: fixed;
         border-collapse: collapse;
@@ -36,7 +35,13 @@
         border: 0;
     }
 
+        #finales table:empty {
+            display: none;
+            visibility: hidden;
+        }
+
     #finales th {
+        text-align: center;
         background-color: forestgreen;
         color: #fff;
         font-size: 16px;
@@ -47,6 +52,10 @@
 
     #finales td {
         padding: 10px;
+    }
+
+    #finales tbody:empty {
+        content: 'No hay finales disponibles';
     }
 
     #finales tbody:nth-child(even) {
@@ -61,16 +70,22 @@
         background-color: antiquewhite;
     }
 
-    .a {
-        position: absolute;
-        right: -400px;
-        bottom: 100px;
+    .correlativasCursadas {
+        color: red;
+        font-weight: bold;
+       
     }
 
-    .b {
-        position: absolute;
-        right: -400px;
-        bottom: -100px;
+    .correlativasCursadas:empty {
+        
+    }
+        
+    .correlativasDestrabadas {
+    color: blue;
+    }
+
+    .correlativasDestrabadas:empty {
+        content: 'No Destraba Correlativas';
     }
 </style>
 
@@ -95,33 +110,26 @@
                 <th scope="col">Correlativas Que Destraba</th>
             </tr>
         </thead>
-        <tbody ng-repeat="finales in vm.finales | orderBy: vm.orden | filter: vm.filtro ">
+        <tbody ng-repeat="finales in vm.finales | orderBy: vm.orden | filter: vm.filtro">
             <tr>
                 <td>{{finales.abr}}</td>
                 <td>{{finales.fechaVencimiento | uppercase}}</td>
                 <td>{{finales.reprobado}}</td>
-                <td>
+                <td class="correlativasCursadas">
+                    <ul ng-if="vm.finales.correlativasCursadas == NULL"> &check;</ul>
                     <ul>
                         <li ng-repeat="n in finales.correlativasCursadas">{{n.abr}}</li>
                     </ul>
                 </td>
-                <td>
+                <td class="correlativasDestrabadas">
+                    <ul ng-if="vm.finales.correlativasFuturas == NULL"> &cross;</ul>
                     <ul>
                         <li ng-repeat="n in finales.correlativasFuturas">{{n.abr}}</li>
                     </ul>
                 </td>
+  
             </tr>
         </tbody>
     </table>
 
 
-<h6 class="a">Equivalencias Parciales por Rendir</h6>
-<ul class="a">
-    <li ng-repeat="finales in vm.finales | filter: {'descrip' : 'EQP'}"> {{finales.abr}}</li>
-</ul>
-
-
-<h6 class="b">Finales Proximos a Vencerse</h6>
-<ul class="b">
-    <li ng-repeat="finales in vm.finales | filter: {'vencimiento' : 'true' }">{{finales.abr}} {{finales.fechaVencimiento | uppercase}}</li>
-</ul>
