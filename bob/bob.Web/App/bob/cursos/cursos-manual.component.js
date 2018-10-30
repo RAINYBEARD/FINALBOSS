@@ -31,7 +31,7 @@
                 });
             }
 
-            function deseleccionaritems() {
+            function deseleccionaritems(diaid) {
                 vm.materiasSeleccionadas.forEach(function (item, key) {
                     if (vm.checkboxModel.lun === '0' && item.Dia[0] === '1') {
                         vm.materiasSeleccionadas.splice(key, 1);
@@ -51,18 +51,24 @@
                     if (vm.checkboxModel.sab === '0' && item.Dia[5] === '1') {
                         vm.materiasSeleccionadas.splice(key, 1);
                     }
-                    //var cantDiasMateria = item.Dia.split('1').length - 1;
-                    //// Resuelvo el bug cuando una materia tiene mas de un dia que se cursa y destrabo la materia que se cursa tambien otro dia
-                    //if (cantDiasMateria > 1) {
-                    //    vm.cursos.forEach(function (curso) {
-                    //        for (var i = 0; i < item.Dia.length; i++) {
-                    //            if ((item.Dia[i] === '1' && curso.Dia[i] == '1') ||
-                    //                (item.Dia[i] === '1' && curso.Dia[i] == '0')) {
-                    //                vm.materiasSeleccionadas.splice(key, 1);
-                    //            }
-                    //        }
-                    //    });
-                    //}
+                    var cantDiasMateria = item.Dia.split('1').length - 1;
+                    // Resuelvo el bug cuando una materia tiene mas de un dia que se cursa y destrabo la materia que se cursa tambien otro dia
+                    if (cantDiasMateria > 1 && ((diaid === '0' && item.Dia[0] === '1')
+                                             || (diaid === '1' && item.Dia[1] === '1')
+                                             || (diaid === '2' && item.Dia[2] === '1')
+                                             || (diaid === '3' && item.Dia[3] === '1')
+                                             || (diaid === '4' && item.Dia[4] === '1')
+                                             || (diaid === '5' && item.Dia[5] === '1'))
+                    ) {
+                        vm.cursos.forEach(function (curso) {
+                            for (var i = 0; i < item.Dia.length; i++) {
+                                if ((item.Dia[i] === '1' && curso.Dia[i] == '1') ||
+                                    (item.Dia[i] === '1' && curso.Dia[i] == '0')) {
+                                    vm.materiasSeleccionadas.splice(key, 1);
+                                }
+                            }
+                        });
+                    }
                 });
                 
                 
