@@ -1,45 +1,8 @@
-﻿<h2>CURSOS</h2>
-<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()">
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Materia</th>
-            <th scope="col">Lunes</th>
-            <th scope="col">Martes</th>
-            <th scope="col">Miercoles</th>
-            <th scope="col">Jueves</th>
-            <th scope="col">Viernes</th>
-            <th scope="col">Sabado</th>
-            <th scope="col">Todos</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="curso in vm.cursos">
-            <th scope="row">Fisica 2</th>
-            <td></td>
-            <td></td>
-            <td>X</td>
-            <td></td>
-            <td></td>
-            <td>X</td>
-        </tr>
-        <tr>
-            <th scope="row">Quimica</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>X</td>
-            <td></td>
-        </tr>
-        <tr>
-            <th scope="row">Gestion de Proyectos y Calidad</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>X</td>
-            <td></td>
-            <td></td>
-        </tr>
-    </tbody>
-</table>
+﻿<div>
+    <a ui-sref='cursos.auto'>Cursos Automatico</a>
+    &nbsp;|&nbsp;
+    <a ui-sref='cursos.manual'>Cursos Manual</a>
+</div>
+<div>
+    <ui-view></ui-view>
+</div>

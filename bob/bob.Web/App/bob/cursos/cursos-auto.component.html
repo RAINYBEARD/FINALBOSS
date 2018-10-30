@@ -1,0 +1,33 @@
+﻿<h2>CURSOS AUTOMATICO</h2>
+<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()">
+<span>Cant de Dias : </span> <input type="number" name="cantdias" min="1" max="6" step="1" value="6" ng-model="vm.filtroCantDias.valor">
+<table class="table">
+    <thead>
+        <tr>
+            <th align="left" scope="col">Materia</th>
+            <th align="center" scope="col"><p align="center">Lunes </p><p align="center"><input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.lun"></p></th>
+            <th align="center" scope="col"><p align="center">Martes</p><p align="center"><input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.mar"></p></th>
+            <th align="center" scope="col"><p align="center">Miercoles</p><p align="center"><input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.mie"></p></th>
+            <th align="center" scope="col"><p align="center">Jueves</p><p align="center"><input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.jue"></p></th>
+            <th align="center" scope="col"><p align="center">Viernes</p><p align="center"><input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.vie"></p></th>
+            <th align="center" scope="col"><p align="center">Sabado</p><p align="center"><input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.sab"></p></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="curso in vm.cursos | orderBy:'-Dia' | cursosfilterauto:vm.checkboxModel.lun+vm.checkboxModel.mar+vm.checkboxModel.mie+vm.checkboxModel.jue+vm.checkboxModel.vie+vm.checkboxModel.sab+'0':vm.filtroCantDias.valor ">
+            <th align="left" scope="row">{{curso.Abr}}</th>
+            <td align="center" ng-if="curso.Dia.substr(0,1) == '1'">X</td>
+            <td align="center" ng-if="curso.Dia.substr(0,1) != '1'"></td>
+            <td align="center" ng-if="curso.Dia.substr(1,1) == '1'">X</td>
+            <td align="center" ng-if="curso.Dia.substr(1,1) != '1'"></td>
+            <td align="center" ng-if="curso.Dia.substr(2,1) == '1'">X</td>
+            <td align="center" ng-if="curso.Dia.substr(2,1) != '1'"></td>
+            <td align="center" ng-if="curso.Dia.substr(3,1) == '1'">X</td>
+            <td align="center" ng-if="curso.Dia.substr(3,1) != '1'"></td>
+            <td align="center" ng-if="curso.Dia.substr(4,1) == '1'">X</td>
+            <td align="center" ng-if="curso.Dia.substr(4,1) != '1'"></td>
+            <td align="center" ng-if="curso.Dia.substr(5,1) == '1'">X</td>
+            <td align="center" ng-if="curso.Dia.substr(5,1) != '1'"></td>
+        </tr>
+    </tbody>
+</table>
