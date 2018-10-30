@@ -1,0 +1,34 @@
+﻿<h2>CURSOS MANUAL</h2>
+<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()">
+<table class="table">
+    <thead>
+        <tr>
+            <th align="left" scope="col"></th>
+            <th align="left" scope="col">Materia</th>
+            <th align="center" scope="col"><p align="center">Lunes </p><p align="center"><input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.lun" ng-click="vm.deseleccionaritems()"></p></th>
+            <th align="center" scope="col"><p align="center">Martes</p><p align="center"><input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.mar" ng-click="vm.deseleccionaritems()"></p></th>
+            <th align="center" scope="col"><p align="center">Miercoles</p><p align="center"><input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.mie" ng-click="vm.deseleccionaritems()"></p></th>
+            <th align="center" scope="col"><p align="center">Jueves</p><p align="center"><input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.jue" ng-click="vm.deseleccionaritems()"></p></th>
+            <th align="center" scope="col"><p align="center">Viernes</p><p align="center"><input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.vie" ng-click="vm.deseleccionaritems()"></p></th>
+            <th align="center" scope="col"><p align="center">Sabado</p><p align="center"><input type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.sab" ng-click="vm.deseleccionaritems()"></p></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="curso in vm.cursos | orderBy:'-Dia' | cursosfiltermanual:vm.checkboxModel.lun+vm.checkboxModel.mar+vm.checkboxModel.mie+vm.checkboxModel.jue+vm.checkboxModel.vie+vm.checkboxModel.sab+vm.checkboxModel.dom" ng-class="{'custom_class_materia_desactivada':vm.mismoDia == true}">
+            <td align="left" scope="row"><input type="checkbox" ng-disabled="vm.trabarMateria(curso)" ng-checked="vm.materiasSeleccionadas.indexOf(curso.Materia_Id) > -1" ng-click="vm.seleccionmateria(curso)" /></td>
+            <th ng-disabled="vm.mismoDia" align="left" scope="row">{{curso.Abr}}</th>
+            <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(0,1) == '1'">X</td>
+            <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(0,1) != '1'"></td>
+            <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(1,1) == '1'">X</td>
+            <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(1,1) != '1'"></td>
+            <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(2,1) == '1'">X</td>
+            <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(2,1) != '1'"></td>
+            <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(3,1) == '1'">X</td>
+            <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(3,1) != '1'"></td>
+            <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(4,1) == '1'">X</td>
+            <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(4,1) != '1'"></td>
+            <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(5,1) == '1'">X</td>
+            <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(5,1) != '1'"></td>
+        </tr>
+    </tbody>
+</table>

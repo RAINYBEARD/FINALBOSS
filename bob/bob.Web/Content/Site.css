@@ -6,3 +6,7 @@
 .component-borders {
     border: 1px double black;
 }
+
+.custom_class_materia_desactivada {
+    color: #d6d6c2;
+}

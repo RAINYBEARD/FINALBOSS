@@ -183,6 +183,10 @@
     <Content Include="App\bob\arbol\arbol.component.html" />
     <Content Include="App\bob\bob-app.component.js" />
     <Content Include="App\bob\bob-app.component.html" />
+    <Content Include="App\bob\cursos\cursos-auto.component.html" />
+    <Content Include="App\bob\cursos\cursos-auto.component.js" />
+    <Content Include="App\bob\cursos\cursos-manual.component.html" />
+    <Content Include="App\bob\cursos\cursos-manual.component.js" />
     <Content Include="App\bob\cursos\cursos.component.js" />
     <Content Include="App\bob\cursos\cursos.component.html" />
     <Content Include="App\bob\estadisticas\estadisticas.component.js" />
