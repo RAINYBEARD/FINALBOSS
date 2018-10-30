@@ -51,6 +51,18 @@
                     if (vm.checkboxModel.sab === '0' && item.Dia[5] === '1') {
                         vm.materiasSeleccionadas.splice(key, 1);
                     }
+                    //var cantDiasMateria = item.Dia.split('1').length - 1;
+                    //// Resuelvo el bug cuando una materia tiene mas de un dia que se cursa y destrabo la materia que se cursa tambien otro dia
+                    //if (cantDiasMateria > 1) {
+                    //    vm.cursos.forEach(function (curso) {
+                    //        for (var i = 0; i < item.Dia.length; i++) {
+                    //            if ((item.Dia[i] === '1' && curso.Dia[i] == '1') ||
+                    //                (item.Dia[i] === '1' && curso.Dia[i] == '0')) {
+                    //                vm.materiasSeleccionadas.splice(key, 1);
+                    //            }
+                    //        }
+                    //    });
+                    //}
                 });
                 
                 
