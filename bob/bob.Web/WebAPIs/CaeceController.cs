@@ -258,19 +258,20 @@ namespace bob.Controllers
                 {
                     // Descompongo la materiaid del planid
                     string[] matriculaId = resultado0.Key.Split(new Char[] { '/' });
-                    var query2 = BuscarCorrelativa(int.Parse(matriculaId[0]));
+                    var listaCorrelativas = BuscarCorrelativa(int.Parse(matriculaId[0]));
 
                     // Evaluacion para la materias que no tienen correlativas
-                    if (query2.Count == 1)
-                        materiasACursar.Add(query2[0].materia_id + "/" + query2[0].plan_id);
+                    if (listaCorrelativas.Count == 1)
+                        materiasACursar.Add(listaCorrelativas[0].materia_id + "/" + listaCorrelativas[0].plan_id);
 
-                    foreach (var resultado in query2)
+                    foreach (var correlativa in listaCorrelativas)
                     {
-                        if (resultado.materia_id != resultado.codigo_correlativa)
+                        // Para no evaluar las misma materia id que figura como correlativa
+                        if (correlativa.materia_id != correlativa.codigo_correlativa)
                         {
                             // Elimino los resultados repetidos
-                            if (!materiasParaBuscarCorrelativas.Any(x => x.materia_id == resultado.materia_id))
-                                materiasParaBuscarCorrelativas.Add(resultado);
+                            if (!materiasParaBuscarCorrelativas.Any(x => x.materia_id == correlativa.materia_id))
+                                materiasParaBuscarCorrelativas.Add(correlativa);
                         }
                     }
                 }
