@@ -208,18 +208,18 @@ namespace bob.Controllers
                         var corr = new CorrValue();
                         AutoMapper.Mapper.Map(correlativa, corr);
 
-                        if (!dicCorrelativas.ContainsKey(correlativa.Materia_Id + "/" + correlativa.Plan_Id))
+                        if (!dicCorrelativas.ContainsKey(correlativa.Materia_Id))
                         {
                             var listCorrel = new List<CorrValue>();
                             listCorrel.Add(corr);
-                            dicCorrelativas.Add(correlativa.Materia_Id + "/" + correlativa.Plan_Id, listCorrel);
+                            dicCorrelativas.Add(correlativa.Materia_Id,listCorrel);
                         }
                         else
                         {
-                            if (dicCorrelativas.TryGetValue(correlativa.Materia_Id + "/" + correlativa.Plan_Id, out existentes))
+                            if (dicCorrelativas.TryGetValue(correlativa.Materia_Id, out existentes))
                             {
                                 existentes.Add(corr);
-                                dicCorrelativas[correlativa.Materia_Id+ "/" + correlativa.Plan_Id] = existentes;
+                                dicCorrelativas[correlativa.Materia_Id] = existentes;
                             }
                         }
                     }
@@ -257,8 +257,8 @@ namespace bob.Controllers
                 foreach (var resultado0 in SessionManager.DiccionarioNoCursadas)
                 {
                     // Descompongo la materiaid del planid
-                    string matcod = resultado0.Key;
-                    var query2 = BuscarCorrelativa(matcod);
+                    string[] matriculaId = resultado0.Key.Split(new Char[] { '/' });
+                    var query2 = BuscarCorrelativa(int.Parse(matriculaId[0]));
 
                     // Evaluacion para la materias que no tienen correlativas
                     if (query2.Count == 1)
@@ -284,12 +284,11 @@ namespace bob.Controllers
             return materiasACursar;
         }
 
-        public List<CorrValue> BuscarCorrelativa(string matcod)
+        public List<CorrValue> BuscarCorrelativa(int idMateria)
         {
-            int matId = int.Parse(matcod.Split('/')[0]);
-            if (matId > 100)
+            if (idMateria > 100)
             {
-                return SessionManager.DiccionarioCorrelativas[matcod];
+                return SessionManager.DiccionarioCorrelativas[idMateria];
             }
             else
             {
@@ -333,7 +332,7 @@ namespace bob.Controllers
                     // Almaceno la materia para evaluar si la correlativa es la que le resta cursar al alumno
                     materiaAnt = correlativa.materia_id + "/" + correlativa.plan_id;
 
-                    var resulCorrelativa = BuscarCorrelativa(correlativa.codigo_correlativa + "/" + correlativa.plan_id);
+                    var resulCorrelativa = BuscarCorrelativa(correlativa.codigo_correlativa);
                     bool flagMateriaACursar = true;
                     foreach (var resultado in resulCorrelativa)
                     {
@@ -377,9 +376,9 @@ namespace bob.Controllers
                 string materiaid = materia.Split(new Char[] { '/' })[0];
 
                 // Verifico los cursos que puede cursar este cuatrimestre
-                if (SessionManager.DiccionarioCursos.ContainsKey(materiaid))
+                if (SessionManager.DiccionarioCursos.ContainsKey(materia))
                 {
-                    var curso = SessionManager.DiccionarioCursos[materiaid];
+                    var curso = SessionManager.DiccionarioCursos[materia];
                     Curso cursomateria = new Curso();
                     cursomateria.Materia_Id = materiaid;
                     cursomateria.Dia = curso.Dia;
