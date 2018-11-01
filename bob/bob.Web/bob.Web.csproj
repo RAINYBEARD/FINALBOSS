@@ -193,6 +193,7 @@
     <Content Include="App\bob\estadisticas\estadisticas.component.html" />
     <Content Include="App\bob\finales\finales.component.js" />
     <Content Include="App\bob\finales\finales.component.html" />
+    <Content Include="App\bob\imagenes\logocaece_blanco.png" />
     <Content Include="App\bob\login\login.component.html" />
     <Content Include="App\bob\login\login.component.js" />
     <Content Include="App\bob\nav\nav.component.html" />
