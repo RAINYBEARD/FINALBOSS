@@ -3,6 +3,10 @@
     padding:0;
 }
 
+.row-arbol {
+    height:90px;
+}
+
 .component-borders {
     border: 1px double black;
 }
