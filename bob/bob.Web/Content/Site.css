@@ -17,9 +17,15 @@
     color: #ffffff;
 }
 
+.area-j3 {
+    background-color: #ededed;
+    color: #494848;
+}
+
 .btn-j2 {
     background-color: #818173;
     color: #ffffff;
+    font-size: 20px;
 }
 
 .btn-j2:hover {
@@ -38,6 +44,7 @@
 
 .btn-j1 {
     color: #747373;
+    font-size: 25px;
 }
 
 .btn-j1:hover {
