@@ -76,21 +76,23 @@
        
     }
 
-    .correlativasCursadas:empty {
-        
+    .sinCorrelativas {
+        color: green;
+        list-style: none;
     }
-        
+       
     .correlativasDestrabadas {
     color: blue;
     }
 
-    .correlativasDestrabadas:empty {
-        content: 'No Destraba Correlativas';
+    .sinUnlocks {
+        color: red;
+        list-style: none;
     }
+
 </style>
 
 <h2>FINALES</h2>
-<script src="finales.component.js"></script>
 <div id="myBtnContainer">
     <button class="btn" ng-click="vm.vencimiento()"> Vencimiento</button>
     <button class="btn" ng-click="vm.numeroCorrelativas()"> Número de Correlativas</button>
@@ -98,38 +100,38 @@
     <button class="btn" ng-click="vm.ultimoIntento()"> Último Intento</button>
 </div>
 
+<table id="finales" class="table-bordered thead-dark">
+    <thead class="thead">
 
-    <table id="finales" class="table-bordered thead-dark">
-        <thead class="thead">
+        <tr>
+            <th scope="col">Materia</th>
+            <th scope="col">Fecha de Vencimiento</th>
+            <th scope="col">Último Intento</th>
+            <th scope="col">Correlativas Previas sin Aprobar</th>
+            <th scope="col">Correlativas Que Destraba</th>
+        </tr>
+    </thead>
+    <tbody ng-repeat="finales in vm.finales | orderBy: vm.orden | filter: vm.filtro">
+        <tr>
+        <td>{{finales.abr}}</td>
+        <td>{{finales.fechaVencimiento | uppercase}}</td>
+        <td>{{finales.reprobado}}</td>
+        <td>
+            <ul>
+                <li class="sinCorrelativas" ng-if="finales.correlativasCursadas.length == 0">&check;</li>
+                <li class="correlativasCursadas" ng-if="finales.correlativasCursadas.length != 0" ng-repeat="n in finales.correlativasCursadas">{{n.abr}}</li>
+            </ul>
+        </td>
+        <td>
+            <ul>
+                <li class="sinUnlocks" ng-if="finales.correlativasFuturas.length == 0">&cross;</li>
+                <li class="correlativasDestrabadas" ng-repeat="n in finales.correlativasFuturas">{{n.abr}}</li>
+            </ul>
+        </td>
 
-            <tr>
-                <th scope="col">Materia</th>
-                <th scope="col">Fecha de Vencimiento</th>
-                <th scope="col">Último Intento</th>
-                <th scope="col">Correlativas Previas sin Aprobar</th>
-                <th scope="col">Correlativas Que Destraba</th>
-            </tr>
-        </thead>
-        <tbody ng-repeat="finales in vm.finales | orderBy: vm.orden | filter: vm.filtro">
-            <tr>
-                <td>{{finales.abr}}</td>
-                <td>{{finales.fechaVencimiento | uppercase}}</td>
-                <td>{{finales.reprobado}}</td>
-                <td class="correlativasCursadas">
-                    <ul ng-if="vm.finales.correlativasCursadas == NULL"> &check;</ul>
-                    <ul>
-                        <li ng-repeat="n in finales.correlativasCursadas">{{n.abr}}</li>
-                    </ul>
-                </td>
-                <td class="correlativasDestrabadas">
-                    <ul ng-if="vm.finales.correlativasFuturas == NULL"> &cross;</ul>
-                    <ul>
-                        <li ng-repeat="n in finales.correlativasFuturas">{{n.abr}}</li>
-                    </ul>
-                </td>
-  
-            </tr>
-        </tbody>
-    </table>
+        </tr>
+    </tbody>
+</table>
+<div ng-if="vm.finales.length == 0"> Sin Finales Disponibles por Rendir</div>
 
 
