@@ -28,18 +28,12 @@
     font-size: 20px;
 }
 
-.btn-j2:hover {
-        background-color: #ffffff;
-        color: #000000;
+.btn-j2:active, .active, .btn-j2:hover {
+        background-color: red;
+        color: white;
         text-decoration-line: none;
         text-decoration-style: solid;
         text-decoration-color: currentcolor;
-}
-
-.btn-j2:focus {
-    color: #4CAF50;
-    border-color: currentColor;
-    background-color: white;
 }
 
 .btn-j1 {
