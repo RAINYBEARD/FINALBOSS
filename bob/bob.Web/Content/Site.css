@@ -55,10 +55,38 @@
         background-color: white;
 }
 
+.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #7d8985;
+    border-color: #bcbec0;
+}
+
 .component-borders {
     border: 1px double black;
 }
 
 .custom_class_materia_desactivada {
     color: #d6d6c2;
+}
+
+.main__menu {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: center;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+.main__menu__item {
+    list-style-type: none;
 }
