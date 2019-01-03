@@ -193,12 +193,14 @@
     <Content Include="App\bob\estadisticas\estadisticas.component.html" />
     <Content Include="App\bob\finales\finales.component.js" />
     <Content Include="App\bob\finales\finales.component.html" />
+    <Content Include="App\bob\imagenes\logocaece_blanco.png" />
     <Content Include="App\bob\login\login.component.html" />
     <Content Include="App\bob\login\login.component.js" />
     <Content Include="App\bob\nav\nav.component.html" />
     <Content Include="App\bob\nav\nav.component.js" />
     <Content Include="App\bob\servicios\caece.service.js" />
     <Content Include="App\Index.html" />
+    <Content Include="App\bob\imagenes\cajaarbol.png" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
@@ -327,6 +329,7 @@
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
