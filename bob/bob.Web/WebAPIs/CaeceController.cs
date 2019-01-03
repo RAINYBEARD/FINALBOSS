@@ -696,75 +696,35 @@ namespace bob.Controllers
         }
         #endregion
 
-        //POR QUÉ ESTO SON 3 METODOS, TODOS TIENEN ESTADISTICAS, MEJOR DEVOLVER TODO EN UNA RESPUESTA
+        
         #region Estadisticas
         /// <summary>
-        /// Devuelve el porcentaje aprobado de la carrera 
+        /// Devuelvo todas las estadisticas en una sola estructura
         /// </summary>
         /// <param name="matricula"></param>
         /// <returns></returns>
-        public Estadisticas PorcentajeAprobado(string matricula)
+        [HttpGet]
+        [Route("get-estadisticas/{matricula}")]
+        public Estadisticas EstadisticasAlumno(string matricula)
         {
-            SetSesionUsuario(matricula);
+            Estadisticas estadistica = new Estadisticas();
+            estadistica.Lista = new List<AprobadasPorAnio>();
+            //SetSesionUsuario(matricula);
+            var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
+            var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
+            var NoCurDictionary = SessionManager.DiccionarioNoCursadas as NotCurDictionary;
+            var PenDictionary = SessionManager.DiccionarioPendientes as PenDictionary;
 
-            var estadistica = new Estadisticas();
-
-            estadistica.Aprobadas = SessionManager.DiccionarioAprobadas.Count;
-
-            estadistica.Total = SessionManager.DiccionarioAprobadas.Count + SessionManager.DiccionarioCursadas.Count + SessionManager.DiccionarioNoCursadas.Count + SessionManager.DiccionarioPendientes.Count;
-
-            var aux = (estadistica.Aprobadas * 100);
-
-            estadistica.Porcentaje_Aprobado = decimal.Divide(aux, estadistica.Total);
-
-            estadistica.Porcentaje_Faltante = 100 - estadistica.Porcentaje_Aprobado;
-
-            return estadistica;
-        }
-
-        /// <summary>
-        /// Devuelve el porcentaje cursado de la carrera
-        /// </summary>
-        /// <param name="matricula"></param>
-        /// <returns></returns>
-        public Estadisticas PorcentajeCursado(string matricula)
-        {
-
-            var estadistica = new Estadisticas();
-
-            estadistica.Aprobadas = SessionManager.DiccionarioAprobadas.Count + SessionManager.DiccionarioCursadas.Count;
-
-            estadistica.Total = SessionManager.DiccionarioAprobadas.Count + SessionManager.DiccionarioCursadas.Count + SessionManager.DiccionarioNoCursadas.Count + SessionManager.DiccionarioPendientes.Count;
-
-            var aux = ((estadistica.Aprobadas) * 100);
-
-            estadistica.Porcentaje_Aprobado = decimal.Divide(aux, estadistica.Total);
-
-            estadistica.Porcentaje_Faltante = 100 - estadistica.Porcentaje_Aprobado;
-
-            return estadistica;
-
-        }
-
-        /// <summary>
-        /// Devuelve cuantas materias aprobó por año
-        /// </summary>
-        /// <param name="matricula"></param>
-        /// <returns></returns>
-        public List<AprobadasPorAnio> EstadisticaPorAnio(string matricula)
-        {
-
-            List<AprobadasPorAnio> Ls = new List<AprobadasPorAnio>();
-
-            foreach (KeyValuePair<string, AprValue> entry in SessionManager.DiccionarioAprobadas)
+            //Por cada aprobada veo si sumo una aprobada al registro existente de la lista, o agrego otro registro si no existe
+            foreach (KeyValuePair<string, AprValue> entry in aprDictionary)
             {
                 int fecha = int.Parse(entry.Value.Fecha.Substring(6, 4));
 
-                var resultado = Ls.Exists(a => a.Anio == fecha);
+                var resultado = estadistica.Lista.Exists(a => a.Anio == fecha);
 
                 if (resultado == true)
                 {
-                    AprobadasPorAnio Reg = Ls.Find(a => a.Anio == fecha);
+                    AprobadasPorAnio Reg = estadistica.Lista.Find(a => a.Anio == fecha);
                     Reg.Aprobadas++;
                 }
                 else
@@ -773,12 +733,17 @@ namespace bob.Controllers
                     Registro.Anio = int.Parse(entry.Value.Fecha.Substring(6, 4));
                     Registro.Aprobadas = 1;
 
-                    Ls.Add(Registro);
+                    estadistica.Lista.Add(Registro);
                 }
             }
-            Ls.OrderBy(p => p.Anio);
+            estadistica.Lista.OrderBy(p => p.Anio);
 
-            return Ls;
+            estadistica.Total = aprDictionary.Count + curDictionary.Count + NoCurDictionary.Count + PenDictionary.Count;
+            estadistica.Aprobadas = aprDictionary.Count;
+            estadistica.Cursadas = aprDictionary.Count + curDictionary.Count;
+
+            return estadistica;
+
         }
         #endregion
     }

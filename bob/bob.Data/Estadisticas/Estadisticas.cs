@@ -11,9 +11,10 @@ namespace bob.Data.Estadisticas
     /// </summary>
     public class Estadisticas
     {
-        public int Aprobadas { get; set; }
         public int Total { get; set; }
-        public decimal Porcentaje_Aprobado { get; set; }
-        public decimal Porcentaje_Faltante { get; set; }
+        public int Aprobadas { get; set; }
+        public int Cursadas { get; set; }
+
+        public List<AprobadasPorAnio> Lista { get; set; }
     }
 }
