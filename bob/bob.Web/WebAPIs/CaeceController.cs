@@ -577,33 +577,33 @@ namespace bob.Controllers
                             }
                         }
                     }
-                    correlativas = context.Correlativas.Where(a => a.Titulo_Id == SessionManager.TituloId && a.Plan_Tit == SessionManager.PlanTit && ( a.Codigo_Correlativa + "/" + a.Plan_Id) == entry.Key).ToList().Count;
+                    correlativas = context.Correlativas.Where(a => a.Titulo_Id == SessionManager.TituloId && a.Plan_Tit == SessionManager.PlanTit && (a.Codigo_Correlativa + "/" + a.Plan_Id) == entry.Key).ToList().Count;
                     //Numero de Correlativas de la Materia Cursada
 
                     //Chequea si la materia se esta por vencer
                     if (fechaDeVencimiento == DateTime.Now.ToString("MMMM yyyy", new CultureInfo("es-ES")) || fechaDeVencimiento == DateTime.Now.AddMonths(1).ToString("MMMM yyyy", new CultureInfo("es-ES")))
                     {
                         vencimiento = true;
-                    }             
-                    
-                    //Si se reprobo o no
-                   
-                        if ((repDictionary != null) && (repDictionary.ContainsKey(entry.Key)))
-                        {
-                            switch (entry.Value.Descrip)
-                            {
-                                case ("EQP"):
-                                    reprobadas = "Si";
-                                    break;
-                                default:
-                                    if (DateTime.ParseExact(repDictionary[entry.Key].Fecha, "dd/MM/yyyy", null) > DateTime.ParseExact(entry.Value.Fecha, "dd/MM/yyyy", null))
-                                    {
-                                        reprobadas = "Si";
-                                    }
-                                    break;
+                    }
 
-                            }
+                    //Si se reprobo o no
+
+                    if ((repDictionary != null) && (repDictionary.ContainsKey(entry.Key)))
+                    {
+                        switch (entry.Value.Descrip)
+                        {
+                            case ("EQP"):
+                                reprobadas = "Si";
+                                break;
+                            default:
+                                if (DateTime.ParseExact(repDictionary[entry.Key].Fecha, "dd/MM/yyyy", null) > DateTime.ParseExact(entry.Value.Fecha, "dd/MM/yyyy", null))
+                                {
+                                    reprobadas = "Si";
+                                }
+                                break;
+
                         }
+                    }
 
                     //Usar AutoMapper
                     cursados.Add(new CursadoStatus() { materiaCod = entry.Key, fechaCursada = fechaDeCursada, fechaVencimiento = fechaDeVencimiento, porVencerse = vencimiento, abr = entry.Value.Abr, descrip = entry.Value.Descrip, nCorrelativas = correlativas, reprobado = reprobadas });
@@ -614,7 +614,7 @@ namespace bob.Controllers
                 while (z < totalCursadas)
                 {
                     CursadoStatus cur = cursados[z];
-                    var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();                 
+                    var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
                     foreach (Correlativa corr in correlativaAuxiliar)
                     {
                         string materia_correlativa = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
@@ -668,7 +668,7 @@ namespace bob.Controllers
                             }
                             else
                             {
-                                if (curDictionary.ContainsKey(materiaNoCursada)) 
+                                if (curDictionary.ContainsKey(materiaNoCursada))
                                 {
                                     abreviatura = curDictionary[materiaNoCursada].Abr;
                                 }
@@ -679,7 +679,7 @@ namespace bob.Controllers
                             }
                             correlativ2.Add(new CorrelativasCursadas() { materiaCod = materiaNoCursada, abr = abreviatura });
                         }
-                       
+
                     }
                     cursados[i].correlativasCursadas = correlativ;
                     cursados[i].correlativasFuturas = correlativ2;
@@ -692,7 +692,7 @@ namespace bob.Controllers
 
                 throw;
             }
-            
+
         }
         #endregion
 
