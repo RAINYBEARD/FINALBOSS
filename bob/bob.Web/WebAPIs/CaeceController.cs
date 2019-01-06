@@ -611,26 +611,35 @@ namespace bob.Controllers
                 //Filtro materias que no se pueden rendir aunque esten cursadas
                 int totalCursadas = cursados.Count;
                 int z = 0;
+                var elimDictionary = new ElimDictionary();
                 while (z < totalCursadas)
                 {
+                    bool seEleminoLaMateria = false;
                     CursadoStatus cur = cursados[z];
                     var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
                     foreach (Correlativa corr in correlativaAuxiliar)
                     {
                         string materia_correlativa = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
-                        if ((!aprDictionary.ContainsKey(materia_correlativa)) && (!curDictionary.ContainsKey(materia_correlativa)))
-                        {
-                            cursados.Remove(cur);
-                            totalCursadas = cursados.Count;
-                        }
-                        else
-                        {
-                            z++;
-                        }
+                        
+                            if ((((!aprDictionary.ContainsKey(materia_correlativa)) && (!curDictionary.ContainsKey(materia_correlativa))) || (elimDictionary.ContainsKey(materia_correlativa))))
+                            {
+                                string materiaEliminada = cur.materiaCod;
+                                string abr = cur.abr;
+                                elimDictionary.Add(materiaEliminada, abr);
+                                cursados.Remove(cur);
+                                totalCursadas = cursados.Count;
+                                seEleminoLaMateria = true;
+                                break;
+                            }
+                        //}
+                    }
+                    if (seEleminoLaMateria == false)
+                    {
+                        z++;
                     }
                 }
 
-                //Agrego sublista de correlativas cursadas pero no aprobadas de las materias que se pueden rendir
+                //Agrego sublista de correlativas cursadas pero no aprobadas de las materias que se pueden rendir y de materias que destrabaria se se aprueba
                 int i = 0;
                 foreach (CursadoStatus cur in cursados)
                 {
