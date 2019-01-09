@@ -1,15 +1,14 @@
-﻿<div class="d-none d-md-block" data-toggle="buttons">
-    <ul class="main__menu">
-        <li class="main__menu__item">
-            <a class="btn btn-primary btn-j1" ui-sref='estadisticas'>Estadisticas</a>
-            &nbsp; &nbsp;
-        </li>
-        <li class="main__menu__item">
-            <a class="btn btn-primary btn-j1" ui-sref='cursos'>Cursos</a>
-            &nbsp; &nbsp;
-        </li>
-        <li class="main__menu__item">
-            <a class="btn btn-primary btn-j1" ui-sref='finales'>Finales</a>
-        </li>
-    </ul>
+﻿<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+    <button type="button" class="btn btn-info" ui-sref='estadisticas'>Estadisticas</button>
+    <button type="button" class="btn btn-info" ui-sref='cursos.auto'>Cursos</button>
+    <div class="btn-group" role="group">
+        <button id="btnGroupDrop1" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false" ui-sref='finales'>
+            Finales
+        </button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <a class="dropdown-item" href="#">Dropdown link</a>
+            <a class="dropdown-item" href="#">Dropdown link</a>
+        </div>
+    </div>
 </div>
