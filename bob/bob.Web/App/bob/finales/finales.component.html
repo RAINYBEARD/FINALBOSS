@@ -1,93 +1,28 @@
 ﻿<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()">
 <style>
-    .btn {
-        background: #1AAB8A;
-        padding: 10px 25px;
-        color: #fff;
-        float: left;
-        position: relative;
-        height: 35px;
-        font-size: 12px;
-        cursor: pointer;
-        outline: none;
+    
+
+    #finales table:empty {
+        display: none;
+        visibility: hidden;
     }
 
-        .btn:hover {
-            background-color: #4CAF50; /* Green */
-            color: white;
-        }
-
-        .btn:active {
-            top: 1px;
-        }
-
-        .btn:focus {
-            color: #4CAF50;
-            border-color: currentColor;
-            background-color: white;
-        }
-
-    #finales table {
-        text-align: center;
-        position: fixed;
-        border-collapse: collapse;
-        padding: 10px;
-        border: 0;
-    }
-
-        #finales table:empty {
-            display: none;
-            visibility: hidden;
-        }
-
-    #finales th {
-        text-align: center;
-        background-color: forestgreen;
-        color: #fff;
-        font-size: 16px;
-        padding: 10px;
-        font-weight: bold;
-        border: 0;
-    }
-
-    #finales td {
-        padding: 10px;
-    }
 
     #finales tbody:empty {
         content: 'No hay finales disponibles';
     }
 
-    #finales tbody:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-
-    #finales tbody:nth-child(odd) {
-        background-color: #ddd;
-    }
-
-    #finales tr:hover {
-        background-color: antiquewhite;
-    }
 
     .correlativasCursadas {
         color: red;
         font-weight: bold;
     }
 
-    .sinCorrelativas {
-        color: green;
-        list-style: none;
-    }
-
     .correlativasDestrabadas {
         color: blue;
     }
 
-    .sinUnlocks {
-        color: red;
-        list-style: none;
-    }
+   
 </style>
 
 <h2>FINALES</h2>

@@ -1,0 +1,14 @@
+﻿<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()">
+
+ <table id="porvencerse" class="table-bordered thead-dark">
+     <thead>
+       <tr>
+        <th>Materias por Vencerse en proximo Cuatrimestre</th>
+       </tr>
+     </thead>
+     <tbody ng-repeat="finales in vm.finales | filter: { 'porVencerse': true } ">
+         <tr>
+             <td>{{finales.abr}}</td>
+         </tr>
+     </tbody>
+ </table>
