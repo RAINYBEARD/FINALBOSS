@@ -3,6 +3,10 @@
     padding:0;
 }
 
+#cantidaddias {
+    width: 3em;
+}
+
 .barra-titulo {
     background-color: #007367;
     color: #ffffff;

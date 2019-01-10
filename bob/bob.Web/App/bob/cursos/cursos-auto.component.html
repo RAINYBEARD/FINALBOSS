@@ -1,5 +1,8 @@
-﻿<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()">
-<span>Cant de Dias : </span> <input type="number" name="cantdias" min="1" max="6" step="1" value="6" ng-model="vm.filtroCantDias.valor">
+﻿<div>
+    <h4 align="center">Selecci&oacute;n autom&aacute;tica de cursos</h4>
+</div>
+<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" maxlength="7" size="7"/> <input type="button" value="submit" ng-click="vm.submit()">
+<span>Cant de D&iacute;as : </span> <input type="number" name="cantdias" min="1" max="6" step="1" value="6" ng-model="vm.filtroCantDias.valor" id="cantidaddias"  onKeyPress="if(this.value.length==1) return false;">
 <table class="table">
     <thead>
         <tr>

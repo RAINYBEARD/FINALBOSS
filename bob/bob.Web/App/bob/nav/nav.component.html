@@ -1,14 +1,22 @@
 ﻿<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
     <button type="button" class="btn btn-info" ui-sref='estadisticas'>Estadisticas</button>
-    <button type="button" class="btn btn-info" ui-sref='cursos.auto'>Cursos</button>
     <div class="btn-group" role="group">
-        <button id="btnGroupDrop1" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false" ui-sref='finales'>
-            Finales
+        <button id="btnGroupDropCursos" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            Cursos
         </button>
-        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <a class="dropdown-item" href="#">Dropdown link</a>
-            <a class="dropdown-item" href="#">Dropdown link</a>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDropCursos">
+            <a class="dropdown-item" ui-sref="cursos.auto">Selecci&oacute;n Autom&aacute;tica</a>
+            <a class="dropdown-item" ui-sref="cursos.manual">Selecci&oacute;n Manual</a>
         </div>
+    </div>
+    <div class="btn-group" role="group">
+            <button id="btnGroupDropFinales" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                Finales
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDropFinales">
+                <a class="dropdown-item" ui-sref="finales">Finales</a>
+            </div>
     </div>
 </div>
