@@ -89,7 +89,7 @@
         list-style: none;
     }
 </style>-->
-
+<div ng-show="vm.finales.length">
 <h2>FINALES</h2>
 <div id="myBtnContainer">
     <button class="btn" ng-click="vm.vencimiento()"> Vencimiento</button>
@@ -130,6 +130,7 @@
         </tr>
     </tbody>
 </table>
+</div>
 <div ng-if="vm.finales.length == 0"> Sin Finales Disponibles por Rendir</div>
 
 
