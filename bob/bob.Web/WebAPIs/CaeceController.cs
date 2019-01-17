@@ -180,12 +180,12 @@ namespace bob.Controllers
             foreach (var dato in cursosAbiertos)
             {
                 int i = 0;
-                while (i < 7 && (dato.Dia.Substring(i, 1) != "2" && dato.Dia.Substring(i, 1) != "3")) {
+                while (i < 7 && (dato.Dia.Substring(i, 1) == "0" || dato.Dia.Substring(i, 1) == "1")) {
                     i++;
                 }
                 if (i<7)
                 {
-                    System.Diagnostics.Debug.WriteLine("Materia con cursada de medio dia : " + dato.Materia_Id + "/" + dato.Plan_Id + "El string de dias es : " +  dato.Dia );
+                    System.Diagnostics.Debug.WriteLine("Materia con cursada de medio dia : " + dato.Materia_Id + "/" + dato.Plan_Id + "  El string de dias es : " +  dato.Dia );
                 }
 
                 if (!cursosDictionary.ContainsKey(dato.Materia_Id + "/" + dato.Plan_Id) && notCurDictionary.ContainsKey(dato.Materia_Id + "/" + dato.Plan_Id))
