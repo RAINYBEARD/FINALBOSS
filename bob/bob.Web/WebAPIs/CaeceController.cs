@@ -188,7 +188,9 @@ namespace bob.Controllers
                     System.Diagnostics.Debug.WriteLine("Materia con cursada de medio dia : " + dato.Materia_Id + "/" + dato.Plan_Id + "  El string de dias es : " +  dato.Dia );
                 }
 
-                if (!cursosDictionary.ContainsKey(dato.Materia_Id + "/" + dato.Plan_Id) && notCurDictionary.ContainsKey(dato.Materia_Id + "/" + dato.Plan_Id))
+                // Comento para hacer la prueba con los dias que tienen 2 y 3
+                // if (!cursosDictionary.ContainsKey(dato.Materia_Id + "/" + dato.Plan_Id) && notCurDictionary.ContainsKey(dato.Materia_Id + "/" + dato.Plan_Id))
+                if (!cursosDictionary.ContainsKey(dato.Materia_Id + "/" + dato.Plan_Id))
                 {
                     CursosValue curso = new CursosValue();
                     AutoMapper.Mapper.Map(dato, curso);
@@ -380,14 +382,32 @@ namespace bob.Controllers
             List<Curso> materiasACursarEsteCuatri = new List<Curso>();
 
 
-            foreach (var materia in materiasACursar)
-            {
-                // Descompongo la materiaid del planid
-                string materiaid = materia.Split(new Char[] { '/' })[0];
+            //foreach (var materia in materiasACursar)
+            //{
+            //    // Descompongo la materiaid del planid
+            //    string materiaid = materia.Split(new Char[] { '/' })[0];
 
                 // Verifico los cursos que puede cursar este cuatrimestre
-                if (SessionManager.DiccionarioCursos.ContainsKey(materia))
-                {
+                //if (SessionManager.DiccionarioCursos.ContainsKey(materia))
+                //{
+                //    var curso = SessionManager.DiccionarioCursos[materia];
+                //    Curso cursomateria = new Curso();
+                //    cursomateria.Materia_Id = materiaid;
+                //    cursomateria.Dia = curso.Dia;
+                //    cursomateria.M_Acobrar = curso.M_Acobrar;
+                //    cursomateria.Plan_Id = curso.Plan_Id;
+                //    cursomateria.Turno_Id = curso.Turno_Id;
+                //    cursomateria.Abr = ObtenerNombreMateria(int.Parse(materiaid));
+
+                //    // Agrego a la lista los cursos a los cuales se puede inscribir
+                //    materiasACursarEsteCuatri.Add(cursomateria);
+                //}
+
+                // Hardcodeo las materias que tienen 2 y 3 en el dia para probar
+                //if (SessionManager.DiccionarioCursos.ContainsKey("2804/04E") || SessionManager.DiccionarioCursos.ContainsKey("2806/04E"))
+                //{
+                    string materia = "2804/04E";
+                    string materiaid = "2804";
                     var curso = SessionManager.DiccionarioCursos[materia];
                     Curso cursomateria = new Curso();
                     cursomateria.Materia_Id = materiaid;
@@ -396,11 +416,31 @@ namespace bob.Controllers
                     cursomateria.Plan_Id = curso.Plan_Id;
                     cursomateria.Turno_Id = curso.Turno_Id;
                     cursomateria.Abr = ObtenerNombreMateria(int.Parse(materiaid));
-                    
+
                     // Agrego a la lista los cursos a los cuales se puede inscribir
                     materiasACursarEsteCuatri.Add(cursomateria);
-                }
-            }
+
+                    materia = "2806/04E";
+                    materiaid = "2806";
+                    curso = SessionManager.DiccionarioCursos[materia];
+                    Curso cursomateria2 = new Curso();
+                    cursomateria2.Materia_Id = materiaid;
+                    cursomateria2.Dia = curso.Dia;
+                    cursomateria2.M_Acobrar = curso.M_Acobrar;
+                    cursomateria2.Plan_Id = curso.Plan_Id;
+                    cursomateria2.Turno_Id = curso.Turno_Id;
+                    cursomateria2.Abr = ObtenerNombreMateria(int.Parse(materiaid));
+
+                    // Agrego a la lista los cursos a los cuales se puede inscribir
+                    materiasACursarEsteCuatri.Add(cursomateria2);
+            //}
+
+
+            //}
+            //
+            // Aqui hay que devolver las materias con dias con 2 o 3 para hacer la prueba
+            //
+
             return materiasACursarEsteCuatri;
         }
 
