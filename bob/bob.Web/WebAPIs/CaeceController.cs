@@ -322,6 +322,19 @@ namespace bob.Controllers
         {
             using (var context = new CaeceDBContext())
             {
+                //Hardcodeo para probar materias con 2 o 3
+                if (materiaid == 2804)
+                {
+                    return "Materia con 2";
+                }
+                if (materiaid == 2806)
+                {
+                    return "Materia con 3";
+                }
+                if (materiaid != 2804 && materiaid != 2806)
+                {
+                    return context.Materias_Descripciones.First(x => x.Materia_Id == materiaid).Mat_Des;
+                }
                 return context.Materias_Descripciones.First(x => x.Materia_Id == materiaid).Mat_Des;
             }
         }
