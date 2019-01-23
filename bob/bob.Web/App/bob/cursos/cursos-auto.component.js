@@ -71,8 +71,10 @@
                 }
 
                 // Le sumo la cantidad de dias de la materia nueva
-                var cantDiasMateria = curso.Dia.split('1').length - 1;
-                cantDias = cantDias + cantDiasMateria;
+                //var cantDiasMateria = curso.Dia.split('1').length - 1;
+                //cantDias = cantDias + cantDiasMateria;
+                //var cantDiasMateria = curso.Dia.split('1').length - 1;
+                cantDias = cantDias + (curso.Dia.split('1').length - 1) + (curso.Dia.split('2').length - 1) + (curso.Dia.split('3').length - 1);
 
                 if (i == 7 && (cantDias <= filtroCantDias)) {
                     var diasParaCursar = diasQueCursa.split('');
