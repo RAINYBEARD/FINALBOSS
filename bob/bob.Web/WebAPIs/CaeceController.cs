@@ -446,6 +446,21 @@ namespace bob.Controllers
 
                     // Agrego a la lista los cursos a los cuales se puede inscribir
                     materiasACursarEsteCuatri.Add(cursomateria2);
+
+                    
+                    materia = "1620/10S";
+                    materiaid = "1620";
+                    curso = SessionManager.DiccionarioCursos[materia];
+                    Curso cursomateria3 = new Curso();
+                    cursomateria3.Materia_Id = materiaid;
+                    cursomateria3.Dia = curso.Dia;
+                    cursomateria3.M_Acobrar = curso.M_Acobrar;
+                    cursomateria3.Plan_Id = curso.Plan_Id;
+                    cursomateria3.Turno_Id = curso.Turno_Id;
+                    cursomateria3.Abr = ObtenerNombreMateria(int.Parse(materiaid));
+
+                    // Agrego a la lista los cursos a los cuales se puede inscribir
+                    materiasACursarEsteCuatri.Add(cursomateria3);
             //}
 
 
