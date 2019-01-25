@@ -9,6 +9,7 @@ using bob.Data.Estadisticas;
 using bob.Data.DTOs;
 using bob.Data.Dictionaries;
 using bob.Data.Finales;
+using bob.Data.Pendientes;
 using Newtonsoft.Json.Linq;
 using bob.CaeceWS;
 using System.Web.Configuration;
@@ -511,6 +512,48 @@ namespace bob.Controllers
         }
         #endregion
 
+        #region Pendientes
+        /// <summary>
+        /// Ejemplo de llamada: http://localhost:52178/Caece/Pendientes/951282 
+        /// </summary>
+        /// <param name="matricula"></param>
+        [HttpGet]
+        [Route("get-pendientes/{matricula}")]
+        public List<Pendientes> Pendientes(string matricula)
+        {
+            try
+            {
+                List<Pendientes> pendientes = new List<Pendientes>();
+                var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
+                var penDictionary = SessionManager.DiccionarioPendientes as PenDictionary;
+                //Agrego las materias pendientes a una lista
+                foreach (KeyValuePair<string, PenValue> entry in penDictionary)
+                {
+                    List<CorrelativasNoAprobadas> correlativ = new List<CorrelativasNoAprobadas>();
+                    var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == entry.Key).ToList();
+                    //Busco las correlativas previas que el alumno todavia no aprobo
+                    foreach (Correlativa corr in correlativaAuxiliar)
+                    {
+                        string materiaCursada = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
+                        if ((!aprDictionary.ContainsKey(materiaCursada)) && (materiaCursada != entry.Key))
+                        {
+                            string abreviatura = entry.Value.Abr;
+                            correlativ.Add(new CorrelativasNoAprobadas() { materiaCod = materiaCursada, abr = abreviatura });
+                        }
+                    }
+
+                    pendientes.Add(new Pendientes() { materiaCod = entry.Key, abr = entry.Value.Abr, correlativasNoAprobadas = correlativ });
+                }
+                return pendientes;
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+        }
+
+        #endregion
         #region Finales
         /// <summary>
         /// Ejemplo de llamada: http://localhost:52178/Caece/PlanificadorFinales/951282 
