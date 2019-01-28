@@ -49,7 +49,9 @@
                     (diasQueCursa.substr(i, 1) == "0" && curso.Dia.substr(i, 1) == "2") ||
                     (diasQueCursa.substr(i, 1) == "2" && curso.Dia.substr(i, 1) == "0") ||
                     (diasQueCursa.substr(i, 1) == "0" && curso.Dia.substr(i, 1) == "3") ||
-                    (diasQueCursa.substr(i, 1) == "3" && curso.Dia.substr(i, 1) == "0")) &&
+                    (diasQueCursa.substr(i, 1) == "3" && curso.Dia.substr(i, 1) == "0") ||
+                    (diasQueCursa.substr(i, 1) == "0" && curso.Dia.substr(i, 1) == "4") ||
+                    (diasQueCursa.substr(i, 1) == "4" && curso.Dia.substr(i, 1) == "0")) &&
                     ((filtro.substr(i, 1) == '1' && curso.Dia.substr(i, 1) == '1') ||
                     (filtro.substr(i, 1) == '1' && curso.Dia.substr(i, 1) == '2') ||
                     (filtro.substr(i, 1) == '1' && curso.Dia.substr(i, 1) == '3') ||
@@ -64,7 +66,7 @@
                 var j = 0;
                 while ( j < 7 )
                 {
-                    if (diasQueCursa.substr(j, 1) != "0") {
+                    if (diasQueCursa.substr(j, 1) != "0" && diasQueCursa.substr(j, 1) != "4") {
                         cantDias++;
                     }
                     j++;

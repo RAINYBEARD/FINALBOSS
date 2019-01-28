@@ -351,6 +351,14 @@ namespace bob.Controllers
                 {
                     return "Materia con 3";
                 }
+                if (materiaid == 1779)
+                {
+                    return "Materia con 4";
+                }
+                if (materiaid == 8491)
+                {
+                    return "Materia con 1 y 4";
+                }
                 return context.Materias_Descripciones.First(x => x.Materia_Id == materiaid).Mat_Des;
             }
         }
@@ -448,6 +456,9 @@ namespace bob.Controllers
             lmateria.Add("2333/16E"); //Materia con dia en 2
             lmateria.Add("2327/16E"); //Materia con dia en 3
             lmateria.Add("2332/16E"); //Materia con dia en 3
+            lmateria.Add("1779/05Z"); //Materia con dia en 4
+            lmateria.Add("8491/05A"); //Materia con dia en 1 y 4
+            
 
             foreach (var materia in lmateria)
             {
