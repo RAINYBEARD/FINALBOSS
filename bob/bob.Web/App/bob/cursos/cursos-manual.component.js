@@ -79,7 +79,11 @@
 
                     vm.materiasSeleccionadas.forEach(function (item, key) {
                         for (var i = 0; i < curso.Dia.length; i++) {
-                            if (curso.Materia_Id !== item.Materia_Id && curso.Dia[i] === '1' && curso.Dia[i] === item.Dia[i]) {
+                            if ((curso.Materia_Id !== item.Materia_Id) &&
+                               ((curso.Dia[i] === item.Dia[i]) ||
+                               ((curso.Dia[i] === '1') && ((item.Dia[i] === '2') || (item.Dia[i] === '3'))) ||
+                               (((curso.Dia[i] === '2') || (curso.Dia[i] === '3')) && (item.Dia[i] === '1'))) &&
+                               ((curso.Dia[i] === '1') || (curso.Dia[i] === '2') || (curso.Dia[i] === '3'))) {
                                 vm.mismoDia = true;
                                 break;
                             }
