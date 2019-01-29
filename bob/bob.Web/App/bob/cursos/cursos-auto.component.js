@@ -48,10 +48,10 @@
                     (diasQueCursa.substr(i, 1) == "1" && curso.Dia.substr(i, 1) == "0") ||
                     (diasQueCursa.substr(i, 1) == "0" && curso.Dia.substr(i, 1) == "2") ||
                     (diasQueCursa.substr(i, 1) == "2" && curso.Dia.substr(i, 1) == "0") ||
+                    (diasQueCursa.substr(i, 1) == "2" && curso.Dia.substr(i, 1) == "3") ||
                     (diasQueCursa.substr(i, 1) == "0" && curso.Dia.substr(i, 1) == "3") ||
                     (diasQueCursa.substr(i, 1) == "3" && curso.Dia.substr(i, 1) == "0") ||
-                    (diasQueCursa.substr(i, 1) == "0" && curso.Dia.substr(i, 1) == "4") ||
-                    (diasQueCursa.substr(i, 1) == "4" && curso.Dia.substr(i, 1) == "0")) &&
+                    (diasQueCursa.substr(i, 1) == "3" && curso.Dia.substr(i, 1) == "2")) &&
                     ((filtro.substr(i, 1) == '1' && curso.Dia.substr(i, 1) == '1') ||
                     (filtro.substr(i, 1) == '1' && curso.Dia.substr(i, 1) == '2') ||
                     (filtro.substr(i, 1) == '1' && curso.Dia.substr(i, 1) == '3') ||
@@ -66,7 +66,7 @@
                 var j = 0;
                 while ( j < 7 )
                 {
-                    if (diasQueCursa.substr(j, 1) != "0" && diasQueCursa.substr(j, 1) != "4") {
+                    if (diasQueCursa.substr(j, 1) != "0") {
                         cantDias++;
                     }
                     j++;
@@ -83,9 +83,20 @@
                     var diasMateria = curso.Dia.split('');
                     j = 0;
                     while (j < 7) {
-                        if (diasParaCursar[j] == '0' && diasMateria[j] == '1') {
-                               diasParaCursar[j] = '1';
+                        if ((diasParaCursar[j] == '0' && diasMateria[j] == '1') || (diasParaCursar[j] == '3' && diasMateria[j] == '2') || (diasParaCursar[j] == '2' && diasMateria[j] == '3')) {
+                            diasParaCursar[j] = '1';
                         }
+                        else {
+                            if (diasParaCursar[j] == '0' && diasMateria[j] == '2') {
+                                diasParaCursar[j] = '2';
+                            }
+                            else {
+                                if (diasParaCursar[j] == '0' && diasMateria[j] == '3') {
+                                    diasParaCursar[j] = '3';
+                                }
+                            }    
+                        }
+                        
                         j++;
                     }
                     diasQueCursa = diasParaCursar.join('');
