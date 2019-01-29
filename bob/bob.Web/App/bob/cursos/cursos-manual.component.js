@@ -117,6 +117,8 @@
                 var i = 0;
                 while (i < 7 && (((filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '1') ||
                     (filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '0') ||
+                    (filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '2') ||
+                    (filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '3') ||
                     (filtro.substr(i, 1) === '0' && curso.Dia.substr(i, 1) === '0')))) {
 
                     i++;

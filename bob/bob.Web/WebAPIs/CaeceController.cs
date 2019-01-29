@@ -443,7 +443,6 @@ namespace bob.Controllers
             lmateria.Add("1190/10Z"); //Materia con dia en 1
             lmateria.Add("5521/10S"); //Materia con dia en 1
             lmateria.Add("7025/10S"); //Materia con dia en 1
-            lmateria.Add("1620/10Z"); //Materia con dia en 1
             lmateria.Add("3617/10S"); //Materia con dia en 1
             lmateria.Add("2333/16E"); //Materia con dia en 2
             lmateria.Add("2327/16E"); //Materia con dia en 3
