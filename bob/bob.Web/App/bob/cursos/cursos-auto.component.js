@@ -48,6 +48,8 @@
                     (diasQueCursa.substr(i, 1) == "1" && curso.Dia.substr(i, 1) == "0") ||
                     (diasQueCursa.substr(i, 1) == "0" && curso.Dia.substr(i, 1) == "2") ||
                     (diasQueCursa.substr(i, 1) == "2" && curso.Dia.substr(i, 1) == "0") ||
+                    (diasQueCursa.substr(i, 1) == "0" && curso.Dia.substr(i, 1) == "4") ||
+                    (diasQueCursa.substr(i, 1) == "4" && curso.Dia.substr(i, 1) == "0") ||
                     (diasQueCursa.substr(i, 1) == "2" && curso.Dia.substr(i, 1) == "3") ||
                     (diasQueCursa.substr(i, 1) == "0" && curso.Dia.substr(i, 1) == "3") ||
                     (diasQueCursa.substr(i, 1) == "3" && curso.Dia.substr(i, 1) == "0") ||
@@ -55,6 +57,7 @@
                     ((filtro.substr(i, 1) == '1' && curso.Dia.substr(i, 1) == '1') ||
                     (filtro.substr(i, 1) == '1' && curso.Dia.substr(i, 1) == '2') ||
                     (filtro.substr(i, 1) == '1' && curso.Dia.substr(i, 1) == '3') ||
+                    (filtro.substr(i, 1) == '1' && curso.Dia.substr(i, 1) == '4') ||
                     (filtro.substr(i, 1) == '1' && curso.Dia.substr(i, 1) == '0') ||
                     (filtro.substr(i, 1) == '0' && curso.Dia.substr(i, 1) == '0'))) {
 
@@ -76,14 +79,14 @@
                 //var cantDiasMateria = curso.Dia.split('1').length - 1;
                 //cantDias = cantDias + cantDiasMateria;
                 //var cantDiasMateria = curso.Dia.split('1').length - 1;
-                cantDias = cantDias + (curso.Dia.split('1').length - 1) + (curso.Dia.split('2').length - 1) + (curso.Dia.split('3').length - 1);
+                cantDias = cantDias + (curso.Dia.split('1').length - 1) + (curso.Dia.split('2').length - 1) + (curso.Dia.split('3').length - 1) + (curso.Dia.split('4').length - 1);
 
                 if (i == 7 && (cantDias <= filtroCantDias)) {
                     var diasParaCursar = diasQueCursa.split('');
                     var diasMateria = curso.Dia.split('');
                     j = 0;
                     while (j < 7) {
-                        if ((diasParaCursar[j] == '0' && diasMateria[j] == '1') || (diasParaCursar[j] == '3' && diasMateria[j] == '2') || (diasParaCursar[j] == '2' && diasMateria[j] == '3')) {
+                        if ((diasParaCursar[j] == '0' && diasMateria[j] == '1') || (diasParaCursar[j] == '0' && diasMateria[j] == '4') || (diasParaCursar[j] == '3' && diasMateria[j] == '2') || (diasParaCursar[j] == '2' && diasMateria[j] == '3')) {
                             diasParaCursar[j] = '1';
                         }
                         else {
