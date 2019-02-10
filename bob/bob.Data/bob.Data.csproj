@@ -85,6 +85,7 @@
     <Compile Include="Pendientes\Pendientes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Titulo.cs" />
+    <Compile Include="Vencerse\PorVencerse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

@@ -33,7 +33,7 @@
     <button class="btn" ng-click="vm.ultimoIntento()"> Último Intento</button>
 </div>
 
-<table id="finales" class="table-bordered thead-dark">
+<table id="finales" ng-if="vm.finales.length != 0" class="table-bordered thead-dark">
     <thead class="thead">
 
         <tr>

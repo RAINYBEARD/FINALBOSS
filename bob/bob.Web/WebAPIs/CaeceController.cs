@@ -10,6 +10,7 @@ using bob.Data.DTOs;
 using bob.Data.Dictionaries;
 using bob.Data.Finales;
 using bob.Data.Pendientes;
+using bob.Data.Vencerse;
 using Newtonsoft.Json.Linq;
 using bob.CaeceWS;
 using System.Web.Configuration;
@@ -554,6 +555,75 @@ namespace bob.Controllers
         }
 
         #endregion
+
+        #region PorVencerse
+        /// <summary>
+        /// Ejemplo de llamada: http://localhost:52178/Caece/AlertaPorVencer/951282 
+        /// </summary>
+        /// <param name="matricula"></param>
+        [HttpGet]
+        [Route("get-porvencerse/{matricula}")]
+        public List<PorVencerse> AlertaPorVencer(string matricula)
+        {
+            List<PorVencerse> materias = new List<PorVencerse>();
+            var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
+            foreach (KeyValuePair<string, CurValue> entry in curDictionary)
+            {
+                DateTime fechaAuxiliar = DateTime.ParseExact(entry.Value.Fecha, "dd/MM/yyyy", null);
+                string fechaDeCursada = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
+                string fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
+                //Fecha de Vencimiento
+                if (fechaAuxiliar.Month == 6)
+                {
+                    fechaAuxiliar = fechaAuxiliar.AddMonths(6);
+                    fechaAuxiliar = fechaAuxiliar.AddYears(1);
+                    fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
+                }
+                else
+                {
+                    if (fechaAuxiliar.Month == 7)
+                    {
+                        fechaAuxiliar = fechaAuxiliar.AddMonths(5);
+                        fechaAuxiliar = fechaAuxiliar.AddYears(1);
+                        fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
+                    }
+                    else
+                    {
+                        if (fechaAuxiliar.Month == 8)
+                        {
+                            fechaAuxiliar = fechaAuxiliar.AddMonths(4);
+                            fechaAuxiliar = fechaAuxiliar.AddYears(1);
+                            fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
+                        }
+
+                        else
+                        {
+                            if (fechaAuxiliar.Month == 11)
+                            {
+                                fechaAuxiliar = fechaAuxiliar.AddMonths(-4);
+                                fechaAuxiliar = fechaAuxiliar.AddYears(2);
+                                fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
+                            }
+                            else
+                            {
+                                fechaAuxiliar = fechaAuxiliar.AddMonths(-5);
+                                fechaAuxiliar = fechaAuxiliar.AddYears(2);
+                                fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
+                            }
+                        }
+                    }
+                }
+
+                //Chequea si la materia se esta por vencer
+                if (fechaDeVencimiento == DateTime.Now.ToString("MMMM yyyy", new CultureInfo("es-ES")) || fechaDeVencimiento == DateTime.Now.AddMonths(1).ToString("MMMM yyyy", new CultureInfo("es-ES")) || fechaDeVencimiento == DateTime.Now.AddMonths(2).ToString("MMMM yyyy", new CultureInfo("es-ES")) || fechaDeVencimiento == DateTime.Now.AddMonths(3).ToString("MMMM yyyy", new CultureInfo("es-ES")))
+                {
+                    materias.Add(new PorVencerse() { materiaCod = entry.Key, abr = entry.Value.Abr });
+                }
+            }
+            return materias;
+        }
+        #endregion
+
         #region Finales
         /// <summary>
         /// Ejemplo de llamada: http://localhost:52178/Caece/PlanificadorFinales/951282 
@@ -574,7 +644,6 @@ namespace bob.Controllers
                 {
                     string reprobadas = "No";
                     int correlativas = 0;
-                    bool vencimiento = false;
 
                     DateTime fechaAuxiliar = DateTime.ParseExact(entry.Value.Fecha, "dd/MM/yyyy", null);
                     string fechaDeCursada = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
@@ -623,12 +692,6 @@ namespace bob.Controllers
                     correlativas = context.Correlativas.Where(a => a.Titulo_Id == SessionManager.TituloId && a.Plan_Tit == SessionManager.PlanTit && (a.Codigo_Correlativa + "/" + a.Plan_Id) == entry.Key).ToList().Count;
                     //Numero de Correlativas de la Materia Cursada
 
-                    //Chequea si la materia se esta por vencer
-                    if (fechaDeVencimiento == DateTime.Now.ToString("MMMM yyyy", new CultureInfo("es-ES")) || fechaDeVencimiento == DateTime.Now.AddMonths(1).ToString("MMMM yyyy", new CultureInfo("es-ES")))
-                    {
-                        vencimiento = true;
-                    }
-
                     //Si se reprobo o no
 
                     if ((repDictionary != null) && (repDictionary.ContainsKey(entry.Key)))
@@ -649,7 +712,7 @@ namespace bob.Controllers
                     }
 
                     //Usar AutoMapper
-                    cursados.Add(new CursadoStatus() { materiaCod = entry.Key, fechaCursada = fechaDeCursada, fechaVencimiento = fechaDeVencimiento, porVencerse = vencimiento, abr = entry.Value.Abr, descrip = entry.Value.Descrip, nCorrelativas = correlativas, reprobado = reprobadas });
+                    cursados.Add(new CursadoStatus() { materiaCod = entry.Key, fechaCursada = fechaDeCursada, fechaVencimiento = fechaDeVencimiento, abr = entry.Value.Abr, descrip = entry.Value.Descrip, nCorrelativas = correlativas, reprobado = reprobadas });
                 }
                 //Filtro materias que no se pueden rendir aunque esten cursadas
                 int totalCursadas = cursados.Count;

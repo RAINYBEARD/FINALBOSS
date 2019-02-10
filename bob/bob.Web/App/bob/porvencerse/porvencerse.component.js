@@ -6,13 +6,13 @@
         controller: function (caeceService) {
             var vm = this;
             vm.matricula;
-            vm.finales;
+            vm.porvencerse;
             vm.submit = submit;
 
             function submit() {
 
-                caeceService.getFinales(vm.matricula).then(function (response) {
-                    vm.finales = response;
+                caeceService.getPorVencerse(vm.matricula).then(function (response) {
+                    vm.porvencerse = response;
                 });
             }
 

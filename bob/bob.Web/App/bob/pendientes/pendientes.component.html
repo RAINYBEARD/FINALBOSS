@@ -1,7 +1,7 @@
 ﻿<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()">
 
 <div ng-if="vm.pendientes.length != 0">
-    <a href="#" data-toggle="tooltip" title="Las materias pendientes son aquellas que se aprobaron por equivalencia pero por diferencias de planes no tienen una correlativa previa aprobada, una vez que se aprueben todas esta pasa a ser aprobada">MATERIAS EN ESTADO PENDIENTES </a>
+    <h2 data-toggle="tooltip" title="Las materias pendientes son aquellas que se aprobaron por equivalencia pero por diferencias de planes no tienen una correlativa previa aprobada, una vez que se aprueben todas esta pasa a ser aprobada">MATERIAS EN ESTADO PENDIENTES </h2>
 
     <table id="pendientes" class="table-bordered thead-dark">
         <thead class="thead">

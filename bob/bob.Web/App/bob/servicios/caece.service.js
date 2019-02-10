@@ -40,6 +40,20 @@
                 });
         };
 
+        self.getPendientes = function (matricula) {
+            return $http.get(apiBase + 'get-pendientes' + '/' + matricula)
+                .then(function (result) {
+                    return result.data;
+                });
+        };
+
+        self.getPorVencerse = function (matricula) {
+            return $http.get(apiBase + 'get-porvencerse' + '/' + matricula)
+                .then(function (result) {
+                    return result.data;
+                });
+        };
+
         return this;
     });
 })();
