@@ -1,6 +1,75 @@
 ﻿<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()">
 <style>
-    
+    .btnfinal {
+        background: #1AAB8A;
+        padding: 5px 35px;
+        color: #fff;
+        float: left;
+        position: relative;
+        height: 35px;
+        font-size: 12px;
+        cursor: pointer;
+        outline: none;
+    }
+
+        .btn:hover {
+            color: #DDDDDD;
+            border-color: #DDDDDD;
+        }
+
+        .btn:active {
+            top: 2px;
+        }
+
+    .btn:focus {
+        border-color: currentColor;
+        outline: 0;
+    }
+
+    #finales table {
+        text-align: center;
+        position: fixed;
+        border-collapse: collapse;
+        padding: 10px;
+        border: 0;
+    }
+
+
+    #finales th {
+        text-align: center;
+        background-color: #1AAB8A;
+        color: #fff;
+        font-size: 16px;
+        padding: 10px;
+        font-weight: bold;
+        border: 0;
+    }
+
+    #finales td {
+        padding: 10px;
+    }
+
+    #finales tbody:nth-child(even) {
+        background-color: #bae5db;
+        color: black;
+    }
+
+    #finales tbody:nth-child(odd) {
+        background-color: #30b395;
+        color: black;
+    }
+
+    #finales tr:hover {
+        background-color: antiquewhite;
+    }
+
+    .sinCorrelativas {
+        color: green;
+    }
+
+    .sinUnlocks {
+        color: red;
+    }
     .correlativasCursadas {
         color: red;
         font-weight: bold;
@@ -15,10 +84,10 @@
 
 <h2>FINALES</h2>
 <div id="myBtnContainer">
-    <button class="btn" ng-click="vm.vencimiento()"> Vencimiento</button>
-    <button class="btn" ng-click="vm.numeroCorrelativas()"> Número de Correlativas</button>
-    <button class="btn" ng-click="vm.equivalenciasParciales()"> Equivalencias Parciales</button>
-    <button class="btn" ng-click="vm.ultimoIntento()"> Último Intento</button>
+    <button class="btnfinal" ng-click="vm.vencimiento()"> Vencimiento</button>
+    <button class="btnfinal" ng-click="vm.numeroCorrelativas()"> Número de Correlativas</button>
+    <button class="btnfinal" ng-click="vm.equivalenciasParciales()"> Equivalencias Parciales</button>
+    <button class="btnfinal" ng-click="vm.ultimoIntento()"> Último Intento</button>
 </div>
 
 <table id="finales" ng-if="vm.finales.length != 0" class="table-bordered thead-dark">
@@ -51,9 +120,6 @@
             </td>
         </tr>
     </tbody>
-    <tr ng-if="vm.filtro.length == 0">
-        Sin finales disponibles en esta categoria
-    </tr>
 </table>
 <div ng-if="vm.finales.length == 0"> Sin Finales Disponibles por Rendir</div>
 
