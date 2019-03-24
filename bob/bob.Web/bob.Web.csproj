@@ -191,6 +191,7 @@
     <Content Include="App\bob\cursos\cursos.component.html" />
     <Content Include="App\bob\estadisticas\estadisticas.component.js" />
     <Content Include="App\bob\estadisticas\estadisticas.component.html" />
+    <Content Include="App\bob\finales\finales.component.css" />
     <Content Include="App\bob\finales\finales.component.js" />
     <Content Include="App\bob\finales\finales.component.html" />
     <Content Include="App\bob\imagenes\logocaece_blanco.png" />
