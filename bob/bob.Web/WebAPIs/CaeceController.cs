@@ -323,11 +323,27 @@ namespace bob.Controllers
             using (var context = new CaeceDBContext())
             {
                 //Hardcodeo para probar materias con 2 o 3
-                if (materiaid == 2804)
+                if (materiaid == 1427)
+                {
+                    return "Materia con 1";
+                }
+                if (materiaid == 2076)
+                {
+                    return "Materia2 con 1";
+                }
+                if (materiaid == 1618)
+                {
+                    return "Materia3 con 1";
+                }
+                if (materiaid == 2089)
+                {
+                    return "Materia2 con 4";
+                }
+                if (materiaid == 4834)
                 {
                     return "Materia con 2";
                 }
-                if (materiaid == 2333)
+                if (materiaid == 1681)
                 {
                     return "Materia2 con 2";
                 }
@@ -339,26 +355,27 @@ namespace bob.Controllers
                 {
                     return "Materia4 con 2";
                 }
-                if (materiaid == 2327)
-                {
-                    return "Materia2 con 3";
-                }
-                if (materiaid == 2332)
-                {
-                    return "Materia3 con 3";
-                }
-                if (materiaid == 2806)
+                if (materiaid == 2802)
                 {
                     return "Materia con 3";
                 }
-                if (materiaid == 1779)
+                if (materiaid == 2910)
+                {
+                    return "Materia2 con 3";
+                }
+                if (materiaid == 1434)
+                {
+                    return "Materia3 con 3";
+                }
+                if (materiaid == 2090)
                 {
                     return "Materia con 4";
                 }
-                if (materiaid == 8491)
+                if (materiaid == 7797)
                 {
                     return "Materia con 1 y 4";
                 }
+
                 return context.Materias_Descripciones.First(x => x.Materia_Id == materiaid).Mat_Des;
             }
         }
@@ -445,18 +462,20 @@ namespace bob.Controllers
             // Hardcodeo las materias que tienen 2 y 3 en el dia para probar
             //if (SessionManager.DiccionarioCursos.ContainsKey("2804/04E") || SessionManager.DiccionarioCursos.ContainsKey("2806/04E"))
             //{
-            lmateria.Add("2804/04E"); //Materia con dia en 2
-            lmateria.Add("2806/04E"); //Materia con dia en 3
+            lmateria.Add("4834/04E"); //Materia con dia en 2
+            lmateria.Add("2802/04E"); //Materia con dia en 3
             lmateria.Add("1620/10S"); //Materia "SISTEMAS OPERATIVOS I" con dia en 1
-            lmateria.Add("1190/10Z"); //Materia con dia en 1
-            lmateria.Add("5521/10S"); //Materia con dia en 1
-            lmateria.Add("7025/10S"); //Materia con dia en 1
-            lmateria.Add("3617/10S"); //Materia con dia en 1
-            lmateria.Add("2333/16E"); //Materia con dia en 2
-            lmateria.Add("2327/16E"); //Materia con dia en 3
-            lmateria.Add("2332/16E"); //Materia con dia en 3
-            lmateria.Add("1779/05Z"); //Materia con dia en 4
-            lmateria.Add("8491/05A"); //Materia con dia en 1 y 4
+            lmateria.Add("1427/02A"); //Materia con dia en 1
+
+            lmateria.Add("2076/10S"); //Materia con dia en 1
+            lmateria.Add("1618/10S"); //Materia con dia en 1
+            lmateria.Add("2089/10S"); //Materia con dia en 1
+
+            lmateria.Add("1681/04E"); //Materia con dia en 2
+            lmateria.Add("2910/04E"); //Materia con dia en 3
+            lmateria.Add("1434/02A"); //Materia con dia en 3
+            lmateria.Add("2090/10S"); //Materia con dia en 4
+            lmateria.Add("7797/04P"); //Materia con dia en 1 y 4
             
 
             foreach (var materia in lmateria)
