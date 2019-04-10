@@ -9,7 +9,7 @@
     <button class="btnfinal" ng-click="vm.ultimoIntento()"> Último Intento</button>
 </div>
 
-<table id="finales" ng-if="vm.finales.length != 0" class="table-bordered thead-dark">
+<table id="finales" ng-if="vm.finales.length != 0" class="table-bordered table-responsive thead-dark">
     <thead class="thead">
 
         <tr>
@@ -39,7 +39,7 @@
             </td>
         </tr>
     </tbody>
-</table>
-<div ng-if="vm.finales.length == 0"> Sin Finales Disponibles por Rendir</div>
+</table> 
+<p ng-if="vm.finales.length == 0" margin: 35px;> Sin Finales Disponibles por Rendir</p>
 
 
