@@ -754,9 +754,11 @@ namespace bob.Controllers
         [HttpGet]
         [Route("get-arbol/{matricula}")]
 
-        public List<RegCorrelativa> GetArbol(string matricula)
+        public Arbol GetArbol(string matricula)
         {
-            var plan = new List<RegCorrelativa>();
+            Arbol arbol = new Arbol();
+            arbol.nodos = new List<Nodo>();
+            arbol.arcos = new List<Arcos>();
 
             var JSON = caeceWS.getPlanEstudioJSON(_token, " " + matricula);
             var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
@@ -766,23 +768,38 @@ namespace bob.Controllers
             {
                foreach (PlanEstudio dato in PlanDeEstudio)
                {
-                   if (dato.materia_id != dato.codigo_correlativa)
-                   {
-                       var reg = new RegCorrelativa();
+                    //var id = dato.materia_id.ToString();
+                    var resultado = arbol.nodos.Exists(a => a.materia_id == dato.materia_id);
 
-                       reg.materia_id = dato.materia_id.ToString();
+                   if (resultado == false)
+                   {
+                       var reg = new Nodo();
+
+                       reg.materia_id = dato.materia_id;
                        reg.plan_tit = dato.plan_tit;
                        reg.titulo_id = dato.titulo_id;
                        reg.plan_id = dato.plan_id;
                        reg.mat_des = dato.mat_des;
                        reg.mat_anio = dato.mat_anio;
                        reg.mat_cuatrim = dato.mat_cuatrim;
-                       reg.codigo_correlativa = dato.codigo_correlativa;
                        reg.abr_titulo = dato.abr_titulo;
 
-                       plan.Add(reg);
+                       arbol.nodos.Add(reg);
 
                    }
+
+                   if (dato.materia_id != dato.codigo_correlativa)
+                    {
+                        //var id_materia = dato.materia_id.ToString();
+                        //var id_correlativa = dato.codigo_correlativa.ToString();
+
+                        var reg = new Arcos();  
+                        
+                        reg.materia_id_source = dato.codigo_correlativa;
+                        reg.materia_id_target = dato.materia_id;
+
+                        arbol.arcos.Add(reg);
+                    }
 
                }
 
@@ -799,31 +816,32 @@ namespace bob.Controllers
             var NoCurDictionary = SessionManager.DiccionarioNoCursadas as NotCurDictionary;
             var PenDictionary = SessionManager.DiccionarioPendientes as PenDictionary;
 
-            foreach (RegCorrelativa dato in plan)
+            foreach (Nodo dato in arbol.nodos)
             {
-                if (aprDictionary.ContainsKey(dato.materia_id))
+                var mat_id = dato.materia_id.ToString();
+
+                if (aprDictionary.ContainsKey(mat_id))
                 {
-                    dato.descrip = aprDictionary[dato.materia_id].Descrip;
+                    dato.descrip = aprDictionary[mat_id].Descrip;
                 }
                 
-                if (curDictionary.ContainsKey(dato.materia_id))
+                if (curDictionary.ContainsKey(mat_id))
                 {
-                  dato.descrip = curDictionary[dato.materia_id].Descrip;
+                  dato.descrip = curDictionary[mat_id].Descrip;
                 }
                    
-                if (NoCurDictionary.ContainsKey(dato.materia_id))
+                if (NoCurDictionary.ContainsKey(mat_id))
                 {
-                  dato.descrip = NoCurDictionary[dato.materia_id].Descrip;
+                  dato.descrip = NoCurDictionary[mat_id].Descrip;
                 }
                 
-                if (PenDictionary.ContainsKey(dato.materia_id))
+                if (PenDictionary.ContainsKey(mat_id))
                 {
-                  dato.descrip = PenDictionary[dato.materia_id].Descrip;
+                  dato.descrip = PenDictionary[mat_id].Descrip;
                 }
                             
             }
-            return plan;
-
+            return arbol;
 
         }
         #endregion
@@ -831,10 +849,20 @@ namespace bob.Controllers
     }
 }
 
-
-public class RegCorrelativa
+public class Arbol
 {
-    public string materia_id { get; set; }
+    public List<Nodo> nodos { get; set; }
+    public List<Arcos> arcos { get; set; }
+}
+public class Arcos
+{
+    public int materia_id_source { get; set; }
+    public int materia_id_target { get; set; }
+}
+
+public class Nodo
+{
+    public int materia_id { get; set; }
     public string plan_tit { get; set; }
     public int titulo_id { get; set; }
     public string plan_id { get; set; }
@@ -842,7 +870,6 @@ public class RegCorrelativa
     public int mat_anio { get; set; }
     public int mat_cuatrim { get; set; }
     public string descrip { get; set; }
-    public int codigo_correlativa { get; set; }
     public string abr_titulo { get; set; }
 }
 
