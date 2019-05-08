@@ -43,13 +43,13 @@
     
 
         <br>
-    
+    <svg id="ungrafico"></svg>
         Porcentaje Aprobado de la carrera |  Porcentaje Cursado de la carrera <br>
         <script>
             var width = 400;
             var height = 250;
             var colors = d3.scaleOrdinal(d3.schemeDark2);
-            var svg = d3.select("body").append("svg")
+            var svg = d3.select("body").select("#ungrafico")
                 .attr("width", width).attr("height", height)
                 .style("background", "pink");
 
@@ -96,19 +96,20 @@
 
 
         </script>
-
+        <svg id="otrografico"></svg>
         <script>
             var width = 400;
             var height = 250;
             var colors = d3.scaleOrdinal(d3.schemeDark2);
-            var svg = d3.select("body").append("svg")
+            var svg1 = d3.select("body").select("#otrografico")
                 .attr("width", width).attr("height", height)
                 .style("background", "pink");
 
-            var details = [{
-                grade: "Cursado", number: 60.5
-            }, { grade: "No Cursado", number: 39.5 }];
-
+            var details = [
+                { grade: "Cursado", number: 60.5 },
+                { grade: "No Cursado", number: 39.5 }
+            ];
+            x => x.number
             var data = d3.pie().sort(null).value(function (d) { return d.number; })(details);
             console.log(data);
 
@@ -118,7 +119,7 @@
                 .padAngle(.05)
                 .padRadius(40);
 
-            var sections = svg.append("g").attr("transform", "translate(150,125)")
+            var sections = svg1.append("g").attr("transform", "translate(150,125)")
                 .selectAll("path").data(data);
             sections.enter().append("path").attr("d", segments).attr("fill", function
                 (d) { return colors(d.data.number); });
@@ -130,7 +131,7 @@
                     .text(d.data.number);
             });
 
-            var legends = svg.append("g").attr("transform", "translate(200,150)")
+            var legends = svg1.append("g").attr("transform", "translate(200,150)")
                 .selectAll(".legends").data(data);
 
             var legends = legends.enter().append("g").classed("legends", true).attr("transform", function (d, i) {

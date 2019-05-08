@@ -15,6 +15,7 @@ using System.Web.Configuration;
 using bob.Mocks;
 using bob.Helpers;
 using System.Globalization;
+using Newtonsoft.Json;
 
 namespace bob.Controllers
 {
@@ -754,7 +755,7 @@ namespace bob.Controllers
         [HttpGet]
         [Route("get-arbol/{matricula}")]
 
-        public Arbol GetArbol(string matricula)
+        public string GetArbol(string matricula)
         {
             Arbol arbol = new Arbol();
             arbol.nodos = new List<Nodo>();
@@ -841,7 +842,8 @@ namespace bob.Controllers
                 }
                             
             }
-            return arbol;
+            var json = JsonConvert.SerializeObject(arbol);
+            return json;
 
         }
         #endregion

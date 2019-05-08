@@ -83,13 +83,17 @@
     function tickActions() {
         node
             .attr("cx", function (d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
-            .attr("cy", function (d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
+            .attr("cy", function (d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });     
 
         link
             .attr("x1", function (d) { return d.source.x; })
             .attr("y1", function (d) { return d.source.y; })
             .attr("x2", function (d) { return d.target.x; })
             .attr("y2", function (d) { return d.target.y; });
+
+        label
+            .attr("x", function (d) { return d.x; })
+            .attr("y", function (d) { return d.y; });
     }
 
     simulation.on("tick", tickActions);
@@ -108,5 +112,13 @@
     }
 
     simulation.force("splitting", splitting_force);
+
+    var label = svg.append("g")
+        .selectAll("text")
+        .data(nodes_data)
+        .enter().append("text")
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', 'central')
+        .text(function (d) { return d.name; });
 
 </script>
