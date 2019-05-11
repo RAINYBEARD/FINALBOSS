@@ -1,8 +1,8 @@
 ﻿<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()">
 
 <div ng-if="vm.pendientes.length != 0">
-    <h2>MATERIAS PENDIENTES</h2>
-    <table id="pendientes" class="table-striped table-responsive table-bordered thead-dark">
+    <h2 class="card-header">MATERIAS PENDIENTES</h2>
+    <table id="pendientes" class="table-striped table-responsive table-bordered thead-dark card-body">
         <thead class="thead">
             <tr>
                 <th scope="col">Materia</th>
