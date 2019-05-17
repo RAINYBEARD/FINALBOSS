@@ -1,0 +1,44 @@
+﻿<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()">
+<h2>Porcentaje Aprobado de la carrera</h2>
+
+<svg id="ungrafico"></svg>
+<script>
+            var width = 760;
+            var height = 250;
+            var colors = d3.scaleOrdinal(d3.schemeDark2);
+            var svg = d3.select("body").select("#ungrafico")
+                .attr("width", width).attr("height", height)
+                .style("background", "pink");
+            var details = [{
+                grade: "Aprobado", number: parseFloat("{{ vm.aprobadas }}")
+            }, { grade: "No Aprobado", number: parseFloat("{{ vm.noAprobadas }}") }];
+            var data = d3.pie().sort(null).value(function (d) { return d.number; })(details);
+            console.log(data);
+            var segments = d3.arc()
+                .innerRadius(0)
+                .outerRadius(100)
+                .padAngle(.05)
+                .padRadius(40);
+            var sections = svg.append("g").attr("transform", "translate(380,125)")
+                .selectAll("path").data(data);
+            sections.enter().append("path").attr("d", segments).attr("fill", function
+                (d) {return colors(d.data.number);});
+            var content = d3.select("g").selectAll("text").data(data);
+            content.enter().append("text").classed("inside", true).each(function (d) {
+                var center = segments.centroid(d);
+                d3.select(this).attr("x", center[0]).attr("y", center[1])
+                    .text(d.data.number);
+            });
+            var legends = svg.append("g").attr("transform", "translate(600,150)")
+                .selectAll(".legends").data(data);
+            var legends = legends.enter().append("g").classed("legends", true).attr("transform", function (d, i) {
+                return "translate(0," + (i + 1) * 30 + " )";
+            });
+            legends.append("rect").attr("width", 10).attr("height", 10).attr("fill", function (d) {
+                return colors(d.data.number);
+            });
+            legends.append("text").classed("label", true).text(function (d) { return d.data.grade; })
+                .attr("fill", function (d) { return colors(d.data.number); })
+                .attr("x", 10)
+                .attr("y", 10);
+</script>

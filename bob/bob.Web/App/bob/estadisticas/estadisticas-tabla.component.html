@@ -1,0 +1,16 @@
+﻿<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()"><br>
+<div>    
+    <table>
+        <thead class="thead">
+            <tr>
+                <th>Cantidad de materias aprobadas por año</th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="materia in vm.materias.Lista">
+            <tr>
+                <td>{{materia.Anio}}</td>
+                <td>{{materia.Aprobadas}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

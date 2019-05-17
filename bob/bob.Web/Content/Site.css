@@ -1,6 +1,6 @@
 ﻿body {
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
 }
 
 .barra-titulo {
@@ -28,32 +28,32 @@
     font-size: 20px;
 }
 
-.btn-j2:active, .active, .btn-j2:hover {
+    .btn-j2:active, .active, .btn-j2:hover {
         background-color: red;
         color: white;
         text-decoration-line: none;
         text-decoration-style: solid;
         text-decoration-color: currentcolor;
-}
+    }
 
 .btn-j1 {
     color: #747373;
     font-size: 25px;
 }
 
-.btn-j1:hover {
+    .btn-j1:hover {
         background-color: #ffffff;
         color: #000000;
         text-decoration-line: none;
         text-decoration-style: solid;
         text-decoration-color: currentcolor;
-}
+    }
 
-.btn-j1:focus {
+    .btn-j1:focus {
         color: #4CAF50;
         border-color: currentColor;
         background-color: white;
-}
+    }
 
 .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {
     color: #fff;
