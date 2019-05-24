@@ -40,6 +40,13 @@
                 });
         };
 
+        self.getArbol = function (matricula) {
+            return $http.get(apiBase + 'get-arbol' + '/' + matricula)
+                .then(function (result) {
+                    return result.data;
+                });
+        };
+
         return this;
     });
 })();

@@ -15,6 +15,7 @@ using System.Web.Configuration;
 using bob.Mocks;
 using bob.Helpers;
 using System.Globalization;
+using Newtonsoft.Json;
 
 namespace bob.Controllers
 {
@@ -134,14 +135,10 @@ namespace bob.Controllers
                             aprDictionary.Add(matcod, apr);
                             break;
                         case ("CUR"):
+                        case ("EQP"):
                             CurValue cur = new CurValue();
                             AutoMapper.Mapper.Map(dato, cur);
                             curDictionary.Add(matcod, cur);
-                            break;
-                        case ("EQP"):
-                            CurValue cur2 = new CurValue();
-                            AutoMapper.Mapper.Map(dato, cur2);
-                            curDictionary.Add(matcod, cur2);
                             break;
                         case ("PEN"):
                             PenValue equiv = new PenValue();
@@ -212,7 +209,7 @@ namespace bob.Controllers
                         {
                             var listCorrel = new List<CorrValue>();
                             listCorrel.Add(corr);
-                            dicCorrelativas.Add(correlativa.Materia_Id,listCorrel);
+                            dicCorrelativas.Add(correlativa.Materia_Id, listCorrel);
                         }
                         else
                         {
@@ -250,7 +247,7 @@ namespace bob.Controllers
             string materiaAnt = "";
 
             System.Diagnostics.Debug.WriteLine("Entro en el controller Cursos");
-            
+
             if (SessionManager.DiccionarioCursadas != null)
             {
 
@@ -387,7 +384,7 @@ namespace bob.Controllers
                     cursomateria.Plan_Id = curso.Plan_Id;
                     cursomateria.Turno_Id = curso.Turno_Id;
                     cursomateria.Abr = ObtenerNombreMateria(int.Parse(materiaid));
-                    
+
                     // Agrego a la lista los cursos a los cuales se puede inscribir
                     materiasACursarEsteCuatri.Add(cursomateria);
                 }
@@ -577,33 +574,33 @@ namespace bob.Controllers
                             }
                         }
                     }
-                    correlativas = context.Correlativas.Where(a => a.Titulo_Id == SessionManager.TituloId && a.Plan_Tit == SessionManager.PlanTit && ( a.Codigo_Correlativa + "/" + a.Plan_Id) == entry.Key).ToList().Count;
+                    correlativas = context.Correlativas.Where(a => a.Titulo_Id == SessionManager.TituloId && a.Plan_Tit == SessionManager.PlanTit && (a.Codigo_Correlativa + "/" + a.Plan_Id) == entry.Key).ToList().Count;
                     //Numero de Correlativas de la Materia Cursada
 
                     //Chequea si la materia se esta por vencer
                     if (fechaDeVencimiento == DateTime.Now.ToString("MMMM yyyy", new CultureInfo("es-ES")) || fechaDeVencimiento == DateTime.Now.AddMonths(1).ToString("MMMM yyyy", new CultureInfo("es-ES")))
                     {
                         vencimiento = true;
-                    }             
-                    
-                    //Si se reprobo o no
-                   
-                        if ((repDictionary != null) && (repDictionary.ContainsKey(entry.Key)))
-                        {
-                            switch (entry.Value.Descrip)
-                            {
-                                case ("EQP"):
-                                    reprobadas = "Si";
-                                    break;
-                                default:
-                                    if (DateTime.ParseExact(repDictionary[entry.Key].Fecha, "dd/MM/yyyy", null) > DateTime.ParseExact(entry.Value.Fecha, "dd/MM/yyyy", null))
-                                    {
-                                        reprobadas = "Si";
-                                    }
-                                    break;
+                    }
 
-                            }
+                    //Si se reprobo o no
+
+                    if ((repDictionary != null) && (repDictionary.ContainsKey(entry.Key)))
+                    {
+                        switch (entry.Value.Descrip)
+                        {
+                            case ("EQP"):
+                                reprobadas = "Si";
+                                break;
+                            default:
+                                if (DateTime.ParseExact(repDictionary[entry.Key].Fecha, "dd/MM/yyyy", null) > DateTime.ParseExact(entry.Value.Fecha, "dd/MM/yyyy", null))
+                                {
+                                    reprobadas = "Si";
+                                }
+                                break;
+
                         }
+                    }
 
                     //Usar AutoMapper
                     cursados.Add(new CursadoStatus() { materiaCod = entry.Key, fechaCursada = fechaDeCursada, fechaVencimiento = fechaDeVencimiento, porVencerse = vencimiento, abr = entry.Value.Abr, descrip = entry.Value.Descrip, nCorrelativas = correlativas, reprobado = reprobadas });
@@ -614,7 +611,7 @@ namespace bob.Controllers
                 while (z < totalCursadas)
                 {
                     CursadoStatus cur = cursados[z];
-                    var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();                 
+                    var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
                     foreach (Correlativa corr in correlativaAuxiliar)
                     {
                         string materia_correlativa = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
@@ -668,7 +665,7 @@ namespace bob.Controllers
                             }
                             else
                             {
-                                if (curDictionary.ContainsKey(materiaNoCursada)) 
+                                if (curDictionary.ContainsKey(materiaNoCursada))
                                 {
                                     abreviatura = curDictionary[materiaNoCursada].Abr;
                                 }
@@ -679,7 +676,7 @@ namespace bob.Controllers
                             }
                             correlativ2.Add(new CorrelativasCursadas() { materiaCod = materiaNoCursada, abr = abreviatura });
                         }
-                       
+
                     }
                     cursados[i].correlativasCursadas = correlativ;
                     cursados[i].correlativasFuturas = correlativ2;
@@ -692,11 +689,11 @@ namespace bob.Controllers
 
                 throw;
             }
-            
+
         }
         #endregion
 
-        
+
         #region Estadisticas
         /// <summary>
         /// Devuelvo todas las estadisticas en una sola estructura
@@ -746,7 +743,136 @@ namespace bob.Controllers
 
         }
         #endregion
+
+
+        #region Arbol
+
+        /// <summary>
+        /// Devuelvo lista donde cada registro es una materia (nodo) y una correlativa
+        /// </summary>
+        /// <param name="matricula"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("get-arbol/{matricula}")]
+
+        public string GetArbol(string matricula)
+        {
+            Arbol arbol = new Arbol();
+            arbol.nodos = new List<Nodo>();
+            arbol.arcos = new List<Arcos>();
+
+            var JSON = caeceWS.getPlanEstudioJSON(_token, " " + matricula);
+            var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
+
+
+            try
+            {
+               foreach (PlanEstudio dato in PlanDeEstudio)
+               {
+                    //var id = dato.materia_id.ToString();
+                    var resultado = arbol.nodos.Exists(a => a.materia_id == dato.materia_id);
+
+                   if (resultado == false)
+                   {
+                       var reg = new Nodo();
+
+                       reg.materia_id = dato.materia_id;
+                       reg.plan_tit = dato.plan_tit;
+                       reg.titulo_id = dato.titulo_id;
+                       reg.plan_id = dato.plan_id;
+                       reg.mat_des = dato.mat_des;
+                       reg.mat_anio = dato.mat_anio;
+                       reg.mat_cuatrim = dato.mat_cuatrim;
+                       reg.abr_titulo = dato.abr_titulo;
+
+                       arbol.nodos.Add(reg);
+
+                   }
+
+                   if (dato.materia_id != dato.codigo_correlativa)
+                    {
+                        //var id_materia = dato.materia_id.ToString();
+                        //var id_correlativa = dato.codigo_correlativa.ToString();
+
+                        var reg = new Arcos();  
+                        
+                        reg.materia_id_source = dato.codigo_correlativa;
+                        reg.materia_id_target = dato.materia_id;
+
+                        arbol.arcos.Add(reg);
+                    }
+
+               }
+
+
+            }
+            catch (Exception e)
+            {
+               throw;
+            }
+
+            //SetSesionUsuario(matricula);
+            var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
+            var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
+            var NoCurDictionary = SessionManager.DiccionarioNoCursadas as NotCurDictionary;
+            var PenDictionary = SessionManager.DiccionarioPendientes as PenDictionary;
+
+            foreach (Nodo dato in arbol.nodos)
+            {
+                var mat_id = dato.materia_id.ToString();
+
+                if (aprDictionary.ContainsKey(mat_id))
+                {
+                    dato.descrip = aprDictionary[mat_id].Descrip;
+                }
+                
+                if (curDictionary.ContainsKey(mat_id))
+                {
+                  dato.descrip = curDictionary[mat_id].Descrip;
+                }
+                   
+                if (NoCurDictionary.ContainsKey(mat_id))
+                {
+                  dato.descrip = NoCurDictionary[mat_id].Descrip;
+                }
+                
+                if (PenDictionary.ContainsKey(mat_id))
+                {
+                  dato.descrip = PenDictionary[mat_id].Descrip;
+                }
+                            
+            }
+            var json = JsonConvert.SerializeObject(arbol);
+            return json;
+
+        }
+        #endregion
+
     }
+}
+
+public class Arbol
+{
+    public List<Nodo> nodos { get; set; }
+    public List<Arcos> arcos { get; set; }
+}
+public class Arcos
+{
+    public int materia_id_source { get; set; }
+    public int materia_id_target { get; set; }
+}
+
+public class Nodo
+{
+    public int materia_id { get; set; }
+    public string plan_tit { get; set; }
+    public int titulo_id { get; set; }
+    public string plan_id { get; set; }
+    public string mat_des { get; set; }
+    public int mat_anio { get; set; }
+    public int mat_cuatrim { get; set; }
+    public string descrip { get; set; }
+    public string abr_titulo { get; set; }
 }
 
 

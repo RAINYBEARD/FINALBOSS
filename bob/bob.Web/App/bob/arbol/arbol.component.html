@@ -1,3 +1,124 @@
-﻿<div class="row">
+﻿<!--<div class="row">
         <img src="/App/bob/imagenes/cajaarbol.png" width="1500" height="350" alt="Arbol de Materias" />
-</div>
+</div>-->
+
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+    .links line {
+        stroke: #999;
+        stroke-opacity: 0.6;
+    }
+
+    .nodes circle {
+        stroke: #fff;
+        stroke-width: 1.5px;
+    }
+</style>
+<svg width="960" height="600"></svg>
+
+<script>
+    var radius = 15;
+
+    var svg = d3.select("svg"),
+        width = +svg.attr("width"),
+        height = +svg.attr("height");
+
+    var nodes_data = [
+        { "name": "Travis", "sex": "M" },
+        { "name": "Rake", "sex": "M" },
+        { "name": "Diana", "sex": "F" },
+        { "name": "Rachel", "sex": "F" },
+        { "name": "Shawn", "sex": "M" },
+        { "name": "Emerald", "sex": "F" }
+    ]
+
+    var simulation = d3.forceSimulation()
+        .nodes(nodes_data);
+
+    simulation
+        .force("charge_force", d3.forceManyBody())
+        .force("center_force", d3.forceCenter(width / 2, height / 2));
+
+    var node = svg.append("g")
+        .attr("class", "nodes")
+        .selectAll("circle")
+        .data(nodes_data)
+        .enter()
+        .append("circle")
+        .attr("r", radius)
+        .attr("fill", circleColour);
+
+    function circleColour(d) {
+        if (d.sex == "M") {
+            return "blue";
+        } else {
+            return "pink";
+        }
+    }
+
+    var links_data = [
+        { "source": "Travis", "target": "Rake" },
+        { "source": "Diana", "target": "Rake" },
+        { "source": "Diana", "target": "Rachel" },
+        { "source": "Rachel", "target": "Rake" },
+        { "source": "Rachel", "target": "Shawn" },
+        { "source": "Emerald", "target": "Rachel" }
+    ]
+
+    var link_force = d3.forceLink(links_data)
+        .id(function (d) { return d.name; })
+
+    simulation.force("links", link_force)
+
+    var link = svg.append("g")
+        .attr("class", "links")
+        .selectAll("line")
+        .data(links_data)
+        .enter().append("line")
+        .attr("stroke-width", 2);
+
+    function tickActions() {
+        node
+            .attr("cx", function (d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
+            .attr("cy", function (d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });     
+
+        link
+            .attr("x1", function (d) { return d.source.x; })
+            .attr("y1", function (d) { return d.source.y; })
+            .attr("x2", function (d) { return d.target.x; })
+            .attr("y2", function (d) { return d.target.y; });
+
+        label
+            .attr("x", function (d) { return d.x; })
+            .attr("y", function (d) { return d.y; });
+    }
+
+    simulation.on("tick", tickActions);
+
+    function splitting_force() {
+        for (var i = 0, n = nodes_data.length; i < n; ++i) {
+            curr_node = nodes_data[i];
+            if (curr_node.sex == "M") {
+                curr_node.x += 2;
+                curr_node.y += 1;
+            } else if (curr_node.sex == "F") {
+                curr_node.x -= 2;
+                curr_node.y -= 1;
+            }
+        }
+    }
+
+    simulation.force("splitting", splitting_force);
+
+    var label = svg.append("g")
+        .selectAll("text")
+        .data(nodes_data)
+        .enter().append("text")
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', 'central')
+        .text(function (d) { return d.name; });
+
+</script>
