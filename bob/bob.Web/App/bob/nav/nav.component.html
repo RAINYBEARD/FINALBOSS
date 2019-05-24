@@ -1,15 +1,31 @@
-﻿<div class="d-none d-md-block" data-toggle="buttons">
-    <ul class="main__menu">
-        <li class="main__menu__item">
-            <a class="btn btn-primary btn-j1" ui-sref='estadisticas'>Estadisticas</a>
+﻿
+<!--<div class="topnav" id="myTopnav" data-toggle="buttons">
+            <a ui-sref='estadisticas'>Estadisticas</a>
             &nbsp; &nbsp;
-        </li>
-        <li class="main__menu__item">
-            <a class="btn btn-primary btn-j1" ui-sref='cursos'>Cursos</a>
+            <div class="dropdown">
+                <a class="dropbtn">
+                    Cursos
+                </a>
+                <div class="dropdown-content">
+                    <a ui-sref="cursos.auto">Selecci&oacute;n Autom&aacute;tica</a>
+                    <a ui-sref="cursos.manual">Selecci&oacute;n Manual</a>
+                </div>
+            </div>
             &nbsp; &nbsp;
-        </li>
-        <li class="main__menu__item">
-            <a class="btn btn-primary btn-j1" ui-sref='finales'>Finales</a>
-        </li>
-    </ul>
+            <a ui-sref='finales'>Finales</a>
+</div>-->
+
+<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+    <button type="button" class="btn btn-info" ui-sref='estadisticas'>Estadisticas</button>
+    <div class="btn-group" role="group">
+        <button id="btnGroupDropCursos" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            Cursos
+        </button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDropCursos">
+            <a class="dropdown-item" ui-sref="cursos.auto">Selecci&oacute;n Autom&aacute;tica</a>
+            <a class="dropdown-item" ui-sref="cursos.manual">Selecci&oacute;n Manual</a>
+        </div>
+    </div>
+    <button type="button" class="btn btn-info" ui-sref='finales'>Finales</button>
 </div>
