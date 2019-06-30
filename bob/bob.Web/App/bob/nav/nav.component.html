@@ -1,31 +1,26 @@
-﻿
-<!--<div class="topnav" id="myTopnav" data-toggle="buttons">
-            <a ui-sref='estadisticas'>Estadisticas</a>
-            &nbsp; &nbsp;
-            <div class="dropdown">
-                <a class="dropbtn">
-                    Cursos
-                </a>
-                <div class="dropdown-content">
-                    <a ui-sref="cursos.auto">Selecci&oacute;n Autom&aacute;tica</a>
-                    <a ui-sref="cursos.manual">Selecci&oacute;n Manual</a>
-                </div>
+﻿<div class="barra-opciones-j1 row">
+    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+        <div class="btn-group" role="group">
+            <button id="btnGroupDropEstadisticas" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                Estad&iacute;sticas
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDropEstadisticas">
+                <a class="dropdown-item" ui-sref="estadisticas.tabla">Aprobadas por Año</a>
+                <a class="dropdown-item" ui-sref="estadisticas.aprobadas">Porcentaje Aprobadas</a>
+                <a class="dropdown-item" ui-sref="estadisticas.cursadas">Porcentaje Cursadas</a>
             </div>
-            &nbsp; &nbsp;
-            <a ui-sref='finales'>Finales</a>
-</div>-->
-
-<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-    <button type="button" class="btn btn-info" ui-sref='estadisticas'>Estadisticas</button>
-    <div class="btn-group" role="group">
-        <button id="btnGroupDropCursos" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-            Cursos
-        </button>
-        <div class="dropdown-menu" aria-labelledby="btnGroupDropCursos">
-            <a class="dropdown-item" ui-sref="cursos.auto">Selecci&oacute;n Autom&aacute;tica</a>
-            <a class="dropdown-item" ui-sref="cursos.manual">Selecci&oacute;n Manual</a>
         </div>
+        <div class="btn-group" role="group">
+            <button id="btnGroupDropCursos" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                Cursos
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDropCursos">
+                <a class="dropdown-item" ui-sref="cursos.auto">Selecci&oacute;n Autom&aacute;tica</a>
+                <a class="dropdown-item" ui-sref="cursos.manual">Selecci&oacute;n Manual</a>
+            </div>
+        </div>
+        <button type="button" class="btn btn-info" ui-sref='finales'>Finales</button>
     </div>
-    <button type="button" class="btn btn-info" ui-sref='finales'>Finales</button>
 </div>

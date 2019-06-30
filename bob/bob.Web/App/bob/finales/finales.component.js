@@ -23,7 +23,7 @@
             }
 
             function vencimiento() {
-                vm.orden = '-fechaVencimiento';
+                vm.orden = 'fechaVencimiento';
                 vm.filtro = {};
             }
             function numeroCorrelativas() {

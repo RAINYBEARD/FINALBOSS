@@ -1,24 +1,22 @@
 ﻿<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()">
 <link rel="stylesheet" type="text/css" href="/App/bob/finales/finales.component.css">
-
-<h2 class="card-header">FINALES</h2>
-<div class="card-body">
-    <div id="myBtnContainer">
-        <button class="btn btn-secondary" ng-click="vm.vencimiento()"> Vencimiento</button>
-        <button class="btn btn-secondary" ng-click="vm.numeroCorrelativas()"> Número de Correlativas</button>
-        <button class="btn btn-secondary" ng-click="vm.equivalenciasParciales()"> Equivalencias Parciales</button>
-        <button class="btn btn-secondary" ng-click="vm.ultimoIntento()"> Último Intento</button>
+<h4 class="row">Finales</h4>
+<div class="row">
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <button class="btn btn-caece" ng-click="vm.vencimiento()"> Vencimiento</button>
+        <button class="btn btn-caece" ng-click="vm.numeroCorrelativas()"> Número de Correlativas</button>
+        <button class="btn btn-caece" ng-click="vm.equivalenciasParciales()"> Equivalencias Parciales</button>
+        <button class="btn btn-caece" ng-click="vm.ultimoIntento()"> Último Intento</button>
     </div>
 
-    <table id="finales" ng-if="vm.finales.length != 0" class="table-bordered table-responsive thead-dark">
+    <table ng-if="vm.finales.length != 0" class="table-bordered thead-dark table-caece">
         <thead class="thead">
-
             <tr>
-                <th scope="col">Materia</th>
-                <th scope="col">Fecha de Vencimiento</th>
-                <th scope="col">Último Intento</th>
-                <th scope="col">Correlativas Previas sin Aprobar</th>
-                <th scope="col">Correlativas Que Destraba</th>
+                <th>Materia</th>
+                <th>Fecha de Vencimiento</th>
+                <th>Último Intento</th>
+                <th>Correlativas Previas sin Aprobar</th>
+                <th>Correlativas que Destraba</th>
             </tr>
         </thead>
         <tbody ng-repeat="finales in vm.finales | orderBy: vm.orden | filter: vm.filtro">

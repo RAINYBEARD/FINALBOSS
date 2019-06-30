@@ -189,6 +189,12 @@
     <Content Include="App\bob\cursos\cursos-manual.component.js" />
     <Content Include="App\bob\cursos\cursos.component.js" />
     <Content Include="App\bob\cursos\cursos.component.html" />
+    <Content Include="App\bob\estadisticas\estadisticas-aprobadas.component.html" />
+    <Content Include="App\bob\estadisticas\estadisticas-aprobadas.component.js" />
+    <Content Include="App\bob\estadisticas\estadisticas-cursadas.component.html" />
+    <Content Include="App\bob\estadisticas\estadisticas-cursadas.component.js" />
+    <Content Include="App\bob\estadisticas\estadisticas-tabla.component.html" />
+    <Content Include="App\bob\estadisticas\estadisticas-tabla.component.js" />
     <Content Include="App\bob\estadisticas\estadisticas.component.js" />
     <Content Include="App\bob\estadisticas\estadisticas.component.html" />
     <Content Include="App\bob\finales\finales.component.css" />

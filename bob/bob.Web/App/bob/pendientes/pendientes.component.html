@@ -1,11 +1,10 @@
 ﻿<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()">
 
 <div ng-if="vm.pendientes.length != 0">
-    <h2>MATERIAS PENDIENTES</h2>
-    <table id="pendientes" class="table-striped table-responsive table-bordered thead-dark">
+    <table id="pendientes" class="table-striped table-bordered thead-dark table-caece">
         <thead class="thead">
             <tr>
-                <th scope="col">Materia</th>
+                <th scope="col">Materias Pendientes</th>
                 <th scope="col">Correlativas No Aprobadas</th>
             </tr>
         </thead>
