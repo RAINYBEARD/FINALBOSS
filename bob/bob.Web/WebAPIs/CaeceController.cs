@@ -821,7 +821,7 @@ namespace bob.Controllers
 
             foreach (Nodo dato in arbol.nodos)
             {
-                var mat_id = dato.materia_id.ToString();
+                var mat_id = (dato.materia_id.ToString()) + "/" + (dato.plan_id.ToString());
 
                 if (aprDictionary.ContainsKey(mat_id))
                 {

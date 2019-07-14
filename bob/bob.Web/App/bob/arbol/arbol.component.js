@@ -32,9 +32,9 @@
 
         directive.link = function (scope, elements, attr) {
 
-            var radius = 15;
+            var radius = 30;
             var width = 960;
-            var height = 600;
+            var height = 800;
             var svg = d3.select(elements[0]).append("svg")
                 .attr("width", width)
                 .attr("height", height);
@@ -57,17 +57,6 @@
                 .attr("r", radius)
                 .attr("fill", circleColour);
 
-            function circleColour(d) {
-                if (d.descrip == "APR") {
-                    return "green";
-                } else if (d.descrip == "CUR" || d.descrip == "EQP") {
-                    return "yelow";
-                } else if (d.descrip == "PEN") {
-                    return "orange";
-                } else {
-                    return "red";
-                }
-            }
 
             var links_data = scope.arcos;
 
@@ -75,6 +64,18 @@
                 .id(function (d) { return d.materia_id; })
 
             simulation.force("links", link_force)
+
+            function circleColour(d) {
+                if (d.descrip == "APR") {
+                    return "green";
+                } else if (d.descrip == "CUR" || d.descrip == "EQP") {
+                    return "blue";
+                } else if (d.descrip == "PEN") {
+                    return "orange";
+                } else
+                    return "red";
+
+            }
 
             var link = svg.append("g")
                 .attr("class", "links")
@@ -103,7 +104,7 @@
 
             function splitting_force() {
                 for (var i = 0, n = nodes_data.length; i < n; ++i) {
-                    curr_node = nodes_data[i];
+                    var curr_node = nodes_data[i];
                     if (curr_node.mat_anio == "1") {
                         if (curr_node.mat_cuatrim == "1") {
                             curr_node.x -= 3;
