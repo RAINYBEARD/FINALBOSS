@@ -748,7 +748,7 @@ namespace bob.Controllers
         #region Arbol
 
         /// <summary>
-        /// Devuelvo lista donde cada registro es una materia (nodo) y una correlativa
+        /// Devuelvo estructura del Arbol; que tiene una lista de nodos y una lista de arcos
         /// </summary>
         /// <param name="matricula"></param>
         /// <returns></returns>
@@ -767,51 +767,53 @@ namespace bob.Controllers
 
             try
             {
-               foreach (PlanEstudio dato in PlanDeEstudio)
-               {
+                foreach (PlanEstudio dato in PlanDeEstudio)
+                {
                     //var id = dato.materia_id.ToString();
                     var resultado = arbol.nodos.Exists(a => a.materia_id == dato.materia_id);
 
-                   if (resultado == false)
-                   {
-                       var reg = new Nodo();
+                    if (resultado == false)
+                    {
+                        var reg = new Nodo();
 
-                       reg.materia_id = dato.materia_id;
-                       reg.plan_tit = dato.plan_tit;
-                       reg.titulo_id = dato.titulo_id;
-                       reg.plan_id = dato.plan_id;
-                       reg.mat_des = dato.mat_des;
-                       reg.mat_anio = dato.mat_anio;
-                       reg.mat_cuatrim = dato.mat_cuatrim;
-                       reg.abr_titulo = dato.abr_titulo;
+                        reg.materia_id = dato.materia_id;
+                        reg.plan_tit = dato.plan_tit;
+                        reg.titulo_id = dato.titulo_id;
+                        reg.plan_id = dato.plan_id;
+                        reg.mat_des = dato.mat_des;
+                        reg.mat_anio = dato.mat_anio;
+                        reg.mat_cuatrim = dato.mat_cuatrim;
+                        reg.abr_titulo = dato.abr_titulo;
 
-                       arbol.nodos.Add(reg);
+                        arbol.nodos.Add(reg);
 
-                   }
+                    }
 
-                   if (dato.materia_id != dato.codigo_correlativa)
+                    if (dato.materia_id != dato.codigo_correlativa)
                     {
                         //var id_materia = dato.materia_id.ToString();
                         //var id_correlativa = dato.codigo_correlativa.ToString();
+                        if (dato.codigo_correlativa.ToString().Length > 2)
+                        {
+                            var reg = new Arcos();
 
-                        var reg = new Arcos();  
-                        
-                        reg.materia_id_source = dato.codigo_correlativa;
-                        reg.materia_id_target = dato.materia_id;
+                            reg.source = dato.codigo_correlativa;
+                            reg.target = dato.materia_id;
 
-                        arbol.arcos.Add(reg);
+                            arbol.arcos.Add(reg);
+                        }
                     }
 
-               }
+                }
 
 
             }
             catch (Exception e)
             {
-               throw;
+                throw;
             }
 
-            //SetSesionUsuario(matricula);
+            SetSesionUsuario(matricula);
             var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
             var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
             var NoCurDictionary = SessionManager.DiccionarioNoCursadas as NotCurDictionary;
@@ -825,22 +827,22 @@ namespace bob.Controllers
                 {
                     dato.descrip = aprDictionary[mat_id].Descrip;
                 }
-                
+
                 if (curDictionary.ContainsKey(mat_id))
                 {
-                  dato.descrip = curDictionary[mat_id].Descrip;
+                    dato.descrip = curDictionary[mat_id].Descrip;
                 }
-                   
+
                 if (NoCurDictionary.ContainsKey(mat_id))
                 {
-                  dato.descrip = NoCurDictionary[mat_id].Descrip;
+                    dato.descrip = NoCurDictionary[mat_id].Descrip;
                 }
-                
+
                 if (PenDictionary.ContainsKey(mat_id))
                 {
-                  dato.descrip = PenDictionary[mat_id].Descrip;
+                    dato.descrip = PenDictionary[mat_id].Descrip;
                 }
-                            
+
             }
             var json = JsonConvert.SerializeObject(arbol);
             return json;
@@ -858,8 +860,8 @@ public class Arbol
 }
 public class Arcos
 {
-    public int materia_id_source { get; set; }
-    public int materia_id_target { get; set; }
+    public int source { get; set; }
+    public int target { get; set; }
 }
 
 public class Nodo
