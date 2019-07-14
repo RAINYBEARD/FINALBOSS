@@ -14,6 +14,10 @@
                 caeceService.getPendientes(vm.matricula).then(function (response) {
                     vm.pendientes = response;
                 });
+
+                caeceService.getPorVencerse(vm.matricula).then(function (response) {
+                    vm.porvencerse = response;
+                });
             }
 
         },

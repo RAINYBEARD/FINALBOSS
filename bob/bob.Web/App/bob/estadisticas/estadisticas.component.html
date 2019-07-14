@@ -1,3 +1,27 @@
-﻿<div>
-    <ui-view></ui-view>
+﻿<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<h4 class="row">Porcentaje Aprobado de la Carrera</h4>
+<div style="overflow-x:auto;">
+<d3-aprobadas id="daprobadas" aprobadas="vm.aprobadas" noaprobadas="vm.noaprobadas" ng-if="vm.aprobadas !=null && vm.noaprobadas !=null"></d3-aprobadas>
+</div>
+<h4 class="row">Porcentaje Cursado de la Carrera</h4>
+<div style="overflow-x:auto;">
+    <d3-cursadas id="dcursadas" cursadas="vm.cursadas" nocursadas="vm.nocursadas" ng-if="vm.cursadas !=null && vm.nocursadas !=null"></d3-cursadas>
+</div>
+
+<h4 class="row"> Cantidad de Materias Aprobadas por Año</h4>
+<div class="row">
+    <table class="table-caece">
+        <thead class="thead">
+            <tr>
+                <th>Año</th>
+                <th>Materias Aprobadas</th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="materia in vm.materias.Lista | orderBy: 'Anio'">
+            <tr>
+                <td>{{materia.Anio}}</td>
+                <td>{{materia.Aprobadas}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>

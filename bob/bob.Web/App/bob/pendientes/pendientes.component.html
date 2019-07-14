@@ -1,5 +1,5 @@
 ﻿<span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" /> <input type="button" value="submit" ng-click="vm.submit()">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <div ng-if="vm.pendientes.length != 0">
     <table id="pendientes" class="table-striped table-bordered thead-dark table-caece">
         <thead class="thead">
@@ -16,6 +16,21 @@
                         <li ng-repeat="n in pendientes.correlativasNoAprobadas">{{n.abr}}</li>
                     </ul>
                 </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div ng-if="vm.porvencerse.length != 0">
+    <table id="porvencerse" class="table-bordered table-responsive table-striped thead-dark table-caece">
+        <thead>
+            <tr>
+                <th>Materias por Vencerse en proximo Cuatrimestre</th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="vencerse in vm.porvencerse">
+            <tr>
+                <td>{{vencerse.abr}}</td>
             </tr>
         </tbody>
     </table>

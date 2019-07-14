@@ -189,12 +189,6 @@
     <Content Include="App\bob\cursos\cursos-manual.component.js" />
     <Content Include="App\bob\cursos\cursos.component.js" />
     <Content Include="App\bob\cursos\cursos.component.html" />
-    <Content Include="App\bob\estadisticas\estadisticas-aprobadas.component.html" />
-    <Content Include="App\bob\estadisticas\estadisticas-aprobadas.component.js" />
-    <Content Include="App\bob\estadisticas\estadisticas-cursadas.component.html" />
-    <Content Include="App\bob\estadisticas\estadisticas-cursadas.component.js" />
-    <Content Include="App\bob\estadisticas\estadisticas-tabla.component.html" />
-    <Content Include="App\bob\estadisticas\estadisticas-tabla.component.js" />
     <Content Include="App\bob\estadisticas\estadisticas.component.js" />
     <Content Include="App\bob\estadisticas\estadisticas.component.html" />
     <Content Include="App\bob\finales\finales.component.css" />
@@ -207,7 +201,6 @@
     <Content Include="App\bob\nav\nav.component.js" />
     <Content Include="App\bob\pendientes\pendientes.component.html" />
     <Content Include="App\bob\pendientes\pendientes.component.js" />
-    <Content Include="App\bob\porvencerse\porvencerse.component.html" />
     <Content Include="App\bob\servicios\caece.service.js" />
     <Content Include="App\Index.html" />
     <Content Include="App\bob\imagenes\cajaarbol.png" />
@@ -236,7 +229,6 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
-    <Content Include="App\bob\porvencerse\porvencerse.component.js" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -1,7 +1,8 @@
-﻿<h4 class="row">Selecci&oacute;n Autom&aacute;tica de Cursos</h4>
+﻿<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<h4 class="row">Selecci&oacute;n Autom&aacute;tica de Cursos</h4>
 <span>Matricula:</span> &nbsp; <input type="text" ng-model="vm.matricula" maxlength="7" size="7" /> <input type="button" value="submit" ng-click="vm.submit()">
 <span>Cant de D&iacute;as : </span> <input type="number" name="cantdias" min="1" max="6" step="1" value="6" ng-model="vm.filtroCantDias.valor" id="cantidaddias" onKeyPress="if(this.value.length==1) return false;">
-<div class="bg-info" ng-show="vm.cursos.length">
+<div style="overflow-x:auto;" class="bg-info" ng-show="vm.cursos.length">
     <table class="table">
         <thead>
             <tr>
@@ -49,4 +50,5 @@
             </tr>
         </tbody>
     </table>
+    <p ng-if="vm.cursos.length == 0" margin: 35px;> Sin Cursos Abiertos</p>
 </div>

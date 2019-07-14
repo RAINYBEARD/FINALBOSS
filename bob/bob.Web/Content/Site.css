@@ -143,3 +143,27 @@ button#buttonGroupEstadisticas.btn.btn-info.dropdown-toggle:focus {
     color: #d6d6c2;
 }
 
+.tooltip2 {
+    color: #333;
+    font-size: 18px;
+    left: 375px;
+    padding: 10px;
+    position: absolute;
+    text-align: center;
+    top: 175px;
+    width: 100px;
+    z-index: 10;
+}
+
+.tooltip3 {
+    color: #333;
+    font-size: 18px;
+    left: 375px;
+    padding: 10px;
+    position: absolute;
+    text-align: center;
+    top: 550px;
+    width: 100px;
+    z-index: 10;
+}
+

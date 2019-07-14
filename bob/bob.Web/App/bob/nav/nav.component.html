@@ -1,16 +1,8 @@
-﻿<div class="barra-opciones-j1 row">
+﻿<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div class="barra-opciones-j1 row">
     <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-        <div class="btn-group" role="group">
-            <button id="btnGroupDropEstadisticas" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                Estad&iacute;sticas
-            </button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDropEstadisticas">
-                <a class="dropdown-item" ui-sref="estadisticas.tabla">Aprobadas por Año</a>
-                <a class="dropdown-item" ui-sref="estadisticas.aprobadas">Porcentaje Aprobadas</a>
-                <a class="dropdown-item" ui-sref="estadisticas.cursadas">Porcentaje Cursadas</a>
-            </div>
-        </div>
+        <button type="button" class="btn btn-info" ui-sref='arbol'>Árbol</button>
+        <button type="button" class="btn btn-info" ui-sref='estadisticas'>Estadísticas</button>
         <div class="btn-group" role="group">
             <button id="btnGroupDropCursos" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">

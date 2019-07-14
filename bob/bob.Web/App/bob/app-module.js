@@ -7,6 +7,11 @@
     appModule.config(function ($stateProvider, $urlRouterProvider) {
         var states = [
             {
+                name: 'arbol',
+                url: '/arbol',
+                template: '<arbol></arbol>'
+            },
+            {
                 name: 'cursos',
                 url: '/cursos',
                 template: '<cursos></cursos>'
@@ -31,21 +36,7 @@
                 url: '/estadisticas',
                 template: '<estadisticas></estadisticas>'
             },
-            {
-                name: 'estadisticas.tabla',
-                url: '/tabla',
-                template: '<estadisticas-tabla></estadisticas-tabla>'
-            },
-            {
-                name: 'estadisticas.aprobadas',
-                url: '/aprobadas',
-                template: '<estadisticas-aprobadas></estadisticas-aprobadas>'
-            },
-            {
-                name: 'estadisticas.cursadas',
-                url: '/cursadas',
-                template: '<estadisticas-cursadas></estadisticas-cursadas>'
-            }
+
             //{
             //    name: 'course',
             //    url: '/course/{courseId}',
