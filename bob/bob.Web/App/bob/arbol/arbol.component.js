@@ -9,12 +9,13 @@
             vm.materias;
             vm.nodos;
             vm.arcos;
-
+            vm.total;
            
             caeceService.getArbol('951282').then(function (response) {
                     vm.materias = JSON.parse(response);
                     vm.nodos    = vm.materias.nodos;
                     vm.arcos    = vm.materias.arcos;
+                    vm.total    = vm.materias.aprobadas + "/" + vm.materias.total;
                 });
             
             
@@ -155,6 +156,36 @@
                 .attr('text-anchor', 'middle')
                 .attr('dominant-baseline', 'central')
                 .text(function (d) { return d.mat_des; });
+
+            var allNodes = svg.selectAll('circle');
+
+            var tooltip = d3.select(elements[0])
+                .append('div')
+                .append('class', 'tooltip3')
+
+            tooltip.append('div')
+                .attr('class', 'mat_des');
+
+            tooltip.append('div')
+                .attr('class', 'mat_anio');
+
+            tooltip.append('div')
+                .attr('class', 'mat_cuatrim');
+
+            tooltip.append('div')
+                .attr('class', 'descrip');
+
+            allNodes.on('mouseover', function (d) {
+                tooltip.select('.mad_des').html(d.mat_des);
+                tooltip.select('.mat_cuatrim').html(d.mat_anio);
+                tooltip.select('.mat_cuatrim').html(d.mat_cuatrim);
+                tooltip.select('.mat_cuatrim').html(d.descrip);
+                tooltip.style('display', 'block');
+            });
+
+            allNodes.on('mouseout', function () {
+                tooltip.style('display', 'none');
+            });
         }
 
         return directive;

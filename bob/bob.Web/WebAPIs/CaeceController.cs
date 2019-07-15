@@ -764,7 +764,6 @@ namespace bob.Controllers
             var JSON = caeceWS.getPlanEstudioJSON(_token, " " + matricula);
             var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
 
-
             try
             {
                 foreach (PlanEstudio dato in PlanDeEstudio)
@@ -784,6 +783,8 @@ namespace bob.Controllers
                         reg.mat_anio = dato.mat_anio;
                         reg.mat_cuatrim = dato.mat_cuatrim;
                         reg.abr_titulo = dato.abr_titulo;
+
+                        arbol.total = arbol.total + 1;
 
                         arbol.nodos.Add(reg);
 
@@ -826,6 +827,8 @@ namespace bob.Controllers
                 if (aprDictionary.ContainsKey(mat_id))
                 {
                     dato.descrip = aprDictionary[mat_id].Descrip;
+
+                    arbol.aprobadas = arbol.aprobadas + 1;
                 }
 
                 if (curDictionary.ContainsKey(mat_id))
@@ -857,6 +860,8 @@ public class Arbol
 {
     public List<Nodo> nodos { get; set; }
     public List<Arcos> arcos { get; set; }
+    public int total = 0;
+    public int aprobadas = 0;
 }
 public class Arcos
 {
