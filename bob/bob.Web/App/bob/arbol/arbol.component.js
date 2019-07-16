@@ -83,6 +83,7 @@
                 .selectAll("line")
                 .data(links_data)
                 .enter().append("line")
+                .attr("stroke", "#999")
                 .attr("stroke-width", 2);
 
             function tickActions() {
