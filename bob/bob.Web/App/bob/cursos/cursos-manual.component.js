@@ -7,7 +7,6 @@
             var vm = this;
             vm.matricula;
             vm.cursos;
-            vm.submit = submit;
             vm.seleccionmateria = seleccionmateria;
             vm.materiasSeleccionadas = [];
             vm.trabarMateria = trabarMateria;
@@ -25,11 +24,9 @@
 
             vm.filtro = vm.checkboxModel.lun + vm.checkboxModel.mar + vm.checkboxModel.mie + vm.checkboxModel.jue + vm.checkboxModel.vie + vm.checkboxModel.sab + vm.checkboxModel.dom;
 
-            function submit() {
-                caeceService.getCursos(vm.matricula).then(function (response) {
-                    vm.cursos = response;
-                });
-            }
+            caeceService.getCursos(vm.matricula).then(function (response) {
+                vm.cursos = response;
+            });
 
             function deseleccionaritems(diaid) {
                 vm.materiasSeleccionadas.forEach(function (item, key) {

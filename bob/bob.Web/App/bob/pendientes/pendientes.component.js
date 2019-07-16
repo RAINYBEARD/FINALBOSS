@@ -7,19 +7,15 @@
             var vm = this;
             vm.matricula;
             vm.pendientes;
-            vm.submit = submit;
+            
+            caeceService.getPendientes(vm.matricula).then(function (response) {
+                vm.pendientes = response;
+            });
 
-            function submit() {
-
-                caeceService.getPendientes(vm.matricula).then(function (response) {
-                    vm.pendientes = response;
-                });
-
-                caeceService.getPorVencerse(vm.matricula).then(function (response) {
-                    vm.porvencerse = response;
-                });
-            }
-
+            caeceService.getPorVencerse(vm.matricula).then(function (response) {
+                vm.porvencerse = response;
+            });
+            
         },
         templateUrl: '/App/bob/pendientes/pendientes.component.html'
     });

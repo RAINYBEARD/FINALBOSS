@@ -7,7 +7,6 @@
             var vm = this;
             vm.matricula;
             vm.cursos;
-            vm.submit = submit;
 
             vm.checkboxModel = {
                 lun: '1',
@@ -24,12 +23,10 @@
 
             vm.filtro = vm.checkboxModel.lun + vm.checkboxModel.mar + vm.checkboxModel.mie + vm.checkboxModel.jue + vm.checkboxModel.vie + vm.checkboxModel.sab + '0';
 
+            caeceService.getCursos(vm.matricula).then(function (response) {
+                vm.cursos = response;
+            });
 
-            function submit() {
-                caeceService.getCursos(vm.matricula).then(function (response) {
-                    vm.cursos = response;
-                });
-            }
 
         },
 

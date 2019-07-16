@@ -7,7 +7,6 @@
             var vm = this;
             vm.matricula;
             vm.finales;
-            vm.submit = submit;
             vm.vencimiento = vencimiento;
             vm.numeroCorrelativas = numeroCorrelativas;
             vm.equivalenciasParciales = equivalenciasParciales;
@@ -15,12 +14,10 @@
             vm.orden;
             vm.filtro;
 
-            function submit() {
-
-                caeceService.getFinales(vm.matricula).then(function (response) {
-                    vm.finales = response;
-                });
-            }
+            caeceService.getFinales(vm.matricula).then(function (response) {
+                vm.finales = response;
+            });
+ 
 
             function vencimiento() {
                 vm.orden = 'fechaVencimiento';
