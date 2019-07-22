@@ -60,6 +60,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arbol\Arbol.cs" />
+    <Compile Include="Arbol\Arcos.cs" />
+    <Compile Include="Arbol\Nodo.cs" />
     <Compile Include="Dictionaries\CorrDictionary.cs" />
     <Compile Include="Dictionaries\AprDictionary.cs" />
     <Compile Include="Dictionaries\CursosDictionary.cs" />

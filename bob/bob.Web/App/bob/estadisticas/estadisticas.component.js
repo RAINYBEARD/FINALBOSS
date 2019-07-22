@@ -49,7 +49,7 @@
             var data = d3.pie().sort(null).value(function (d) { return d.number; })(details);
             console.log(data);
             var segments = d3.arc()
-                .innerRadius(100)
+                .innerRadius(70)
                 .outerRadius(150)
 
             var sections = svg.append("g").attr("transform", "translate(425,180)")
@@ -127,7 +127,7 @@
             var data = d3.pie().sort(null).value(function (d) { return d.number; })(details);
             console.log(data);
             var segments = d3.arc()
-                .innerRadius(100)
+                .innerRadius(70)
                 .outerRadius(150)
   
             var sections = svg.append("g").classed("pepe", true).attr("transform", "translate(425,180)")

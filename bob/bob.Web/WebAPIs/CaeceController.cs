@@ -5,10 +5,11 @@ using System.Web.Http;
 using System.Threading;
 using bob.Data;
 using bob.Data.Entities;
-using bob.Data.Estadisticas;
 using bob.Data.DTOs;
 using bob.Data.Dictionaries;
 using bob.Data.Finales;
+using bob.Data.Arbol;
+using bob.Data.Estadisticas;
 using bob.Data.Pendientes;
 using bob.Data.Vencerse;
 using Newtonsoft.Json.Linq;
@@ -17,6 +18,7 @@ using System.Web.Configuration;
 using bob.Mocks;
 using bob.Helpers;
 using System.Globalization;
+using Newtonsoft.Json;
 
 namespace bob.Controllers
 {
@@ -537,7 +539,9 @@ namespace bob.Controllers
             try
             {
                 List<Pendientes> pendientes = new List<Pendientes>();
-                var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
+                //var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
+                var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
+                var notCurDictionary = SessionManager.DiccionarioNoCursadas as NotCurDictionary;
                 var penDictionary = SessionManager.DiccionarioPendientes as PenDictionary;
                 //Agrego las materias pendientes a una lista
                 foreach (KeyValuePair<string, PenValue> entry in penDictionary)
@@ -548,9 +552,24 @@ namespace bob.Controllers
                     foreach (Correlativa corr in correlativaAuxiliar)
                     {
                         string materiaCursada = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
-                        if ((!aprDictionary.ContainsKey(materiaCursada)) && (materiaCursada != entry.Key))
+                        //if ((!aprDictionary.ContainsKey(materiaCursada)) && (materiaCursada != entry.Key))
+                        //{
+                        //    string abreviatura = corr.Materia.ToString();
+                        //    correlativ.Add(new CorrelativasNoAprobadas() { materiaCod = materiaCursada, abr = abreviatura });
+                        //}
+                        if ((notCurDictionary.ContainsKey(materiaCursada)) && (materiaCursada != entry.Key))
                         {
-                            string abreviatura = entry.Value.Abr;
+                            string abreviatura = notCurDictionary[materiaCursada].Abr;
+                            correlativ.Add(new CorrelativasNoAprobadas() { materiaCod = materiaCursada, abr = abreviatura });
+                        }
+                        else if ((penDictionary.ContainsKey(materiaCursada)) && (materiaCursada != entry.Key))
+                        {
+                            string abreviatura = penDictionary[materiaCursada].Abr;
+                            correlativ.Add(new CorrelativasNoAprobadas() { materiaCod = materiaCursada, abr = abreviatura });
+                        }
+                        else if ((curDictionary.ContainsKey(materiaCursada)) && (materiaCursada != entry.Key))
+                        {
+                            string abreviatura = curDictionary[materiaCursada].Abr;
                             correlativ.Add(new CorrelativasNoAprobadas() { materiaCod = materiaCursada, abr = abreviatura });
                         }
                     }
@@ -869,6 +888,114 @@ namespace bob.Controllers
             estadistica.Cursadas = aprDictionary.Count + curDictionary.Count;
 
             return estadistica;
+
+        }
+        #endregion
+
+        #region Arbol
+
+        /// <summary>
+        /// Devuelvo estructura del Arbol; que tiene una lista de nodos y una lista de arcos
+        /// </summary>
+        /// <param name="matricula"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("get-arbol/{matricula}")]
+
+        public string GetArbol(string matricula)
+        {
+            Arbol arbol = new Arbol();
+            arbol.nodos = new List<Nodo>();
+            arbol.arcos = new List<Arcos>();
+
+            var JSON = caeceWS.getPlanEstudioJSON(_token, " " + matricula);
+            var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
+
+            try
+            {
+                foreach (PlanEstudio dato in PlanDeEstudio)
+                {
+                    //var id = dato.materia_id.ToString();
+                    var resultado = arbol.nodos.Exists(a => a.materia_id == dato.materia_id);
+
+                    if (resultado == false)
+                    {
+                        var reg = new Nodo();
+
+                        reg.materia_id = dato.materia_id;
+                        reg.plan_tit = dato.plan_tit;
+                        reg.titulo_id = dato.titulo_id;
+                        reg.plan_id = dato.plan_id;
+                        reg.mat_des = dato.mat_des;
+                        reg.mat_anio = dato.mat_anio;
+                        reg.mat_cuatrim = dato.mat_cuatrim;
+                        reg.abr_titulo = dato.abr_titulo;
+
+                        arbol.total = arbol.total + 1;
+
+                        arbol.nodos.Add(reg);
+
+                    }
+
+                    if (dato.materia_id != dato.codigo_correlativa)
+                    {
+                        //var id_materia = dato.materia_id.ToString();
+                        //var id_correlativa = dato.codigo_correlativa.ToString();
+                        if (dato.codigo_correlativa.ToString().Length > 2)
+                        {
+                            var reg = new Arcos();
+
+                            reg.source = dato.codigo_correlativa;
+                            reg.target = dato.materia_id;
+
+                            arbol.arcos.Add(reg);
+                        }
+                    }
+
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+            SetSesionUsuario(matricula);
+            //var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
+            var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
+            var NoCurDictionary = SessionManager.DiccionarioNoCursadas as NotCurDictionary;
+            var PenDictionary = SessionManager.DiccionarioPendientes as PenDictionary;
+
+            foreach (Nodo dato in arbol.nodos)
+            {
+                var mat_id = (dato.materia_id.ToString()) + "/" + (dato.plan_id.ToString());
+
+                //if (aprDictionary.ContainsKey(mat_id))
+                //{
+                //    dato.descrip = aprDictionary[mat_id].Descrip;
+
+                //    arbol.aprobadas = arbol.aprobadas + 1;
+                //}
+
+                if (curDictionary.ContainsKey(mat_id))
+                {
+                    dato.descrip = curDictionary[mat_id].Descrip;
+                }
+
+                if (NoCurDictionary.ContainsKey(mat_id))
+                {
+                    dato.descrip = NoCurDictionary[mat_id].Descrip;
+                }
+
+                if (PenDictionary.ContainsKey(mat_id))
+                {
+                    dato.descrip = PenDictionary[mat_id].Descrip;
+                }
+
+            }
+            var json = JsonConvert.SerializeObject(arbol);
+            return json;
 
         }
         #endregion

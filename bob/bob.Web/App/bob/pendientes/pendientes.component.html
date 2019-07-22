@@ -1,36 +1,38 @@
 ﻿<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<div ng-if="vm.pendientes.length != 0">
-    <table id="pendientes" class="table-striped table-bordered thead-dark table-caece">
-        <thead class="thead">
-            <tr>
-                <th scope="col">Materias Pendientes</th>
-                <th scope="col">Correlativas No Aprobadas</th>
-            </tr>
-        </thead>
-        <tbody ng-repeat="pendientes in vm.pendientes">
-            <tr>
-                <td>{{pendientes.abr}}</td>
-                <td>
-                    <ul>
-                        <li ng-repeat="n in pendientes.correlativasNoAprobadas">{{n.abr}}</li>
-                    </ul>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<div class="row" style="overflow-x:auto;">
+    <div ng-if="vm.pendientes.length != 0">
+        <table id="pendientes" class="table-striped table-bordered thead-dark table-caece">
+            <thead class="thead">
+                <tr>
+                    <th scope="col">Materias Pendientes</th>
+                    <th scope="col">Correlativas No Aprobadas</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="pendientes in vm.pendientes">
+                <tr>
+                    <td>{{pendientes.abr}}</td>
+                    <td>
+                        <ul>
+                            <li ng-repeat="n in pendientes.correlativasNoAprobadas">{{n.abr}}</li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-<div ng-if="vm.porvencerse.length != 0">
-    <table id="porvencerse" class="table-bordered table-responsive table-striped thead-dark table-caece">
-        <thead>
-            <tr>
-                <th>Materias por Vencerse en proximo Cuatrimestre</th>
-            </tr>
-        </thead>
-        <tbody ng-repeat="vencerse in vm.porvencerse">
-            <tr>
-                <td>{{vencerse.abr}}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div ng-if="vm.porvencerse.length != 0">
+        <table id="porvencerse" class="table-bordered table-responsive table-striped thead-dark table-caece">
+            <thead>
+                <tr>
+                    <th>Materias por Vencerse en proximo Cuatrimestre</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="vencerse in vm.porvencerse">
+                <tr>
+                    <td>{{vencerse.abr}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

@@ -13,5 +13,5 @@ namespace bob.Data.Dictionaries
     public class RepValue
     {
         public string Fecha { get; set; }
-    }
+    } 
 }
