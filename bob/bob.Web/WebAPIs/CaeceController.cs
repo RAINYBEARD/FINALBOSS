@@ -86,7 +86,7 @@ namespace bob.Controllers
                             }
 
                             // Cargo a la base las materias correlativas
-                            var correlativa = context.Correlativas.Create();
+                            var correlativa = new Correlativa();
                             AutoMapper.Mapper.Map(dato, correlativa);
                             context.Correlativas.Add(correlativa);
                             context.SaveChanges();
@@ -526,13 +526,13 @@ namespace bob.Controllers
             return mostrarMateriasACursarEsteCuatri;
         }
         #endregion
-
-        #region Pendientes
-        /// <summary>
-        /// Ejemplo de llamada: http://localhost:52178/Caece/Pendientes/951282 
-        /// </summary>
-        /// <param name="matricula"></param>
-        [HttpGet]
+     
+    #region Pendientes
+    /// <summary>
+    /// Ejemplo de llamada: http://localhost:52178/Caece/Pendientes/951282 
+    /// </summary>
+    /// <param name="matricula"></param>
+    [HttpGet]
         [Route("get-pendientes/{matricula}")]
         public List<Pendientes> Pendientes(string matricula)
         {
@@ -549,9 +549,17 @@ namespace bob.Controllers
                     List<CorrelativasNoAprobadas> correlativ = new List<CorrelativasNoAprobadas>();
                     var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == entry.Key).ToList();
                     //Busco las correlativas previas que el alumno todavia no aprobo
+                    // Correlativa que arregla los plan_Ids de las demas
+                    //var flan = correlativaAuxiliar[0].Plan_Id;
+                    //foreach (Correlativa corr in correlativaAuxiliar)
+                    //{
+                    //    corr.Plan_Id = flan;
+                    //}
+
                     foreach (Correlativa corr in correlativaAuxiliar)
                     {
                         string materiaCursada = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
+                        //string materiaFlan = (corr.Codigo_Correlativa + "/" + flan_Id);
                         //if ((!aprDictionary.ContainsKey(materiaCursada)) && (materiaCursada != entry.Key))
                         //{
                         //    string abreviatura = corr.Materia.ToString();
@@ -572,6 +580,21 @@ namespace bob.Controllers
                             string abreviatura = curDictionary[materiaCursada].Abr;
                             correlativ.Add(new CorrelativasNoAprobadas() { materiaCod = materiaCursada, abr = abreviatura });
                         }
+                        //else if ((notCurDictionary.ContainsKey(materiaFlan)) && (materiaFlan != entry.Key))
+                        //{
+                        //    string abreviatura = notCurDictionary[materiaFlan].Abr;
+                        //    correlativ.Add(new CorrelativasNoAprobadas() { materiaCod = materiaFlan, abr = abreviatura });
+                        //}
+                        //else if ((penDictionary.ContainsKey(materiaFlan)) && (materiaFlan != entry.Key))
+                        //{
+                        //    string abreviatura = penDictionary[materiaFlan].Abr;
+                        //    correlativ.Add(new CorrelativasNoAprobadas() { materiaCod = materiaFlan, abr = abreviatura });
+                        //}
+                        //else if ((curDictionary.ContainsKey(materiaFlan)) && (materiaFlan != entry.Key))
+                        //{
+                        //    string abreviatura = curDictionary[materiaFlan].Abr;
+                        //    correlativ.Add(new CorrelativasNoAprobadas() { materiaCod = materiaFlan, abr = abreviatura });
+                        //}
                     }
 
                     pendientes.Add(new Pendientes() { materiaCod = entry.Key, abr = entry.Value.Abr, correlativasNoAprobadas = correlativ });
@@ -670,6 +693,7 @@ namespace bob.Controllers
                 var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
                 var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
                 var repDictionary = SessionManager.DiccionarioReprobadas as RepDictionary;
+                var penDictionary = SessionManager.DiccionarioPendientes as PenDictionary;
                 var notCurDictionary = SessionManager.DiccionarioNoCursadas as NotCurDictionary;
                 foreach (KeyValuePair<string, CurValue> entry in curDictionary)
                 {
@@ -759,7 +783,7 @@ namespace bob.Controllers
                         string materia_correlativa = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
                         
                             if ((((!aprDictionary.ContainsKey(materia_correlativa)) && (!curDictionary.ContainsKey(materia_correlativa))) || (elimDictionary.ContainsKey(materia_correlativa))))
-                            {
+                            {                               
                                 string materiaEliminada = cur.materiaCod;
                                 string abr = cur.abr;
                                 elimDictionary.Add(materiaEliminada, abr);
@@ -808,20 +832,13 @@ namespace bob.Controllers
                         if ((correlativasHechas == true) && (materiaNoCursada != cur.materiaCod))
                         {
                             string abreviatura;
-                            if (aprDictionary.ContainsKey(materiaNoCursada))
+                            if (curDictionary.ContainsKey(materiaNoCursada))
                             {
-                                abreviatura = notCurDictionary[materiaNoCursada].Abr;
+                                abreviatura = curDictionary[materiaNoCursada].Abr;
                             }
                             else
                             {
-                                if (curDictionary.ContainsKey(materiaNoCursada))
-                                {
-                                    abreviatura = curDictionary[materiaNoCursada].Abr;
-                                }
-                                else
-                                {
-                                    abreviatura = notCurDictionary[materiaNoCursada].Abr;
-                                }
+                                abreviatura = notCurDictionary[materiaNoCursada].Abr;
                             }
                             correlativ2.Add(new CorrelativasCursadas() { materiaCod = materiaNoCursada, abr = abreviatura });
                         }
