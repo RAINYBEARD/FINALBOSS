@@ -919,11 +919,10 @@ namespace bob.Controllers
         [HttpGet]
         [Route("get-arbol/{matricula}")]
 
-        public string GetArbol(string matricula)
+        public Tabla GetArbol(string matricula)
         {
-            Arbol arbol = new Arbol();
-            arbol.nodos = new List<Nodo>();
-            arbol.arcos = new List<Arcos>();
+            Tabla tabla = new Tabla();
+            tabla.materias = new List<Materias>();
 
             var JSON = caeceWS.getPlanEstudioJSON(_token, " " + matricula);
             var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
@@ -933,41 +932,41 @@ namespace bob.Controllers
                 foreach (PlanEstudio dato in PlanDeEstudio)
                 {
                     //var id = dato.materia_id.ToString();
-                    var resultado = arbol.nodos.Exists(a => a.materia_id == dato.materia_id);
+                    var resultado = tabla.materias.Exists(a => a.materia_id == dato.materia_id);
 
                     if (resultado == false)
                     {
-                        var reg = new Nodo();
+                        var reg = new Materias();
 
                         reg.materia_id = dato.materia_id;
-                        reg.plan_tit = dato.plan_tit;
-                        reg.titulo_id = dato.titulo_id;
                         reg.plan_id = dato.plan_id;
                         reg.mat_des = dato.mat_des;
                         reg.mat_anio = dato.mat_anio;
                         reg.mat_cuatrim = dato.mat_cuatrim;
-                        reg.abr_titulo = dato.abr_titulo;
+                        reg.correlativas = new List<Correlativas>();
 
-                        arbol.total = arbol.total + 1;
+                        tabla.total = tabla.total + 1;
 
-                        arbol.nodos.Add(reg);
+                        tabla.materias.Add(reg);
 
                     }
 
-                    if (dato.materia_id != dato.codigo_correlativa)
-                    {
-                        //var id_materia = dato.materia_id.ToString();
-                        //var id_correlativa = dato.codigo_correlativa.ToString();
-                        if (dato.codigo_correlativa.ToString().Length > 2)
+                        if (dato.materia_id != dato.codigo_correlativa)
                         {
-                            var reg = new Arcos();
+                            //var id_materia = dato.materia_id.ToString();
+                            //var id_correlativa = dato.codigo_correlativa.ToString();
+                            if (dato.codigo_correlativa.ToString().Length > 2)
+                            {
+                                var materia = tabla.materias.Find(x => x.materia_id == dato.materia_id);
+                                var reg = new Correlativas();
 
-                            reg.source = dato.codigo_correlativa;
-                            reg.target = dato.materia_id;
+                                reg.materia_id = dato.codigo_correlativa;
+                                //reg.materia_des = dato.;
 
-                            arbol.arcos.Add(reg);
+                                materia.correlativas.Add(reg);
+                            }
                         }
-                    }
+                    
 
                 }
 
@@ -979,40 +978,46 @@ namespace bob.Controllers
             }
 
             SetSesionUsuario(matricula);
-            //var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
+            var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
             var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
             var NoCurDictionary = SessionManager.DiccionarioNoCursadas as NotCurDictionary;
             var PenDictionary = SessionManager.DiccionarioPendientes as PenDictionary;
 
-            foreach (Nodo dato in arbol.nodos)
+            foreach (Materias dato in tabla.materias)
             {
                 var mat_id = (dato.materia_id.ToString()) + "/" + (dato.plan_id.ToString());
 
-                //if (aprDictionary.ContainsKey(mat_id))
-                //{
-                //    dato.descrip = aprDictionary[mat_id].Descrip;
+                if (aprDictionary.ContainsKey(mat_id))
+                {
+                    dato.estado = aprDictionary[mat_id].Descrip;
 
-                //    arbol.aprobadas = arbol.aprobadas + 1;
-                //}
+                    tabla.aprobadas = tabla.aprobadas + 1;
+                }
 
                 if (curDictionary.ContainsKey(mat_id))
                 {
-                    dato.descrip = curDictionary[mat_id].Descrip;
+                    dato.estado = curDictionary[mat_id].Descrip;
                 }
 
                 if (NoCurDictionary.ContainsKey(mat_id))
                 {
-                    dato.descrip = NoCurDictionary[mat_id].Descrip;
+                    dato.estado = NoCurDictionary[mat_id].Descrip;
                 }
 
                 if (PenDictionary.ContainsKey(mat_id))
                 {
-                    dato.descrip = PenDictionary[mat_id].Descrip;
+                    dato.estado = PenDictionary[mat_id].Descrip;
                 }
 
+
+                foreach (Correlativas corr in dato.correlativas)
+                {
+                    var mat = tabla.materias.Find(x => x.materia_id == corr.materia_id);
+                    corr.materia_des = mat.mat_des;
+                }
             }
-            var json = JsonConvert.SerializeObject(arbol);
-            return json;
+            //var json = JsonConvert.SerializeObject(tabla);
+            return tabla;
 
         }
         #endregion
