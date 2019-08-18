@@ -925,6 +925,8 @@ namespace bob.Controllers
             tabla.materias = new List<Materias>();
 
             var JSON = caeceWS.getPlanEstudioJSON(_token, " " + matricula);
+
+            //var PlanDeEstudio = MockService.LoadJson<PlanEstudio>(MockMethod.PlanDeEstudio);
             var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
 
             try
@@ -989,24 +991,28 @@ namespace bob.Controllers
 
                 if (aprDictionary.ContainsKey(mat_id))
                 {
-                    dato.estado = aprDictionary[mat_id].Descrip;
+                    //dato.estado = aprDictionary[mat_id].Descrip;
+                    dato.estado = "Aprobada";
 
                     tabla.aprobadas = tabla.aprobadas + 1;
                 }
 
                 if (curDictionary.ContainsKey(mat_id))
                 {
-                    dato.estado = curDictionary[mat_id].Descrip;
+                    //dato.estado = curDictionary[mat_id].Descrip;
+                    dato.estado = "Cursada";
                 }
 
                 if (NoCurDictionary.ContainsKey(mat_id))
                 {
-                    dato.estado = NoCurDictionary[mat_id].Descrip;
+                    //dato.estado = NoCurDictionary[mat_id].Descrip;
+                    dato.estado = "No Cursada";
                 }
 
                 if (PenDictionary.ContainsKey(mat_id))
                 {
-                    dato.estado = PenDictionary[mat_id].Descrip;
+                    //dato.estado = PenDictionary[mat_id].Descrip;
+                    dato.estado = "Pendiente";
                 }
 
 
