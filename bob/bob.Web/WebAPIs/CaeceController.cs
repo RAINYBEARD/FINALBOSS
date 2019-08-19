@@ -925,8 +925,6 @@ namespace bob.Controllers
             tabla.materias = new List<Materias>();
 
             var JSON = caeceWS.getPlanEstudioJSON(_token, " " + matricula);
-
-            //var PlanDeEstudio = MockService.LoadJson<PlanEstudio>(MockMethod.PlanDeEstudio);
             var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
 
             try
@@ -979,7 +977,7 @@ namespace bob.Controllers
                 throw;
             }
 
-            SetSesionUsuario(matricula);
+            //SetSesionUsuario(matricula);
             var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
             var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
             var NoCurDictionary = SessionManager.DiccionarioNoCursadas as NotCurDictionary;
