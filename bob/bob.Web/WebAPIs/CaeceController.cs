@@ -940,9 +940,19 @@ namespace bob.Controllers
 
                         reg.materia_id = dato.materia_id;
                         reg.plan_id = dato.plan_id;
-                        reg.mat_des = dato.mat_des;
+                        reg.mat_des = dato.mat_des;                        
                         reg.mat_anio = dato.mat_anio;
-                        reg.mat_cuatrim = dato.mat_cuatrim;
+
+                        //hacer el casteo de cuatrimestre para mostrar vacio en vez de un 3
+                        if (dato.mat_cuatrim == 1 || dato.mat_cuatrim == 2)
+                        {
+                            reg.mat_cuatrim = dato.mat_cuatrim.ToString();
+                        }
+                        else {
+                            reg.mat_cuatrim = " ";    
+                        }
+                        
+                        
                         reg.correlativas = new List<Correlativas>();
 
                         tabla.total = tabla.total + 1;

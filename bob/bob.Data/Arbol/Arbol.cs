@@ -19,7 +19,7 @@ namespace bob.Data.Arbol
         public string plan_id { get; set; }
         public string mat_des { get; set; }
         public int mat_anio { get; set; }
-        public int mat_cuatrim { get; set; }
+        public string mat_cuatrim { get; set; }
         public string estado { get; set; }
 
         public List<Correlativas> correlativas { get; set;}
