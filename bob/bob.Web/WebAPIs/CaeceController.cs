@@ -953,18 +953,15 @@ namespace bob.Controllers
 
                         if (dato.materia_id != dato.codigo_correlativa)
                         {
-                            //var id_materia = dato.materia_id.ToString();
-                            //var id_correlativa = dato.codigo_correlativa.ToString();
-                            if (dato.codigo_correlativa.ToString().Length > 2)
-                            {
+                            
                                 var materia = tabla.materias.Find(x => x.materia_id == dato.materia_id);
                                 var reg = new Correlativas();
 
                                 reg.materia_id = dato.codigo_correlativa;
-                                //reg.materia_des = dato.;
+                                reg.materia_des = dato.descripcion_correlativa;
 
                                 materia.correlativas.Add(reg);
-                            }
+                           
                         }
                     
 
@@ -1013,12 +1010,6 @@ namespace bob.Controllers
                     dato.estado = "Pendiente";
                 }
 
-
-                foreach (Correlativas corr in dato.correlativas)
-                {
-                    var mat = tabla.materias.Find(x => x.materia_id == corr.materia_id);
-                    corr.materia_des = mat.mat_des;
-                }
             }
             //var json = JsonConvert.SerializeObject(tabla);
             return tabla;

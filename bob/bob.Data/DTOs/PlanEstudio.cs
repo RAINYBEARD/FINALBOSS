@@ -23,5 +23,7 @@ namespace bob.Data.DTOs
         public string paprobar { get; set; }
         public int codigo_correlativa { get; set; }
         public string abr_titulo { get; set; }
+
+        public string descripcion_correlativa { get; set; }
     }
 }
