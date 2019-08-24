@@ -7,6 +7,14 @@
 </div>
 
 <div class="row">
+
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <button class="btn btn-caece" ng-click="vm.materiasaprobadas()"> Aprobadas</button>
+        <button class="btn btn-caece" ng-click="vm.materiascursadas()"> Cursadas</button>
+        <button class="btn btn-caece" ng-click="vm.materiasnocursadas()"> No Cursadas</button>
+        <button class="btn btn-caece" ng-click="vm.materiaspendientes()"> Pendientes</button>
+    </div>
+
     <table class="table-caece">
         <thead class="thead">
             <tr>
@@ -17,7 +25,7 @@
                 <th>Correlativas</th>
             </tr>
         </thead>
-        <tbody ng-repeat="materia in vm.materias | orderBy: 'mat_anio'">
+        <tbody ng-repeat="materia in vm.materias | orderBy: 'mat_anio' | filter: vm.filtro">
             <tr>
                 <td>{{materia.mat_anio}}</td>
                 <td>{{materia.mat_cuatrim}}</td>
