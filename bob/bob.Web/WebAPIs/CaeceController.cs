@@ -539,62 +539,24 @@ namespace bob.Controllers
             try
             {
                 List<Pendientes> pendientes = new List<Pendientes>();
-                //var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
-                var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
-                var notCurDictionary = SessionManager.DiccionarioNoCursadas as NotCurDictionary;
+                var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
                 var penDictionary = SessionManager.DiccionarioPendientes as PenDictionary;
                 //Agrego las materias pendientes a una lista
                 foreach (KeyValuePair<string, PenValue> entry in penDictionary)
                 {
                     List<CorrelativasNoAprobadas> correlativ = new List<CorrelativasNoAprobadas>();
                     var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == entry.Key).ToList();
-                    //Busco las correlativas previas que el alumno todavia no aprobo
-                    // Correlativa que arregla los plan_Ids de las demas
-                    //var flan = correlativaAuxiliar[0].Plan_Id;
-                    //foreach (Correlativa corr in correlativaAuxiliar)
-                    //{
-                    //    corr.Plan_Id = flan;
-                    //}
-
+                    
                     foreach (Correlativa corr in correlativaAuxiliar)
                     {
                         string materiaCursada = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
-                        //string materiaFlan = (corr.Codigo_Correlativa + "/" + flan_Id);
-                        //if ((!aprDictionary.ContainsKey(materiaCursada)) && (materiaCursada != entry.Key))
-                        //{
-                        //    string abreviatura = corr.Materia.ToString();
-                        //    correlativ.Add(new CorrelativasNoAprobadas() { materiaCod = materiaCursada, abr = abreviatura });
-                        //}
-                        if ((notCurDictionary.ContainsKey(materiaCursada)) && (materiaCursada != entry.Key))
+
+                        if ((!aprDictionary.ContainsKey(materiaCursada)) && (materiaCursada != entry.Key))
                         {
-                            string abreviatura = notCurDictionary[materiaCursada].Abr;
+                            string abreviatura = corr.Materia.Materia_Descripcion.Mat_Des;
                             correlativ.Add(new CorrelativasNoAprobadas() { materiaCod = materiaCursada, abr = abreviatura });
                         }
-                        else if ((penDictionary.ContainsKey(materiaCursada)) && (materiaCursada != entry.Key))
-                        {
-                            string abreviatura = penDictionary[materiaCursada].Abr;
-                            correlativ.Add(new CorrelativasNoAprobadas() { materiaCod = materiaCursada, abr = abreviatura });
-                        }
-                        else if ((curDictionary.ContainsKey(materiaCursada)) && (materiaCursada != entry.Key))
-                        {
-                            string abreviatura = curDictionary[materiaCursada].Abr;
-                            correlativ.Add(new CorrelativasNoAprobadas() { materiaCod = materiaCursada, abr = abreviatura });
-                        }
-                        //else if ((notCurDictionary.ContainsKey(materiaFlan)) && (materiaFlan != entry.Key))
-                        //{
-                        //    string abreviatura = notCurDictionary[materiaFlan].Abr;
-                        //    correlativ.Add(new CorrelativasNoAprobadas() { materiaCod = materiaFlan, abr = abreviatura });
-                        //}
-                        //else if ((penDictionary.ContainsKey(materiaFlan)) && (materiaFlan != entry.Key))
-                        //{
-                        //    string abreviatura = penDictionary[materiaFlan].Abr;
-                        //    correlativ.Add(new CorrelativasNoAprobadas() { materiaCod = materiaFlan, abr = abreviatura });
-                        //}
-                        //else if ((curDictionary.ContainsKey(materiaFlan)) && (materiaFlan != entry.Key))
-                        //{
-                        //    string abreviatura = curDictionary[materiaFlan].Abr;
-                        //    correlativ.Add(new CorrelativasNoAprobadas() { materiaCod = materiaFlan, abr = abreviatura });
-                        //}
+
                     }
 
                     pendientes.Add(new Pendientes() { materiaCod = entry.Key, abr = entry.Value.Abr, correlativasNoAprobadas = correlativ });
@@ -872,6 +834,8 @@ namespace bob.Controllers
             Estadisticas estadistica = new Estadisticas();
             estadistica.Lista = new List<AprobadasPorAnio>();
             //SetSesionUsuario(matricula);
+            var JSON = caeceWS.getPlanEstudioJSON(_token, " " + matricula);
+            var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
             var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
             var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
             var notCurDictionary = SessionManager.DiccionarioNoCursadas as NotCurDictionary;
@@ -900,9 +864,22 @@ namespace bob.Controllers
             }
             estadistica.Lista.OrderBy(p => p.Anio);
 
-            estadistica.Total = aprDictionary.Count + curDictionary.Count + notCurDictionary.Count + penDictionary.Count;
-            estadistica.Aprobadas = aprDictionary.Count;
-            estadistica.Cursadas = aprDictionary.Count + curDictionary.Count;
+            foreach (PlanEstudio dato in PlanDeEstudio)
+            {
+                var mat_id = (dato.materia_id.ToString()) + "/" + (dato.plan_id.ToString());
+                estadistica.Total++;
+                if (aprDictionary.ContainsKey(mat_id))
+                {
+                    estadistica.Aprobadas++;
+                    estadistica.Cursadas++;
+                }
+                if ((curDictionary.ContainsKey(mat_id))&&(penDictionary.ContainsKey(mat_id)))
+                {
+                    estadistica.Cursadas++;
+                }
+            }
+
+
 
             return estadistica;
 
@@ -919,11 +896,10 @@ namespace bob.Controllers
         [HttpGet]
         [Route("get-arbol/{matricula}")]
 
-        public string GetArbol(string matricula)
+        public Tabla GetArbol(string matricula)
         {
-            Arbol arbol = new Arbol();
-            arbol.nodos = new List<Nodo>();
-            arbol.arcos = new List<Arcos>();
+            Tabla tabla = new Tabla();
+            tabla.materias = new List<Materias>();
 
             var JSON = caeceWS.getPlanEstudioJSON(_token, " " + matricula);
             var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
@@ -933,41 +909,49 @@ namespace bob.Controllers
                 foreach (PlanEstudio dato in PlanDeEstudio)
                 {
                     //var id = dato.materia_id.ToString();
-                    var resultado = arbol.nodos.Exists(a => a.materia_id == dato.materia_id);
+                    var resultado = tabla.materias.Exists(a => a.materia_id == dato.materia_id);
 
                     if (resultado == false)
                     {
-                        var reg = new Nodo();
+                        var reg = new Materias();
 
                         reg.materia_id = dato.materia_id;
-                        reg.plan_tit = dato.plan_tit;
-                        reg.titulo_id = dato.titulo_id;
                         reg.plan_id = dato.plan_id;
                         reg.mat_des = dato.mat_des;
                         reg.mat_anio = dato.mat_anio;
-                        reg.mat_cuatrim = dato.mat_cuatrim;
-                        reg.abr_titulo = dato.abr_titulo;
 
-                        arbol.total = arbol.total + 1;
+                        //hacer el casteo de cuatrimestre para mostrar vacio en vez de un 3
+                        if (dato.mat_cuatrim == 1 || dato.mat_cuatrim == 2)
+                        {
+                            reg.mat_cuatrim = dato.mat_cuatrim.ToString();
+                        }
+                        else
+                        {
+                            reg.mat_cuatrim = " ";
+                        }
 
-                        arbol.nodos.Add(reg);
+
+                        reg.correlativas = new List<Correlativas>();
+
+                        tabla.total = tabla.total + 1;
+
+                        tabla.materias.Add(reg);
 
                     }
 
                     if (dato.materia_id != dato.codigo_correlativa)
                     {
-                        //var id_materia = dato.materia_id.ToString();
-                        //var id_correlativa = dato.codigo_correlativa.ToString();
-                        if (dato.codigo_correlativa.ToString().Length > 2)
-                        {
-                            var reg = new Arcos();
 
-                            reg.source = dato.codigo_correlativa;
-                            reg.target = dato.materia_id;
+                        var materia = tabla.materias.Find(x => x.materia_id == dato.materia_id);
+                        var reg = new Correlativas();
 
-                            arbol.arcos.Add(reg);
-                        }
+                        reg.materia_id = dato.codigo_correlativa;
+                        reg.materia_des = dato.descripcion_correlativa;
+
+                        materia.correlativas.Add(reg);
+
                     }
+
 
                 }
 
@@ -978,41 +962,45 @@ namespace bob.Controllers
                 throw;
             }
 
-            SetSesionUsuario(matricula);
-            //var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
+            //SetSesionUsuario(matricula);
+            var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
             var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
             var NoCurDictionary = SessionManager.DiccionarioNoCursadas as NotCurDictionary;
             var PenDictionary = SessionManager.DiccionarioPendientes as PenDictionary;
 
-            foreach (Nodo dato in arbol.nodos)
+            foreach (Materias dato in tabla.materias)
             {
                 var mat_id = (dato.materia_id.ToString()) + "/" + (dato.plan_id.ToString());
 
-                //if (aprDictionary.ContainsKey(mat_id))
-                //{
-                //    dato.descrip = aprDictionary[mat_id].Descrip;
+                if (aprDictionary.ContainsKey(mat_id))
+                {
+                    //dato.estado = aprDictionary[mat_id].Descrip;
+                    dato.estado = "Aprobada";
 
-                //    arbol.aprobadas = arbol.aprobadas + 1;
-                //}
+                    tabla.aprobadas = tabla.aprobadas + 1;
+                }
 
                 if (curDictionary.ContainsKey(mat_id))
                 {
-                    dato.descrip = curDictionary[mat_id].Descrip;
+                    //dato.estado = curDictionary[mat_id].Descrip;
+                    dato.estado = "Cursada";
                 }
 
                 if (NoCurDictionary.ContainsKey(mat_id))
                 {
-                    dato.descrip = NoCurDictionary[mat_id].Descrip;
+                    //dato.estado = NoCurDictionary[mat_id].Descrip;
+                    dato.estado = "Sin Cursar";
                 }
 
                 if (PenDictionary.ContainsKey(mat_id))
                 {
-                    dato.descrip = PenDictionary[mat_id].Descrip;
+                    //dato.estado = PenDictionary[mat_id].Descrip;
+                    dato.estado = "Pendiente";
                 }
 
             }
-            var json = JsonConvert.SerializeObject(arbol);
-            return json;
+            //var json = JsonConvert.SerializeObject(tabla);
+            return tabla;
 
         }
         #endregion

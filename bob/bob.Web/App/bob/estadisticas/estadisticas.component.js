@@ -5,7 +5,7 @@
         controllerAs: 'vm',
         controller: function (caeceService) {
             var vm = this;
-            vm.matricula;
+            vm.matricula = "825471";
             vm.materias;
             vm.aprobadas;
             vm.noaprobadas;
