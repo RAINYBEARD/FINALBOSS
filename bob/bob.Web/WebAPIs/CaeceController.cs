@@ -1011,7 +1011,7 @@ namespace bob.Controllers
                 if (NoCurDictionary.ContainsKey(mat_id))
                 {
                     //dato.estado = NoCurDictionary[mat_id].Descrip;
-                    dato.estado = "No Cursada";
+                    dato.estado = "Sin Cursar";
                 }
 
                 if (PenDictionary.ContainsKey(mat_id))

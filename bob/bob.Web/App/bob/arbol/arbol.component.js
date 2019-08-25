@@ -33,7 +33,7 @@
             }
 
             function materiasnocursadas() {
-                vm.filtro = 'No Cursada';
+                vm.filtro = 'Sin Cursar';
             }
 
             function materiaspendientes() {
@@ -68,13 +68,13 @@
                 }
             });
 
-            angular.module('bob').filter('No Cursada', function () {
+            angular.module('bob').filter('Sin Cursar', function () {
                 return function (items) {
                     var materias = items.materias;
                     var filteredItems;
                     for (var i = 0; i < materias.length; i++) {
                         var item = materias[i];
-                        if (item.estado === 'No Cursada') {
+                        if (item.estado === 'Sin Cursar') {
                             filteredItems.push(item);
                         }
                     }
