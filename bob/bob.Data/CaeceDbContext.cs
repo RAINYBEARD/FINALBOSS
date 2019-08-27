@@ -27,11 +27,7 @@ namespace bob.Data
             modelBuilder.Entity<Alumno>()
                 .Property(e => e.Password)
                 .IsUnicode(false);
-
-            modelBuilder.Entity<Alumno>()
-                .Property(e => e.Plan_Tit)
-                .IsUnicode(false);
-
+            
             modelBuilder.Entity<Correlativa>()
                 .Property(e => e.PCursar)
                 .IsUnicode(false);
@@ -59,7 +55,7 @@ namespace bob.Data
             modelBuilder.Entity<Materia>()
                 .HasMany(e => e.Correlativas)
                 .WithRequired(e => e.Materia)
-                .HasForeignKey(e => new { e.Materia_Id, e.Plan_Id, e.Plan_Tit, e.Titulo_Id })
+                .HasForeignKey(e => new { e.Codigo_Correlativa, e.Plan_Id, e.Plan_Tit, e.Titulo_Id })
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Materia_Descripcion>()
@@ -78,12 +74,6 @@ namespace bob.Data
             modelBuilder.Entity<Titulo>()
                 .Property(e => e.Tit_Des)
                 .IsUnicode(false);
-
-            modelBuilder.Entity<Titulo>()
-                .HasMany(e => e.Alumnos)
-                .WithRequired(e => e.Titulo)
-                .HasForeignKey(e => new { e.Plan_Tit, e.Titulo_Id })
-                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Titulo>()
                 .HasMany(e => e.Materias)

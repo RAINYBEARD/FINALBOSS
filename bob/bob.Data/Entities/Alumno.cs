@@ -14,19 +14,8 @@ namespace bob.Data.Entities
         [StringLength(7)]
         public string Matricula { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
-        [StringLength(3)]
-        public string Plan_Tit { get; set; }
-
-        [Key]
-        [Column(Order = 2)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Titulo_Id { get; set; }
-
-        [StringLength(40)]
+        [StringLength(100)]
         public string Password { get; set; }
 
-        public virtual Titulo Titulo { get; set; }
     }
 }
