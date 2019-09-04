@@ -40,6 +40,9 @@ namespace bob.Data.Entities
         [StringLength(5)]
         public string PAprobar { get; set; }
 
+        [StringLength(3)]
+        public string Correlativa_Tit { get; set; }
+
         [ForeignKey("materia")]
         public virtual Materia Materia { get; set; }
     }
