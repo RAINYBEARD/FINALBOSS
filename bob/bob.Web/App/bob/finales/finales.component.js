@@ -28,47 +28,47 @@
                 vm.filtro = {};
             }
 
-            function equivalenciasParciales() {
-                vm.filtro = 'equivalencias';
-            }
-
-            function ultimoIntento() {
-                vm.filtro = 'ultimo';
-            }
-
-            angular.module('bob').filter('equivalencias', function () {
-                return function (items) {
-                   var filteredItems;
-                    for (var i = 0; i < items.length; i++) {
-                        var item = items[i];
-                        if (item.descrip === 'EQP') {
-                            filteredItems.push(item);
-                        }
-                    }
-                    return filteredItems;
-                }
-            });
-
             //function equivalenciasParciales() {
-            //    vm.filtro = { 'descrip': 'EQP' };
+            //    vm.filtro = 'equivalencias';
             //}
-
-            angular.module('bob').filter('ultimo', function () {
-                return function (items) {
-                    var filteredItems;
-                    for (var i = 0; i < items.length; i++) {
-                        var item = items[i];
-                        if (item.reprobado === 'Si') {
-                            filteredItems.push(item);
-                        }
-                    }
-                    return filteredItems;
-                }
-            });
 
             //function ultimoIntento() {
-            //    vm.filtro = { 'reprobado': 'Si' };
+            //    vm.filtro = 'ultimo';
             //}
+
+            //angular.module('bob').filter('equivalencias', function () {
+            //    return function (items) {
+            //       var filteredItems;
+            //        for (var i = 0; i < items.length; i++) {
+            //            var item = items[i];
+            //            if (item.descrip === 'EQP') {
+            //                filteredItems.push(item);
+            //            }
+            //        }
+            //        return filteredItems;
+            //    }
+            //});
+
+            function equivalenciasParciales() {
+                vm.filtro = { 'descrip': 'EQP' };
+            }
+
+            //angular.module('bob').filter('ultimo', function () {
+            //    return function (items) {
+            //        var filteredItems;
+            //        for (var i = 0; i < items.length; i++) {
+            //            var item = items[i];
+            //            if (item.reprobado === 'Si') {
+            //                filteredItems.push(item);
+            //            }
+            //        }
+            //        return filteredItems;
+            //    }
+            //});
+
+            function ultimoIntento() {
+                vm.filtro = { 'reprobado': 'Si' };
+            }
         },
         templateUrl: '/App/bob/finales/finales.component.html'
     });

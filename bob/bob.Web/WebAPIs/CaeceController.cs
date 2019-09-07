@@ -155,7 +155,10 @@ namespace bob.Controllers
                         case ("REP"):
                             if ((repDictionary != null) && (repDictionary.ContainsKey(matcod)))
                             {
-                                repDictionary[matcod].Fecha = dato.Fecha;
+                                if (DateTime.ParseExact(dato.Fecha, "dd/MM/yyyy", null) > DateTime.ParseExact(repDictionary[matcod].Fecha, "dd/MM/yyyy", null))
+                                {
+                                    repDictionary[matcod].Fecha = dato.Fecha;
+                                }
                             }
                             else
                             {
