@@ -19,5 +19,6 @@ namespace bob.Data.Dictionaries
         public string plan_tit { get; set; }
         public string paprobar { get; set; }
         public string pcursar { get; set; }
+        public string correlativa_tit { get; set; }
     }
 }

@@ -29,7 +29,6 @@ namespace bob.Controllers
         private string _token = WebConfigurationManager.AppSettings.Get("CaeceWSToken");
         private CaeceWS.wbsTrans caeceWS = new CaeceWS.wbsTrans();
 
-
         /// <summary>
         /// Ejemplo de llamada: http://localhost:52178/api/v1/caece/save-plan-estudio/951282 
         /// Guarda el Plan de Estudio de la Persona
@@ -88,16 +87,24 @@ namespace bob.Controllers
                             // Cargo a la base las materias correlativas
                             var correlativa = new Correlativa();
                             AutoMapper.Mapper.Map(dato, correlativa);
+                            if (dato.codigo_correlativa == dato.materia_id)
+                            {
+                                correlativa.Correlativa_Tit = dato.plan_tit;
+                            }
+
                             context.Correlativas.Add(correlativa);
                             context.SaveChanges();
+
                         }
+
                         transaction.Commit();
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
                         transaction.Rollback();
                     }
                 }
+
             }
         }
 
