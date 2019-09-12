@@ -7,7 +7,6 @@
             var vm = this;
             vm.matricula;
             vm.cursos;
-            vm.submit = submit;
             vm.seleccionmateria = seleccionmateria;
             vm.materiasSeleccionadas = [];
             vm.trabarMateria = trabarMateria;
@@ -25,11 +24,9 @@
 
             vm.filtro = vm.checkboxModel.lun + vm.checkboxModel.mar + vm.checkboxModel.mie + vm.checkboxModel.jue + vm.checkboxModel.vie + vm.checkboxModel.sab + vm.checkboxModel.dom;
 
-            function submit() {
-                caeceService.getCursos(vm.matricula).then(function (response) {
-                    vm.cursos = response;
-                });
-            }
+            caeceService.getCursos(vm.matricula).then(function (response) {
+                vm.cursos = response;
+            });
 
             function deseleccionaritems(diaid) {
                 vm.materiasSeleccionadas.forEach(function (item, key) {
@@ -54,11 +51,11 @@
                     var cantDiasMateria = item.Dia.split('1').length - 1;
                     // Resuelvo el bug cuando una materia tiene mas de un dia que se cursa y destrabo la materia que se cursa tambien otro dia
                     if (cantDiasMateria > 1 && ((diaid === '0' && item.Dia[0] === '1')
-                                             || (diaid === '1' && item.Dia[1] === '1')
-                                             || (diaid === '2' && item.Dia[2] === '1')
-                                             || (diaid === '3' && item.Dia[3] === '1')
-                                             || (diaid === '4' && item.Dia[4] === '1')
-                                             || (diaid === '5' && item.Dia[5] === '1'))
+                        || (diaid === '1' && item.Dia[1] === '1')
+                        || (diaid === '2' && item.Dia[2] === '1')
+                        || (diaid === '3' && item.Dia[3] === '1')
+                        || (diaid === '4' && item.Dia[4] === '1')
+                        || (diaid === '5' && item.Dia[5] === '1'))
                     ) {
                         vm.cursos.forEach(function (curso) {
                             for (var i = 0; i < item.Dia.length; i++) {
@@ -70,21 +67,25 @@
                         });
                     }
                 });
-                
-                
+
+
             }
 
             function trabarMateria(curso) {
                 vm.mismoDia = false;
 
-                    vm.materiasSeleccionadas.forEach(function (item, key) {
-                        for (var i = 0; i < curso.Dia.length; i++) {
-                            if (curso.Materia_Id !== item.Materia_Id && curso.Dia[i] === '1' && curso.Dia[i] === item.Dia[i]) {
-                                vm.mismoDia = true;
-                                break;
-                            }
+                vm.materiasSeleccionadas.forEach(function (item, key) {
+                    for (var i = 0; i < curso.Dia.length; i++) {
+                        if ((curso.Materia_Id !== item.Materia_Id) &&
+                            ((curso.Dia[i] === item.Dia[i]) ||
+                                ((curso.Dia[i] === '1') && ((item.Dia[i] === '2') || (item.Dia[i] === '3'))) ||
+                                (((curso.Dia[i] === '2') || (curso.Dia[i] === '3')) && (item.Dia[i] === '1'))) &&
+                            ((curso.Dia[i] === '1') || (curso.Dia[i] === '2') || (curso.Dia[i] === '3'))) {
+                            vm.mismoDia = true;
+                            break;
                         }
-                    });
+                    }
+                });
 
                 return vm.mismoDia;
             }
@@ -112,12 +113,16 @@
     angular.module('bob').filter('cursosfiltermanual', function () {
         return function (cursos, filtro) {
             var out = [];
-            console.log('Materias Seleccionadas: ',cursos);
+            console.log('Materias Seleccionadas: ', cursos);
             angular.forEach(cursos, function (curso) {
                 var i = 0;
                 while (i < 7 && (((filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '1') ||
                     (filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '0') ||
-                    (filtro.substr(i, 1) === '0' && curso.Dia.substr(i, 1) === '0')))) {
+                    (filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '2') ||
+                    (filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '3') ||
+                    (filtro.substr(i, 1) === '0' && curso.Dia.substr(i, 1) === '0') ||
+                    (filtro.substr(i, 1) === '0' && curso.Dia.substr(i, 1) === '4') ||
+                    (filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '4')))) {
 
                     i++;
 

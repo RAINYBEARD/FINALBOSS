@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arbol\Arbol.cs" />
     <Compile Include="Auth\ApplicationTypes.cs" />
     <Compile Include="Auth\Client.cs" />
     <Compile Include="Auth\RefreshToken.cs" />

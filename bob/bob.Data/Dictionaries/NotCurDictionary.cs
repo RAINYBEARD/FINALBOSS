@@ -15,6 +15,8 @@ namespace bob.Data.Dictionaries
     {
         public string Fecha { get; set; }
         public string Abr { get; set; }
+        public string Descrip { get; set; }
+        public string Materia_Id { get; set; }
         public int Anio { get; set; }
         public int Cuatrim { get; set; }
         public string Plan_Id { get; set; }

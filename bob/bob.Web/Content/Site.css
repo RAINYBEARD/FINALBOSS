@@ -3,13 +3,22 @@
     padding:0;
 }
 
+#cantidaddias {
+    width: 3em;
+}
+
 .barra-titulo {
     background-color: #007367;
     color: #ffffff;
 }
 
+.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
 .barra-opciones-j1 {
-    background-color: #d7d7d1;
+    background-color: black;
 }
 
 .barra-opciones-j2 {
@@ -17,40 +26,117 @@
     color: #ffffff;
 }
 
-.area-j3 {
-    background-color: #ededed;
-    color: #494848;
+h4 {
+    text-align: left;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-.btn-j2 {
-    background-color: #818173;
-    color: #ffffff;
-    font-size: 20px;
+
+.btn-caece {
+    background: #54625b;
+    padding: 5px 35px;
+    color: #fff;
+    float: left;
+    position: relative;
+    height: 35px;
+    text-align: center;
+    font-family:"PTSansRegular", Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+    border-radius: 0;
 }
 
-.btn-j1 {
-    color: #747373;
-    font-size: 25px;
+.btn-caece:hover {
+    background-color: #545B62;
 }
 
-.btn-j1:hover {
-        background-color: #ffffff;
-        color: #000000;
-        text-decoration-line: none;
-        text-decoration-style: solid;
-        text-decoration-color: currentcolor;
+.btn-caece:focus {
+    background-color: #545B62;
 }
 
-.btn-j1:focus {
-        color: #4CAF50;
-        border-color: currentColor;
-        background-color: white;
+.btn-caece:active {
+}
+
+.btn-info {
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    float: left;
+}
+
+.btn-info:hover {
+    background-color: #005c52
+}
+
+.btn-info:focus {
+    background-color: #005c52
+}
+
+a.dropdown-item:focus {
+    background-color: #e5e5e5;
+    color: black;
+}
+
+button#buttonGroupEstadisticas.btn.btn-info.dropdown-toggle {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+button#buttonGroupEstadisticas.btn.btn-info.dropdown-toggle:focus {
+    background-color: #005c52
 }
 
 .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {
     color: #fff;
     background-color: #7d8985;
     border-color: #bcbec0;
+}
+
+.table-caece table {
+    text-align: center;
+    position: fixed;
+    table-layout: fixed;
+    width: 200px;
+    height: 200px;
+    border-collapse: collapse;
+    padding: 10px;
+    border: 0;
+}
+
+.table-caece th {
+    text-align: center;
+    background-color: #1AAB8A;
+    color: #fff;
+    font-size: 16px;
+    padding: 10px;
+    width: 200px;
+    height: 60px;
+    font-weight: bold;
+    border: 0;
+}
+
+.table-caece td {
+    padding: 10px;
+    text-align: center;
+}
+.table-caece ul {
+    text-align:left;
+}
+.table-caece tbody:nth-child(even) {
+    background-color: #bae5db;
+    color: black;
+}
+
+.table-caece tbody:nth-child(odd) {
+    background-color: #30b395;
+    color: black;
 }
 
 .component-borders {
@@ -61,24 +147,27 @@
     color: #d6d6c2;
 }
 
-.main__menu {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: start;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    -webkit-justify-content: flex-start;
-    -ms-flex-pack: center;
-    justify-content: flex-start;
-    padding: 0;
-    margin: 0;
-    height: 100%;
+.tooltip2 {
+    color: #333;
+    font-size: 18px;
+    left: 375px;
+    padding: 10px;
+    position: absolute;
+    text-align: center;
+    top: 175px;
+    width: 100px;
+    z-index: 10;
 }
 
-.main__menu__item {
-    list-style-type: none;
+.tooltip3 {
+    color: #333;
+    font-size: 18px;
+    left: 375px;
+    padding: 10px;
+    position: absolute;
+    text-align: center;
+    top: 575px;
+    width: 100px;
+    z-index: 10;
 }
+

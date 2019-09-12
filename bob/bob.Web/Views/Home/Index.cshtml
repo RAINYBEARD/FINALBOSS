@@ -1,38 +1,35 @@
-﻿@section styles{
+﻿<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html ng-app="bob">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/Content/Site.css">
     <link rel="stylesheet" type="text/css" href="/App/bob/finales/finales.component.css">
-}
+    <base href="/" />
+</head>
+<body ng-cloak>
+    <bob-app></bob-app>
 
+    <script src="/Scripts/jquery-3.3.1.js"></script>
+    <script src="/Scripts/umd/popper.js"></script>
+    <script src="/Scripts/angular.js"></script>
+    <script src="/Scripts/angular-ui-router.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
 
-@section scripts{
+    <script src="https://d3js.org/d3.v5.js"></script>
+
     <script src="/App/bob/app-module.js"></script>
     <script src="/App/bob/bob-app.component.js"></script>
     <script src="/App/bob/servicios/caece.service.js"></script>
-    <script src="/App/bob/navegacion/navegacion.component.js"></script>
-    <script src="/App/bob/userstatus/userstatus.component.js"></script>
+    <script src="/App/bob/nav/nav.component.js"></script>
     <script src="/App/bob/login/login.component.js"></script>
-    <script src="/App/bob/register/register.component.js"></script>
-    <script src="/App/bob/changepassword/changepassword.component.js"></script>
     <script src="/App/bob/arbol/arbol.component.js"></script>
     <script src="/App/bob/cursos/cursos.component.js"></script>
     <script src="/App/bob/cursos/cursos-auto.component.js"></script>
     <script src="/App/bob/cursos/cursos-manual.component.js"></script>
     <script src="/App/bob/finales/finales.component.js"></script>
     <script src="/App/bob/estadisticas/estadisticas.component.js"></script>
-    <script src="/App/bob/porvencerse/porvencerse.component.js"></script>
     <script src="/App/bob/pendientes/pendientes.component.js"></script>
-    <script src="/App/bob/servicios/auth-interceptor.service.js"></script>
-    <script src="/App/bob/servicios/auth.service.js"></script>
-}
-
-@section jsCode {
-    angular.bootstrap(document.getElementById("bob"), ['bob']);
-}
-
-<div ng-non-bindable class="container-fluid">
-    <div id="bob" class="section-container">
-        <div class="body-content" ng-cloak>
-            <bob-app></bob-app>
-        </div>
-    </div>
-</div>
 

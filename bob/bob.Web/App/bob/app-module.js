@@ -69,7 +69,6 @@
         });
     });
 
-    appModule.value('componentBorders', false);
 
     appModule.run(function ($rootScope, $state, authService) {
         $rootScope.$on('unauthorized', function (event) {

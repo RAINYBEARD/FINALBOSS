@@ -5,10 +5,11 @@ using System.Web.Http;
 using System.Threading;
 using bob.Data;
 using bob.Data.Entities;
-using bob.Data.Estadisticas;
 using bob.Data.DTOs;
 using bob.Data.Dictionaries;
 using bob.Data.Finales;
+using bob.Data.Arbol;
+using bob.Data.Estadisticas;
 using bob.Data.Pendientes;
 using bob.Data.Vencerse;
 using Newtonsoft.Json.Linq;
@@ -17,6 +18,7 @@ using System.Web.Configuration;
 using bob.Mocks;
 using bob.Helpers;
 using System.Globalization;
+using Newtonsoft.Json;
 
 namespace bob.Controllers
 {
@@ -88,22 +90,17 @@ namespace bob.Controllers
                                     context.SaveChanges();
                                 }
 
-                                // Cargo a la base las materias correlativas
-                                resultado = context.Correlativas.Any(a => a.Plan_Tit == dato.plan_tit && a.Codigo_Correlativa == dato.codigo_correlativa );
-                                if (resultado == false)
-                                {
-                                    var correlativa = context.Correlativas.Create();
-                                    AutoMapper.Mapper.Map(dato, correlativa);
-                                    context.Correlativas.Add(correlativa);
-                                    context.SaveChanges();
-                                }
-                            }
-                            transaction.Commit();
+                            // Cargo a la base las materias correlativas
+                            var correlativa = new Correlativa();
+                            AutoMapper.Mapper.Map(dato, correlativa);
+                            context.Correlativas.Add(correlativa);
+                            context.SaveChanges();
                         }
-                        catch (Exception e)
-                        {
-                            transaction.Rollback();
-                        }
+                        transaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
                     }
                 }
             }
@@ -163,7 +160,10 @@ namespace bob.Controllers
                         case ("REP"):
                             if ((repDictionary != null) && (repDictionary.ContainsKey(matcod)))
                             {
-                                repDictionary[matcod].Fecha = dato.Fecha;
+                                if (DateTime.ParseExact(dato.Fecha, "dd/MM/yyyy", null) > DateTime.ParseExact(repDictionary[matcod].Fecha, "dd/MM/yyyy", null))
+                                {
+                                    repDictionary[matcod].Fecha = dato.Fecha;
+                                }
                             }
                             else
                             {
@@ -191,7 +191,19 @@ namespace bob.Controllers
 
             foreach (var dato in cursosAbiertos)
             {
-                if (!cursosDictionary.ContainsKey(dato.Materia_Id + "/" + dato.Plan_Id) && notCurDictionary.ContainsKey(dato.Materia_Id + "/" + dato.Plan_Id))
+                int i = 0;
+                while (i < 7 && (dato.Dia.Substring(i, 1) == "0" || dato.Dia.Substring(i, 1) == "1"))
+                {
+                    i++;
+                }
+                if (i < 7)
+                {
+                    System.Diagnostics.Debug.WriteLine("Materia con cursada de medio dia : " + dato.Materia_Id + "/" + dato.Plan_Id + "  El string de dias es : " + dato.Dia);
+                }
+
+                // Comento para hacer la prueba con los dias que tienen 2 y 3
+                // if (!cursosDictionary.ContainsKey(dato.Materia_Id + "/" + dato.Plan_Id) && notCurDictionary.ContainsKey(dato.Materia_Id + "/" + dato.Plan_Id))
+                if (!cursosDictionary.ContainsKey(dato.Materia_Id + "/" + dato.Plan_Id))
                 {
                     CursosValue curso = new CursosValue();
                     AutoMapper.Mapper.Map(dato, curso);
@@ -522,13 +534,13 @@ namespace bob.Controllers
             return mostrarMateriasACursarEsteCuatri;
         }
         #endregion
-
-        #region Pendientes
-        /// <summary>
-        /// Ejemplo de llamada: http://localhost:52178/Caece/Pendientes/951282 
-        /// </summary>
-        /// <param name="matricula"></param>
-        [HttpGet]
+     
+    #region Pendientes
+    /// <summary>
+    /// Ejemplo de llamada: http://localhost:52178/Caece/Pendientes/951282 
+    /// </summary>
+    /// <param name="matricula"></param>
+    [HttpGet]
         [Route("get-pendientes/{matricula}")]
         public List<Pendientes> Pendientes(string matricula)
         {
@@ -542,15 +554,17 @@ namespace bob.Controllers
                 {
                     List<CorrelativasNoAprobadas> correlativ = new List<CorrelativasNoAprobadas>();
                     var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == entry.Key).ToList();
-                    //Busco las correlativas previas que el alumno todavia no aprobo
+                    
                     foreach (Correlativa corr in correlativaAuxiliar)
                     {
                         string materiaCursada = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
+
                         if ((!aprDictionary.ContainsKey(materiaCursada)) && (materiaCursada != entry.Key))
                         {
-                            string abreviatura = entry.Value.Abr;
+                            string abreviatura = corr.Materia.Materia_Descripcion.Mat_Des;
                             correlativ.Add(new CorrelativasNoAprobadas() { materiaCod = materiaCursada, abr = abreviatura });
                         }
+
                     }
 
                     pendientes.Add(new Pendientes() { materiaCod = entry.Key, abr = entry.Value.Abr, correlativasNoAprobadas = correlativ });
@@ -649,6 +663,7 @@ namespace bob.Controllers
                 var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
                 var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
                 var repDictionary = SessionManager.DiccionarioReprobadas as RepDictionary;
+                var penDictionary = SessionManager.DiccionarioPendientes as PenDictionary;
                 var notCurDictionary = SessionManager.DiccionarioNoCursadas as NotCurDictionary;
                 foreach (KeyValuePair<string, CurValue> entry in curDictionary)
                 {
@@ -736,17 +751,17 @@ namespace bob.Controllers
                     foreach (Correlativa corr in correlativaAuxiliar)
                     {
                         string materia_correlativa = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
-
-                        if ((((!aprDictionary.ContainsKey(materia_correlativa)) && (!curDictionary.ContainsKey(materia_correlativa))) || (elimDictionary.ContainsKey(materia_correlativa))))
-                        {
-                            string materiaEliminada = cur.materiaCod;
-                            string abr = cur.abr;
-                            elimDictionary.Add(materiaEliminada, abr);
-                            cursados.Remove(cur);
-                            totalCursadas = cursados.Count;
-                            seEleminoLaMateria = true;
-                            break;
-                        }
+                        
+                            if ((((!aprDictionary.ContainsKey(materia_correlativa)) && (!curDictionary.ContainsKey(materia_correlativa))) || (elimDictionary.ContainsKey(materia_correlativa))))
+                            {                               
+                                string materiaEliminada = cur.materiaCod;
+                                string abr = cur.abr;
+                                elimDictionary.Add(materiaEliminada, abr);
+                                cursados.Remove(cur);
+                                totalCursadas = cursados.Count;
+                                seEleminoLaMateria = true;
+                                break;
+                            }
                         //}
                     }
                     if (seEleminoLaMateria == false)
@@ -787,20 +802,13 @@ namespace bob.Controllers
                         if ((correlativasHechas == true) && (materiaNoCursada != cur.materiaCod))
                         {
                             string abreviatura;
-                            if (aprDictionary.ContainsKey(materiaNoCursada))
+                            if (curDictionary.ContainsKey(materiaNoCursada))
                             {
-                                abreviatura = notCurDictionary[materiaNoCursada].Abr;
+                                abreviatura = curDictionary[materiaNoCursada].Abr;
                             }
                             else
                             {
-                                if (curDictionary.ContainsKey(materiaNoCursada))
-                                {
-                                    abreviatura = curDictionary[materiaNoCursada].Abr;
-                                }
-                                else
-                                {
-                                    abreviatura = notCurDictionary[materiaNoCursada].Abr;
-                                }
+                                abreviatura = notCurDictionary[materiaNoCursada].Abr;
                             }
                             correlativ2.Add(new CorrelativasCursadas() { materiaCod = materiaNoCursada, abr = abreviatura });
                         }
@@ -821,75 +829,36 @@ namespace bob.Controllers
         }
         #endregion
 
-        //POR QUÉ ESTO SON 3 METODOS, TODOS TIENEN ESTADISTICAS, MEJOR DEVOLVER TODO EN UNA RESPUESTA
         #region Estadisticas
         /// <summary>
-        /// Devuelve el porcentaje aprobado de la carrera 
+        /// Devuelvo todas las estadisticas en una sola estructura
         /// </summary>
         /// <param name="matricula"></param>
         /// <returns></returns>
-        public Estadisticas PorcentajeAprobado(string matricula)
+        [HttpGet]
+        [Route("get-estadisticas/{matricula}")]
+        public Estadisticas EstadisticasAlumno(string matricula)
         {
-            SetSesionUsuario(matricula);
+            Estadisticas estadistica = new Estadisticas();
+            estadistica.Lista = new List<AprobadasPorAnio>();
+            //SetSesionUsuario(matricula);
+            var JSON = caeceWS.getPlanEstudioJSON(_token, " " + matricula);
+            var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
+            var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
+            var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
+            var notCurDictionary = SessionManager.DiccionarioNoCursadas as NotCurDictionary;
+            var penDictionary = SessionManager.DiccionarioPendientes as PenDictionary;
 
-            var estadistica = new Estadisticas();
-
-            estadistica.Aprobadas = SessionManager.DiccionarioAprobadas.Count;
-
-            estadistica.Total = SessionManager.DiccionarioAprobadas.Count + SessionManager.DiccionarioCursadas.Count + SessionManager.DiccionarioNoCursadas.Count + SessionManager.DiccionarioPendientes.Count;
-
-            var aux = (estadistica.Aprobadas * 100);
-
-            estadistica.Porcentaje_Aprobado = decimal.Divide(aux, estadistica.Total);
-
-            estadistica.Porcentaje_Faltante = 100 - estadistica.Porcentaje_Aprobado;
-
-            return estadistica;
-        }
-
-        /// <summary>
-        /// Devuelve el porcentaje cursado de la carrera
-        /// </summary>
-        /// <param name="matricula"></param>
-        /// <returns></returns>
-        public Estadisticas PorcentajeCursado(string matricula)
-        {
-
-            var estadistica = new Estadisticas();
-
-            estadistica.Aprobadas = SessionManager.DiccionarioAprobadas.Count + SessionManager.DiccionarioCursadas.Count;
-
-            estadistica.Total = SessionManager.DiccionarioAprobadas.Count + SessionManager.DiccionarioCursadas.Count + SessionManager.DiccionarioNoCursadas.Count + SessionManager.DiccionarioPendientes.Count;
-
-            var aux = ((estadistica.Aprobadas) * 100);
-
-            estadistica.Porcentaje_Aprobado = decimal.Divide(aux, estadistica.Total);
-
-            estadistica.Porcentaje_Faltante = 100 - estadistica.Porcentaje_Aprobado;
-
-            return estadistica;
-
-        }
-
-        /// <summary>
-        /// Devuelve cuantas materias aprobó por año
-        /// </summary>
-        /// <param name="matricula"></param>
-        /// <returns></returns>
-        public List<AprobadasPorAnio> EstadisticaPorAnio(string matricula)
-        {
-
-            List<AprobadasPorAnio> Ls = new List<AprobadasPorAnio>();
-
-            foreach (KeyValuePair<string, AprValue> entry in SessionManager.DiccionarioAprobadas)
+            //Por cada aprobada veo si sumo una aprobada al registro existente de la lista, o agrego otro registro si no existe
+            foreach (KeyValuePair<string, AprValue> entry in aprDictionary)
             {
                 int fecha = int.Parse(entry.Value.Fecha.Substring(6, 4));
 
-                var resultado = Ls.Exists(a => a.Anio == fecha);
+                var resultado = estadistica.Lista.Exists(a => a.Anio == fecha);
 
                 if (resultado == true)
                 {
-                    AprobadasPorAnio Reg = Ls.Find(a => a.Anio == fecha);
+                    AprobadasPorAnio Reg = estadistica.Lista.Find(a => a.Anio == fecha);
                     Reg.Aprobadas++;
                 }
                 else
@@ -898,12 +867,149 @@ namespace bob.Controllers
                     Registro.Anio = int.Parse(entry.Value.Fecha.Substring(6, 4));
                     Registro.Aprobadas = 1;
 
-                    Ls.Add(Registro);
+                    estadistica.Lista.Add(Registro);
                 }
             }
-            Ls.OrderBy(p => p.Anio);
+            estadistica.Lista.OrderBy(p => p.Anio);
 
-            return Ls;
+            foreach (PlanEstudio dato in PlanDeEstudio)
+            {
+                var mat_id = (dato.materia_id.ToString()) + "/" + (dato.plan_id.ToString());
+                estadistica.Total++;
+                if (aprDictionary.ContainsKey(mat_id))
+                {
+                    estadistica.Aprobadas++;
+                    estadistica.Cursadas++;
+                }
+                if ((curDictionary.ContainsKey(mat_id))&&(penDictionary.ContainsKey(mat_id)))
+                {
+                    estadistica.Cursadas++;
+                }
+            }
+
+
+
+            return estadistica;
+
+        }
+        #endregion
+
+        #region Arbol
+
+        /// <summary>
+        /// Devuelvo estructura del Arbol; que tiene una lista de nodos y una lista de arcos
+        /// </summary>
+        /// <param name="matricula"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("get-arbol/{matricula}")]
+
+        public Tabla GetArbol(string matricula)
+        {
+            Tabla tabla = new Tabla();
+            tabla.materias = new List<Materias>();
+
+            var JSON = caeceWS.getPlanEstudioJSON(_token, " " + matricula);
+            var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
+
+            try
+            {
+                foreach (PlanEstudio dato in PlanDeEstudio)
+                {
+                    //var id = dato.materia_id.ToString();
+                    var resultado = tabla.materias.Exists(a => a.materia_id == dato.materia_id);
+
+                    if (resultado == false)
+                    {
+                        var reg = new Materias();
+
+                        reg.materia_id = dato.materia_id;
+                        reg.plan_id = dato.plan_id;
+                        reg.mat_des = dato.mat_des;
+                        reg.mat_anio = dato.mat_anio;
+
+                        //hacer el casteo de cuatrimestre para mostrar vacio en vez de un 3
+                        if (dato.mat_cuatrim == 1 || dato.mat_cuatrim == 2)
+                        {
+                            reg.mat_cuatrim = dato.mat_cuatrim.ToString();
+                        }
+                        else
+                        {
+                            reg.mat_cuatrim = " ";
+                        }
+
+
+                        reg.correlativas = new List<Correlativas>();
+
+                        tabla.total = tabla.total + 1;
+
+                        tabla.materias.Add(reg);
+
+                    }
+
+                    if (dato.materia_id != dato.codigo_correlativa)
+                    {
+
+                        var materia = tabla.materias.Find(x => x.materia_id == dato.materia_id);
+                        var reg = new Correlativas();
+
+                        reg.materia_id = dato.codigo_correlativa;
+                        reg.materia_des = dato.descripcion_correlativa;
+
+                        materia.correlativas.Add(reg);
+
+                    }
+
+
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+            //SetSesionUsuario(matricula);
+            var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
+            var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
+            var NoCurDictionary = SessionManager.DiccionarioNoCursadas as NotCurDictionary;
+            var PenDictionary = SessionManager.DiccionarioPendientes as PenDictionary;
+
+            foreach (Materias dato in tabla.materias)
+            {
+                var mat_id = (dato.materia_id.ToString()) + "/" + (dato.plan_id.ToString());
+
+                if (aprDictionary.ContainsKey(mat_id))
+                {
+                    //dato.estado = aprDictionary[mat_id].Descrip;
+                    dato.estado = "Aprobada";
+
+                    tabla.aprobadas = tabla.aprobadas + 1;
+                }
+
+                if (curDictionary.ContainsKey(mat_id))
+                {
+                    //dato.estado = curDictionary[mat_id].Descrip;
+                    dato.estado = "Cursada";
+                }
+
+                if (NoCurDictionary.ContainsKey(mat_id))
+                {
+                    //dato.estado = NoCurDictionary[mat_id].Descrip;
+                    dato.estado = "Sin Cursar";
+                }
+
+                if (PenDictionary.ContainsKey(mat_id))
+                {
+                    //dato.estado = PenDictionary[mat_id].Descrip;
+                    dato.estado = "Pendiente";
+                }
+
+            }
+            //var json = JsonConvert.SerializeObject(tabla);
+            return tabla;
+
         }
         #endregion
     }

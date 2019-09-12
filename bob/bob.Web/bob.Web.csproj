@@ -235,7 +235,6 @@
     <Content Include="App\bob\navegacion\navegacion.component.js" />
     <Content Include="App\bob\pendientes\pendientes.component.html" />
     <Content Include="App\bob\pendientes\pendientes.component.js" />
-    <Content Include="App\bob\porvencerse\porvencerse.component.html" />
     <Content Include="App\bob\changepassword\changepassword.component.html" />
     <Content Include="App\bob\changepassword\changepassword.component.js" />
     <Content Include="App\bob\register\register.component.html" />
@@ -272,7 +271,6 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
-    <Content Include="App\bob\porvencerse\porvencerse.component.js" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

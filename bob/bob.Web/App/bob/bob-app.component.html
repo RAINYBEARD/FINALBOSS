@@ -1,14 +1,20 @@
-﻿<div>
+﻿<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div class="container">
     <div class="row">
         <div class="col-8 barra-titulo"><img src="/App/bob/imagenes/logocaece_blanco.png" alt="Universidad CAECE" /></div>
         <div class="col-4"><userstatus></userstatus></div>
     </div>
-    <div>
-        <navegacion></navegacion>
+    <div class="row">
+        <div class="col-12">
+            <nav></nav>
+        </div>
     </div>
     <div class="row">
-        <div class="col-12 ">
+        <div class="col-10">
             <ui-view></ui-view>
+        </div>
+        <div class="col-2">
+            <pendientes></pendientes>
         </div>
     </div>
 </div>
