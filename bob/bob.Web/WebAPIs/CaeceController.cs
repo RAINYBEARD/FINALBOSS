@@ -20,13 +20,13 @@ using System.Globalization;
 
 namespace bob.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/v1/caece")]
     public class CaeceController : ApiController
     {
         private readonly CaeceDBContext context = new CaeceDBContext();
         private string _token = WebConfigurationManager.AppSettings.Get("CaeceWSToken");
         private CaeceWS.wbsTrans caeceWS = new CaeceWS.wbsTrans();
-
 
         /// <summary>
         /// Ejemplo de llamada: http://localhost:52178/api/v1/caece/save-plan-estudio/951282 
@@ -37,63 +37,73 @@ namespace bob.Controllers
         [Route("save-plan-estudio/{matricula}")]
         public void SavePlanDeEstudio(string matricula)
         {
-            var JSON = caeceWS.getPlanEstudioJSON(_token, " " + matricula);
+            if (matricula.Length == 6) {
+                matricula = " " + matricula; 
+            }
+            var JSON = caeceWS.getPlanEstudioJSON(_token, matricula);
+            var JSON2 = caeceWS.getHistoriaAcademicaJSON(_token, matricula);
             var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
-
-            SessionManager.TituloId = PlanDeEstudio[0].titulo_id;
-            SessionManager.PlanTit = PlanDeEstudio[0].plan_tit;
-
-            using (var context = new CaeceDBContext())
+            if (PlanDeEstudio.Count > 0)
             {
-                using (var transaction = context.Database.BeginTransaction())
+                SessionManager.TituloId = PlanDeEstudio[0].titulo_id;
+                SessionManager.PlanTit = PlanDeEstudio[0].plan_tit;
+
+                using (var context = new CaeceDBContext())
                 {
-                    try
+                    using (var transaction = context.Database.BeginTransaction())
                     {
-                        foreach (PlanEstudio dato in PlanDeEstudio)
+                        try
                         {
-                            // Cargo a la base los datos de las materias
-                            bool resultado = context.Materias_Descripciones.Any(a => a.Materia_Id == dato.materia_id);
-
-                            if (resultado == false)
+                            foreach (PlanEstudio dato in PlanDeEstudio)
                             {
-                                var materia_descripcion = context.Materias_Descripciones.Create();
-                                AutoMapper.Mapper.Map(dato, materia_descripcion);
-                                context.Materias_Descripciones.Add(materia_descripcion);
-                                context.SaveChanges();
+                                // Cargo a la base los datos de las materias
+                                bool resultado = context.Materias_Descripciones.Any(a => a.Materia_Id == dato.materia_id);
+
+                                if (resultado == false)
+                                {
+                                    var materia_descripcion = context.Materias_Descripciones.Create();
+                                    AutoMapper.Mapper.Map(dato, materia_descripcion);
+                                    context.Materias_Descripciones.Add(materia_descripcion);
+                                    context.SaveChanges();
+                                }
+
+                                // Cargo a la base los datos de los titulos
+                                resultado = context.Titulos.Any(a => a.Plan_Tit == dato.plan_tit && a.Titulo_Id == dato.titulo_id);
+
+                                if (resultado == false)
+                                {
+                                    var titulo = context.Titulos.Create();
+                                    AutoMapper.Mapper.Map(dato, titulo);
+                                    context.Titulos.Add(titulo);
+                                    context.SaveChanges();
+                                }
+
+                                // Cargo a la base la relacion materia titulo
+                                resultado = context.Materias.Any(a => a.Materia_Id == dato.materia_id && a.Plan_Id == dato.plan_id && a.Plan_Tit == dato.plan_tit && a.Titulo_Id == dato.titulo_id);
+                                if (resultado == false)
+                                {
+                                    var materia = context.Materias.Create();
+                                    AutoMapper.Mapper.Map(dato, materia);
+                                    context.Materias.Add(materia);
+                                    context.SaveChanges();
+                                }
+
+                                // Cargo a la base las materias correlativas
+                                resultado = context.Correlativas.Any(a => a.Plan_Tit == dato.plan_tit && a.Codigo_Correlativa == dato.codigo_correlativa );
+                                if (resultado == false)
+                                {
+                                    var correlativa = context.Correlativas.Create();
+                                    AutoMapper.Mapper.Map(dato, correlativa);
+                                    context.Correlativas.Add(correlativa);
+                                    context.SaveChanges();
+                                }
                             }
-
-                            // Cargo a la base los datos de los titulos
-                            resultado = context.Titulos.Any(a => a.Plan_Tit == dato.plan_tit && a.Titulo_Id == dato.titulo_id);
-
-                            if (resultado == false)
-                            {
-                                var titulo = context.Titulos.Create();
-                                AutoMapper.Mapper.Map(dato, titulo);
-                                context.Titulos.Add(titulo);
-                                context.SaveChanges();
-                            }
-
-                            // Cargo a la base la relacion materia titulo
-                            resultado = context.Materias.Any(a => a.Materia_Id == dato.materia_id && a.Plan_Id == dato.plan_id && a.Plan_Tit == dato.plan_tit && a.Titulo_Id == dato.titulo_id);
-                            if (resultado == false)
-                            {
-                                var materia = context.Materias.Create();
-                                AutoMapper.Mapper.Map(dato, materia);
-                                context.Materias.Add(materia);
-                                context.SaveChanges();
-                            }
-
-                            // Cargo a la base las materias correlativas
-                            var correlativa = context.Correlativas.Create();
-                            AutoMapper.Mapper.Map(dato, correlativa);
-                            context.Correlativas.Add(correlativa);
-                            context.SaveChanges();
+                            transaction.Commit();
                         }
-                        transaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        transaction.Rollback();
+                        catch (Exception e)
+                        {
+                            transaction.Rollback();
+                        }
                     }
                 }
             }
@@ -214,7 +224,7 @@ namespace bob.Controllers
                         {
                             var listCorrel = new List<CorrValue>();
                             listCorrel.Add(corr);
-                            dicCorrelativas.Add(correlativa.Materia_Id,listCorrel);
+                            dicCorrelativas.Add(correlativa.Materia_Id, listCorrel);
                         }
                         else
                         {
@@ -252,7 +262,7 @@ namespace bob.Controllers
             string materiaAnt = "";
 
             System.Diagnostics.Debug.WriteLine("Entro en el controller Cursos");
-            
+
             if (SessionManager.DiccionarioCursadas != null)
             {
 
@@ -389,7 +399,7 @@ namespace bob.Controllers
                     cursomateria.Plan_Id = curso.Plan_Id;
                     cursomateria.Turno_Id = curso.Turno_Id;
                     cursomateria.Abr = ObtenerNombreMateria(int.Parse(materiaid));
-                    
+
                     // Agrego a la lista los cursos a los cuales se puede inscribir
                     materiasACursarEsteCuatri.Add(cursomateria);
                 }
@@ -726,17 +736,17 @@ namespace bob.Controllers
                     foreach (Correlativa corr in correlativaAuxiliar)
                     {
                         string materia_correlativa = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
-                        
-                            if ((((!aprDictionary.ContainsKey(materia_correlativa)) && (!curDictionary.ContainsKey(materia_correlativa))) || (elimDictionary.ContainsKey(materia_correlativa))))
-                            {
-                                string materiaEliminada = cur.materiaCod;
-                                string abr = cur.abr;
-                                elimDictionary.Add(materiaEliminada, abr);
-                                cursados.Remove(cur);
-                                totalCursadas = cursados.Count;
-                                seEleminoLaMateria = true;
-                                break;
-                            }
+
+                        if ((((!aprDictionary.ContainsKey(materia_correlativa)) && (!curDictionary.ContainsKey(materia_correlativa))) || (elimDictionary.ContainsKey(materia_correlativa))))
+                        {
+                            string materiaEliminada = cur.materiaCod;
+                            string abr = cur.abr;
+                            elimDictionary.Add(materiaEliminada, abr);
+                            cursados.Remove(cur);
+                            totalCursadas = cursados.Count;
+                            seEleminoLaMateria = true;
+                            break;
+                        }
                         //}
                     }
                     if (seEleminoLaMateria == false)

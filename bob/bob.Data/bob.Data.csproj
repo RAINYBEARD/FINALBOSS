@@ -60,6 +60,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Auth\ApplicationTypes.cs" />
+    <Compile Include="Auth\Client.cs" />
+    <Compile Include="Auth\RefreshToken.cs" />
     <Compile Include="Dictionaries\CorrDictionary.cs" />
     <Compile Include="Dictionaries\AprDictionary.cs" />
     <Compile Include="Dictionaries\CursosDictionary.cs" />
@@ -85,6 +88,9 @@
     <Compile Include="Pendientes\Pendientes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Titulo.cs" />
+    <Compile Include="Usuario\ChangePassword.cs" />
+    <Compile Include="Usuario\Register.cs" />
+    <Compile Include="Usuario\Usuario.cs" />
     <Compile Include="Vencerse\PorVencerse.cs" />
   </ItemGroup>
   <ItemGroup>

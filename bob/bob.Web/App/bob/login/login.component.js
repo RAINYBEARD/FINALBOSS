@@ -3,15 +3,32 @@
 
     angular.module('bob').component('login', {
         controllerAs: 'vm',
-        controller: function (apiBase, $http, caeceService) {
+        controller: function (caeceService, authService, $state) {
             var vm = this;
-            vm.matricula;
-            vm.submit = submit;
 
-            function submit() {
-                caeceService.savePlanEstudio(vm.matricula).then(function (response) {
-                    caeceService.setSesionUsuario(vm.matricula);
-                });
+            vm.loginData = {
+                userName: "",
+                password: "",
+                clientId: ""
+            };
+
+            vm.message = "";
+            vm.login = login;
+
+            function login() {
+
+                authService.login(vm.loginData).then(function (response) {
+
+                    caeceService.savePlanEstudio(vm.loginData.userName).then(function (response) {
+                        caeceService.setSesionUsuario(vm.loginData.userName).then(function (response) {
+                            $state.go('estadisticas');
+
+                        });
+                    });
+                }, 
+                    function (err) {
+                        vm.message = err.error_description;
+                    });
 
             }
         },

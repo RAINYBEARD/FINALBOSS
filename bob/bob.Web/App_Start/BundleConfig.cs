@@ -17,11 +17,16 @@ namespace bob
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+                      "~/Scripts/umd/popper.min.js", 
+                      "~/Scripts/bootstrap.js"
+                      ));
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
-                      "~/App/app.js",
-                      "~/App/Arbol/arbol.component.js"));
+                      "~/Scripts/angular.js",
+                      // "~/Scripts/angular-animate.js",
+                      "~//Scripts/angular-local-storage.js",
+                      "~/Scripts/angular-ui-router.js"
+                      ));
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));

@@ -12,7 +12,7 @@ namespace bob.Data.Entities
         [Key]
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Materia_Id { get; set; }
+        public int Codigo_Correlativa { get; set; }
 
         [Key]
         [Column(Order = 1)]
@@ -32,7 +32,7 @@ namespace bob.Data.Entities
         [Key]
         [Column(Order = 4)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Codigo_Correlativa { get; set; }
+        public int Materia_Id { get; set; }
 
         [StringLength(5)]
         public string PCursar { get; set; }
@@ -40,6 +40,7 @@ namespace bob.Data.Entities
         [StringLength(5)]
         public string PAprobar { get; set; }
 
+        [ForeignKey("materia")]
         public virtual Materia Materia { get; set; }
     }
 }

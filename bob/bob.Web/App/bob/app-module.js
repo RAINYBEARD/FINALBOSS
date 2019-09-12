@@ -1,11 +1,40 @@
 ﻿(function () {
     'use strict';
-    var appModule = angular.module('bob', ['ui.router']);
+    var appModule = angular.module('bob', ['ui.router', 'LocalStorageModule']);
 
-    appModule.value('apiBase', 'http://localhost:52178/api/v1/caece/');
+    appModule.value('base', 'http://localhost:52178/');
+    appModule.value('caeceApi', 'http://localhost:52178/api/v1/caece/');
+    appModule.value('authApi', 'http://localhost:52178/api/v1/auth/');
 
-    appModule.config(function ($stateProvider, $urlRouterProvider) {
+    appModule.constant('ngAuthSettings', {
+        clientId: 'bob'
+    });
+    appModule.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
+
+        $httpProvider.interceptors.push('authInterceptorService');
+
         var states = [
+            {
+                name: 'login',
+                url: '/login',
+                template: '<login></login>'
+            },
+            {
+                name: 'register',
+                url: '/register',
+                template: '<register></register>'
+            },
+            {
+                name: 'changepassword',
+                url: '/changepassword',
+                template: '<changepassword></changepassword>'
+            },
+            {
+                name: 'arbol',
+                url: '/arbol',
+                template: '<arbol></arbol>'
+            },
+
             {
                 name: 'cursos',
                 url: '/cursos',
@@ -31,19 +60,9 @@
                 url: '/estadisticas',
                 template: '<estadisticas></estadisticas>'
             }
-            //{
-            //    name: 'course',
-            //    url: '/course/{courseId}',
-            //    resolve: {
-            //        courseId: function ($stateParams) {
-            //            return $stateParams.courseId;
-            //        }
-            //    },
-            //    template: '<course course-id="$resolve.courseId"></course>'
-            //}
         ];
 
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/login');
 
         states.forEach(function (state) {
             $stateProvider.state(state);
@@ -52,26 +71,19 @@
 
     appModule.value('componentBorders', false);
 
-    appModule.run(function (componentBorders) {
-        if (componentBorders) {
-            if (appModule._invokeQueue) {
-                appModule._invokeQueue.forEach(function (item) {
-                    if (item[1] === 'component') {
-                        var componentName = item[2][0];
-                        var componentProperties = item[2][1];
-                        if (componentProperties.templateUrl) {
-                            var templateUrl = componentProperties.templateUrl;
-                            delete componentProperties.templateUrl;
-                            componentProperties.template = '<div class="component-borders"><b>' + componentName + '</b><div ng-include="\'' + templateUrl + '\'"></div></div>';
-                        }
-                        else {
-                            var template = '<div class="component-borders">' + componentName + '<div>' + componentProperties.template + '</div></div>';
-                            componentProperties.template = template;
-                        }
-                    }
-                });
+    appModule.run(function ($rootScope, $state, authService) {
+        $rootScope.$on('unauthorized', function (event) {
+            event.preventDefault();
+            $state.go('login');
+        });
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+            let loggedIn = authService.authentication.isAuth;
+            if (toState.name !== 'login' && toState.name !== 'register' && toState.name !== 'changepassword' && !loggedIn) {
+                event.preventDefault();
+                $state.go('login');
             }
-        }
+        });
+
     });
 
 })();

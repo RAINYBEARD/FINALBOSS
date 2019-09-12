@@ -24,7 +24,7 @@ namespace bob
             routes.MapRoute(
               name: "Default",
               url: "{controller}/{action}/{id}",
-              defaults: new {controller = "caece", action = UrlParameter.Optional, id=UrlParameter.Optional }
+              defaults: new {controller = "Home", action = "Index", id=UrlParameter.Optional }
            );
         }
     }

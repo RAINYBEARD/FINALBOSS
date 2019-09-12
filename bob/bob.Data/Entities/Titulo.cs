@@ -12,7 +12,6 @@ namespace bob.Data.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Titulo()
         {
-            Alumnos = new HashSet<Alumno>();
             Materias = new HashSet<Materia>();
         }
 
@@ -28,9 +27,6 @@ namespace bob.Data.Entities
 
         [StringLength(100)]
         public string Tit_Des { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Alumno> Alumnos { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Materia> Materias { get; set; }
