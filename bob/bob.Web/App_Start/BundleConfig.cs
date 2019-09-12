@@ -17,9 +17,12 @@ namespace bob
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/umd/popper.min.js", 
+                      "~/Scripts/umd/popper.min.js",
                       "~/Scripts/bootstrap.js"
                       ));
+
+            bundles.Add(new ScriptBundle("~/bundles/d3").Include(
+                    "~/Scripts/d3/d3.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                       "~/Scripts/angular.js",

@@ -39,8 +39,9 @@ namespace bob.Controllers
         [Route("save-plan-estudio/{matricula}")]
         public void SavePlanDeEstudio(string matricula)
         {
-            if (matricula.Length == 6) {
-                matricula = " " + matricula; 
+            if (matricula.Length == 6)
+            {
+                matricula = " " + matricula;
             }
             var JSON = caeceWS.getPlanEstudioJSON(_token, matricula);
             var JSON2 = caeceWS.getHistoriaAcademicaJSON(_token, matricula);
@@ -90,17 +91,18 @@ namespace bob.Controllers
                                     context.SaveChanges();
                                 }
 
-                            // Cargo a la base las materias correlativas
-                            var correlativa = new Correlativa();
-                            AutoMapper.Mapper.Map(dato, correlativa);
-                            context.Correlativas.Add(correlativa);
-                            context.SaveChanges();
+                                // Cargo a la base las materias correlativas
+                                var correlativa = new Correlativa();
+                                AutoMapper.Mapper.Map(dato, correlativa);
+                                context.Correlativas.Add(correlativa);
+                                context.SaveChanges();
+                            }
+                            transaction.Commit();
                         }
-                        transaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        transaction.Rollback();
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                        }
                     }
                 }
             }
@@ -534,13 +536,13 @@ namespace bob.Controllers
             return mostrarMateriasACursarEsteCuatri;
         }
         #endregion
-     
-    #region Pendientes
-    /// <summary>
-    /// Ejemplo de llamada: http://localhost:52178/Caece/Pendientes/951282 
-    /// </summary>
-    /// <param name="matricula"></param>
-    [HttpGet]
+
+        #region Pendientes
+        /// <summary>
+        /// Ejemplo de llamada: http://localhost:52178/Caece/Pendientes/951282 
+        /// </summary>
+        /// <param name="matricula"></param>
+        [HttpGet]
         [Route("get-pendientes/{matricula}")]
         public List<Pendientes> Pendientes(string matricula)
         {
@@ -554,7 +556,7 @@ namespace bob.Controllers
                 {
                     List<CorrelativasNoAprobadas> correlativ = new List<CorrelativasNoAprobadas>();
                     var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == entry.Key).ToList();
-                    
+
                     foreach (Correlativa corr in correlativaAuxiliar)
                     {
                         string materiaCursada = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
@@ -751,17 +753,17 @@ namespace bob.Controllers
                     foreach (Correlativa corr in correlativaAuxiliar)
                     {
                         string materia_correlativa = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
-                        
-                            if ((((!aprDictionary.ContainsKey(materia_correlativa)) && (!curDictionary.ContainsKey(materia_correlativa))) || (elimDictionary.ContainsKey(materia_correlativa))))
-                            {                               
-                                string materiaEliminada = cur.materiaCod;
-                                string abr = cur.abr;
-                                elimDictionary.Add(materiaEliminada, abr);
-                                cursados.Remove(cur);
-                                totalCursadas = cursados.Count;
-                                seEleminoLaMateria = true;
-                                break;
-                            }
+
+                        if ((((!aprDictionary.ContainsKey(materia_correlativa)) && (!curDictionary.ContainsKey(materia_correlativa))) || (elimDictionary.ContainsKey(materia_correlativa))))
+                        {
+                            string materiaEliminada = cur.materiaCod;
+                            string abr = cur.abr;
+                            elimDictionary.Add(materiaEliminada, abr);
+                            cursados.Remove(cur);
+                            totalCursadas = cursados.Count;
+                            seEleminoLaMateria = true;
+                            break;
+                        }
                         //}
                     }
                     if (seEleminoLaMateria == false)
@@ -881,7 +883,7 @@ namespace bob.Controllers
                     estadistica.Aprobadas++;
                     estadistica.Cursadas++;
                 }
-                if ((curDictionary.ContainsKey(mat_id))&&(penDictionary.ContainsKey(mat_id)))
+                if ((curDictionary.ContainsKey(mat_id)) && (penDictionary.ContainsKey(mat_id)))
                 {
                     estadistica.Cursadas++;
                 }

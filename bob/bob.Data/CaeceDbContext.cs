@@ -45,10 +45,6 @@ namespace bob.Data
                 .Property(e => e.Plan_Tit)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<Correlativa>()
-            .Property(e => e.Correlativa_Tit)
-            .IsUnicode(false);
-
             modelBuilder.Entity<Materia>()
                 .Property(e => e.Plan_Id)
                 .IsUnicode(false);
