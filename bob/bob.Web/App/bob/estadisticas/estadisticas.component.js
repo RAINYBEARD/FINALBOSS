@@ -3,16 +3,16 @@
 
     angular.module('bob').component('estadisticas', {
         controllerAs: 'vm',
-        controller: function (caeceService) {
+        controller: function (caeceService, authService) {
             var vm = this;
-            vm.matricula = "825471";
+            
             vm.materias;
             vm.aprobadas;
             vm.noaprobadas;
             vm.cursadas;
             vm.nocursadas;
 
-            caeceService.getEstadisticas(vm.matricula).then(function (response) {
+            caeceService.getEstadisticas(authService.authentication.userName).then(function (response) {
                 vm.materias = response;
                 vm.aprobadas = (vm.materias.Aprobadas / vm.materias.Total) * 100;
                 vm.noaprobadas = ((vm.materias.Total - vm.materias.Aprobadas) / vm.materias.Total) * 100;

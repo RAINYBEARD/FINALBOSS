@@ -21,13 +21,12 @@
 
                     caeceService.savePlanEstudio(vm.loginData.userName).then(function (response) {
                         caeceService.setSesionUsuario(vm.loginData.userName).then(function (response) {
-                            $state.go('estadisticas');
-
+                            $state.go('bob');
                         });
                     });
-                }, 
+                },
                     function (err) {
-                        vm.message = err.error_description;
+                        vm.message = err.data.error_description;
                     });
 
             }

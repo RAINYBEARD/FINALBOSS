@@ -98,7 +98,7 @@ namespace bob.Auth
 
                     var validPass = PasswordHash.ValidatePassword(context.Password, user.Password);
 
-                    if (user == null && validPass)
+                    if (user == null || !validPass)
                     {
                         context.SetError("invalid_grant", "The user name or password is incorrect.");
                         return;

@@ -233,6 +233,7 @@
     <Content Include="App\bob\login\login.component.js" />
     <Content Include="App\bob\navegacion\navegacion.component.html" />
     <Content Include="App\bob\navegacion\navegacion.component.js" />
+    <Content Include="App\bob\nav\nav.component.html" />
     <Content Include="App\bob\pendientes\pendientes.component.html" />
     <Content Include="App\bob\pendientes\pendientes.component.js" />
     <Content Include="App\bob\changepassword\changepassword.component.html" />

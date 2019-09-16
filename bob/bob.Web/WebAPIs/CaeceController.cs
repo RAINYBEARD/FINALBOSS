@@ -117,10 +117,14 @@ namespace bob.Controllers
         [Route("set-sesion-usuario/{matricula}")]
         public void SetSesionUsuario(string matricula)
         {
+            if (matricula.Length == 6)
+            {
+                matricula = " " + matricula;
+            }
             // Para hacer la llamada al WS
             var JSONCursos = caeceWS.getCursosAbiertosJSON(_token);
             var cursosAbiertos = ((JArray)JObject.Parse(JSONCursos)["Cursos"]).ToObject<List<Curso>>();
-            var JSONHistoriaAcademica = caeceWS.getHistoriaAcademicaJSON(_token, " " + matricula);
+            var JSONHistoriaAcademica = caeceWS.getHistoriaAcademicaJSON(_token, matricula);
             var historiaAcademiaCompleta = ((JArray)JObject.Parse(JSONHistoriaAcademica)["HistoriaAcademica"]).ToObject<List<HistoriaAcademica>>();
 
             var aprDictionary = new AprDictionary();
@@ -269,6 +273,10 @@ namespace bob.Controllers
         /// <param name="matricula"></param>
         public List<string> GetMateriasACursar(string matricula)
         {
+            if (matricula.Length == 6)
+            {
+                matricula = " " + matricula;
+            }
             var tiempoInicio = DateTime.Now;
 
             List<string> materiasACursar = new List<string>();
@@ -393,6 +401,10 @@ namespace bob.Controllers
         [Route("get-cursos/{matricula}")]
         public List<Curso> GetCursosCuatrimestreActual(string matricula)
         {
+            if (matricula.Length == 6)
+            {
+                matricula = " " + matricula;
+            }
             List<string> materiasACursar = GetMateriasACursar(matricula);
             List<Curso> materiasACursarEsteCuatri = new List<Curso>();
 
@@ -488,6 +500,10 @@ namespace bob.Controllers
 
         public List<Curso> MostrarMateriasACursarCuatrimestreActual(string matricula, string filtroDias, int filtroCantDias, string modo)
         {
+            if (matricula.Length == 6)
+            {
+                matricula = " " + matricula;
+            }
             List<Curso> materiasACursarEsteCuatri = GetCursosCuatrimestreActual(matricula);
             List<Curso> mostrarMateriasACursarEsteCuatri = new List<Curso>();
             List<Curso> auxMateriasACursar = new List<Curso>();
@@ -841,10 +857,14 @@ namespace bob.Controllers
         [Route("get-estadisticas/{matricula}")]
         public Estadisticas EstadisticasAlumno(string matricula)
         {
+            if (matricula.Length == 6)
+            {
+                matricula = " " + matricula;
+            }
             Estadisticas estadistica = new Estadisticas();
             estadistica.Lista = new List<AprobadasPorAnio>();
             //SetSesionUsuario(matricula);
-            var JSON = caeceWS.getPlanEstudioJSON(_token, " " + matricula);
+            var JSON = caeceWS.getPlanEstudioJSON(_token, matricula);
             var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
             var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
             var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
@@ -905,13 +925,16 @@ namespace bob.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("get-arbol/{matricula}")]
-
         public Tabla GetArbol(string matricula)
         {
+            if (matricula.Length == 6)
+            {
+                matricula = " " + matricula;
+            }
             Tabla tabla = new Tabla();
             tabla.materias = new List<Materias>();
 
-            var JSON = caeceWS.getPlanEstudioJSON(_token, " " + matricula);
+            var JSON = caeceWS.getPlanEstudioJSON(_token, matricula);
             var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
 
             try

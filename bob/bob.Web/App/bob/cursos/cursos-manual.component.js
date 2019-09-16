@@ -5,7 +5,6 @@
         controllerAs: 'vm',
         controller: function (caeceService) {
             var vm = this;
-            vm.matricula;
             vm.cursos;
             vm.seleccionmateria = seleccionmateria;
             vm.materiasSeleccionadas = [];
@@ -24,7 +23,7 @@
 
             vm.filtro = vm.checkboxModel.lun + vm.checkboxModel.mar + vm.checkboxModel.mie + vm.checkboxModel.jue + vm.checkboxModel.vie + vm.checkboxModel.sab + vm.checkboxModel.dom;
 
-            caeceService.getCursos(vm.matricula).then(function (response) {
+            caeceService.getCursos(authService.authentication.userName).then(function (response) {
                 vm.cursos = response;
             });
 

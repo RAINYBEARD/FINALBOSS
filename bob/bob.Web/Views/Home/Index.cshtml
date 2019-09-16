@@ -7,6 +7,7 @@
     <script src="/App/bob/app-module.js"></script>
     <script src="/App/bob/bob-app.component.js"></script>
     <script src="/App/bob/servicios/caece.service.js"></script>
+    <script src="/App/bob/nav/nav.component.js"></script>
     <script src="/App/bob/navegacion/navegacion.component.js"></script>
     <script src="/App/bob/userstatus/userstatus.component.js"></script>
     <script src="/App/bob/login/login.component.js"></script>
@@ -31,7 +32,7 @@
 <div ng-non-bindable class="container-fluid">
     <div id="bob" class="section-container">
         <div class="body-content" ng-cloak>
-            <bob-app></bob-app>
+            <div ui-view="content"></div>
         </div>
     </div>
 </div>

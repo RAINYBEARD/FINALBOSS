@@ -41,7 +41,7 @@
         };
 
         self.getArbol = function (matricula) {
-            return $http.get(apiBase + 'get-arbol' + '/' + matricula)
+            return $http.get(caeceApi + 'get-arbol' + '/' + matricula)
                 .then(function (result) {
                     return result.data;
                 });

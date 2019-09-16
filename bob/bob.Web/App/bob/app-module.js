@@ -17,53 +17,89 @@
             {
                 name: 'login',
                 url: '/login',
-                template: '<login></login>'
+                views: {
+                    'content@': {
+                        template: '<login></login>'
+                    }
+                }
             },
             {
                 name: 'register',
                 url: '/register',
-                template: '<register></register>'
+                views: {
+                    'content@': {
+                        template: '<register></register>'
+                    }
+                }
             },
             {
                 name: 'changepassword',
                 url: '/changepassword',
-                template: '<changepassword></changepassword>'
+                views: {
+                    'content@': {
+                        template: '<changepassword></changepassword>'
+                    }
+                }
             },
             {
-                name: 'arbol',
+                name: 'bob',
+                url: '/bob',
+                views: {
+                    'content@': {
+                        template: '<bob-app></bob-app>'
+                    }
+                }
+            },
+            {
+                name: 'bob.arbol',
                 url: '/arbol',
-                template: '<arbol></arbol>'
+                views: {
+                    'bob@bob': {
+                        template: '<arbol></arbol>'
+                    }
+                }
             },
-
             {
-                name: 'cursos',
+                name: 'bob.finales',
+                url: '/finales',
+                views: {
+                    'bob@bob': {
+                        template: '<finales></finales>'
+                    }
+                }
+            },
+            {
+                name: 'bob.estadisticas',
+                url: '/estadisticas',
+                views: {
+                    'bob@bob': {
+                        template: '<estadisticas></estadisticas>'
+                    }
+                }
+            },
+            {
+                name: 'bob.cursos',
                 url: '/cursos',
-                template: '<cursos></cursos>'
+                views: {
+                    'bob@bob': {
+                        template: '<cursos></cursos>'
+                    }
+                }
             },
             {
-                name: 'cursos.auto',
+                name: 'bob.cursos.auto',
                 url: '/auto',
                 template: '<cursos-auto></cursos-auto>'
             },
             {
-                name: 'cursos.manual',
+                name: 'bob.cursos.manual',
                 url: '/manual',
                 template: '<cursos-manual></cursos-manual>'
-            },
-            {
-                name: 'finales',
-                url: '/finales',
-                template: '<finales></finales>'
-            },
-            {
-                name: 'estadisticas',
-                url: '/estadisticas',
-                template: '<estadisticas></estadisticas>'
             }
         ];
 
-        $urlRouterProvider.otherwise('/login');
-
+        $urlRouterProvider.otherwise('/bob');
+        $urlRouterProvider.when('/bob', '/bob/arbol');
         states.forEach(function (state) {
             $stateProvider.state(state);
         });

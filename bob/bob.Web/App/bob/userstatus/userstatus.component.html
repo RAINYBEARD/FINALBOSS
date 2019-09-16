@@ -1,5 +1,8 @@
 ﻿<div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button class="btn btn-secondary" ng-show="!vm.authenticated" type="button" >
+       Please Sign in
+    </button>
+    <button class="btn btn-secondary dropdown-toggle" ng-show="vm.authenticated" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Hi {{vm.user}}
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

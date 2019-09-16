@@ -5,7 +5,6 @@
         controllerAs: 'vm',
         controller: function (caeceService) {
             var vm = this;
-            vm.matricula;
             vm.finales;
             vm.vencimiento = vencimiento;
             vm.numeroCorrelativas = numeroCorrelativas;
@@ -14,7 +13,7 @@
             vm.orden;
             vm.filtro;
 
-            caeceService.getFinales(vm.matricula).then(function (response) {
+            caeceService.getFinales(authService.authentication.userName).then(function (response) {
                 vm.finales = response;
             });
  
