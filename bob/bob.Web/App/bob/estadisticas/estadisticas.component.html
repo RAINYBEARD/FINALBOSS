@@ -17,10 +17,10 @@
                 <th>Materias Aprobadas</th>
             </tr>
         </thead>
-        <tbody ng-repeat="materia in vm.materias.Lista | orderBy: 'Anio'">
+        <tbody ng-repeat="materia in vm.materias.lista | orderBy: 'anio'">
             <tr>
-                <td>{{materia.Anio}}</td>
-                <td>{{materia.Aprobadas}}</td>
+                <td>{{materia.anio}}</td>
+                <td>{{materia.aprobadas}}</td>
             </tr>
         </tbody>
     </table>

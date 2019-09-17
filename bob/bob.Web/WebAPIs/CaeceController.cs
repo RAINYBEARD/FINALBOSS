@@ -44,7 +44,6 @@ namespace bob.Controllers
                 matricula = " " + matricula;
             }
             var JSON = caeceWS.getPlanEstudioJSON(_token, matricula);
-            var JSON2 = caeceWS.getHistoriaAcademicaJSON(_token, matricula);
             var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
             if (PlanDeEstudio.Count > 0)
             {
@@ -908,8 +907,6 @@ namespace bob.Controllers
                     estadistica.Cursadas++;
                 }
             }
-
-
 
             return estadistica;
 

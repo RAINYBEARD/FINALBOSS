@@ -14,10 +14,10 @@
 
             caeceService.getEstadisticas(authService.authentication.userName).then(function (response) {
                 vm.materias = response;
-                vm.aprobadas = (vm.materias.Aprobadas / vm.materias.Total) * 100;
-                vm.noaprobadas = ((vm.materias.Total - vm.materias.Aprobadas) / vm.materias.Total) * 100;
-                vm.cursadas = (vm.materias.Cursadas / vm.materias.Total) * 100;
-                vm.nocursadas = ((vm.materias.Total - vm.materias.Cursadas) / vm.materias.Total) * 100;
+                vm.aprobadas = (vm.materias.aprobadas / vm.materias.total) * 100;
+                vm.noaprobadas = ((vm.materias.total - vm.materias.aprobadas) / vm.materias.total) * 100;
+                vm.cursadas = (vm.materias.cursadas / vm.materias.total) * 100;
+                vm.nocursadas = ((vm.materias.total - vm.materias.cursadas) / vm.materias.total) * 100;
             });
 
         },
@@ -176,8 +176,6 @@
                 .attr("fill", function (d) { return colors(d.data.number); })
                 .attr("x", 10)
                 .attr("y", 10);
-
-
         }
 
         return directive;
