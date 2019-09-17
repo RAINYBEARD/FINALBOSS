@@ -3,7 +3,7 @@
 
     angular.module('bob').component('cursosManual', {
         controllerAs: 'vm',
-        controller: function (caeceService) {
+        controller: function (caeceService, authService) {
             var vm = this;
             vm.cursos;
             vm.seleccionmateria = seleccionmateria;
@@ -58,8 +58,8 @@
                     ) {
                         vm.cursos.forEach(function (curso) {
                             for (var i = 0; i < item.Dia.length; i++) {
-                                if ((item.Dia[i] === '1' && curso.Dia[i] == '1') ||
-                                    (item.Dia[i] === '1' && curso.Dia[i] == '0')) {
+                                if ((item.Dia[i] === '1' && curso.Dia[i] === '1') ||
+                                    (item.Dia[i] === '1' && curso.Dia[i] === '0')) {
                                     vm.materiasSeleccionadas.splice(key, 1);
                                 }
                             }

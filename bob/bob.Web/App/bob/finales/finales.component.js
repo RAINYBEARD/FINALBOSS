@@ -3,7 +3,7 @@
 
     angular.module('bob').component('finales', {
         controllerAs: 'vm',
-        controller: function (caeceService) {
+        controller: function (caeceService, authService) {
             var vm = this;
             vm.finales;
             vm.vencimiento = vencimiento;

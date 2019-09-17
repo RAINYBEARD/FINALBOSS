@@ -32,8 +32,14 @@ namespace bob.Controllers
             if (userModel.UserName.Length < 7) {
                 userModel.UserName = " " + userModel.UserName;
             }
-            var result = JObject.Parse(caeceWS.autenticacion(_token, userModel.UserName, userModel.Password));
-            return Ok((bool)result["autenticacion"][0]["esValido"]);
+            var result = (bool)JObject.Parse(caeceWS.autenticacion(_token, userModel.UserName, userModel.Password))["autenticacion"][0]["esValido"];
+            if (result)
+            {
+                return Ok(result);
+            }
+            else {
+                return BadRequest("Validation Failed");
+            }
         }
 
         // POST api/Account/Register

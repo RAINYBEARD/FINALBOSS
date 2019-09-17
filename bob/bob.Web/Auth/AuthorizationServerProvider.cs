@@ -94,12 +94,25 @@ namespace bob.Auth
             {
                 using (var db = new CaeceDBContext())
                 {
-                    var user = db.Alumnos.First(a => a.Matricula == context.UserName);
-
-                    var validPass = PasswordHash.ValidatePassword(context.Password, user.Password);
-
-                    if (user == null || !validPass)
+                    if (db.Alumnos.Count() > 0)
                     {
+                        var user = db.Alumnos.First(a => a.Matricula == context.UserName);
+
+                        if (user == null)
+                        {
+                            context.SetError("invalid_grant", "The user name or password is incorrect.");
+                            return;
+                        }
+
+                        var validPass = PasswordHash.ValidatePassword(context.Password, user.Password);
+
+                        if (!validPass)
+                        {
+                            context.SetError("invalid_grant", "The user name or password is incorrect.");
+                            return;
+                        }
+                    }
+                    else {
                         context.SetError("invalid_grant", "The user name or password is incorrect.");
                         return;
                     }

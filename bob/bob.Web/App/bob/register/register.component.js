@@ -28,7 +28,10 @@
                 authService.validate(vm.validationModel).then(function (response) {
                     vm.validation = response;
                     vm.registration.userName = vm.validationModel.userName;
-                });
+                },
+                    function (err) {
+                        vm.message = "Failed to register user due to:" + err.data.message;
+                    });
             }
 
             function register() {

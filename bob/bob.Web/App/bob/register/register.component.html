@@ -1,7 +1,7 @@
 ﻿<form class="form-login" role="form" data-ng-show="!vm.validation">
     <h2 class="form-login-heading">Register Validate</h2>
-    <input type="text" class="form-control" placeholder="Username" data-ng-model="vm.validationModel.userName" required autofocus>
-    <input type="password" class="form-control" placeholder="Password" data-ng-model="vm.validationModel.password" required>
+    <input type="text" class="form-control" placeholder="Matricula Data Caece" data-ng-model="vm.validationModel.userName" required autofocus>
+    <input type="password" class="form-control" placeholder="Password Data Caece" data-ng-model="vm.validationModel.password" required>
     <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="vm.validate()">Validate</button>
     <div data-ng-hide="vm.message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
         {{vm.message}}
