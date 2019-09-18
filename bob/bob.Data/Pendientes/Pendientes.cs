@@ -10,12 +10,5 @@ namespace bob.Data.Pendientes
     {
         public string materiaCod;
         public string abr;
-        public List<CorrelativasNoAprobadas> correlativasNoAprobadas;
-    }
-
-    public class CorrelativasNoAprobadas
-    {
-        public string materiaCod;
-        public string abr;
     }
 }

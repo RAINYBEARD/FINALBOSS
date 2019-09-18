@@ -564,27 +564,12 @@ namespace bob.Controllers
             try
             {
                 List<Pendientes> pendientes = new List<Pendientes>();
-                var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
+
                 var penDictionary = SessionManager.DiccionarioPendientes as PenDictionary;
                 //Agrego las materias pendientes a una lista
                 foreach (KeyValuePair<string, PenValue> entry in penDictionary)
                 {
-                    List<CorrelativasNoAprobadas> correlativ = new List<CorrelativasNoAprobadas>();
-                    var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == entry.Key).ToList();
-
-                    foreach (Correlativa corr in correlativaAuxiliar)
-                    {
-                        string materiaCursada = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
-
-                        if ((!aprDictionary.ContainsKey(materiaCursada)) && (materiaCursada != entry.Key))
-                        {
-                            string abreviatura = corr.Materia.Materia_Descripcion.Mat_Des;
-                            correlativ.Add(new CorrelativasNoAprobadas() { materiaCod = materiaCursada, abr = abreviatura });
-                        }
-
-                    }
-
-                    pendientes.Add(new Pendientes() { materiaCod = entry.Key, abr = entry.Value.Abr, correlativasNoAprobadas = correlativ });
+                    pendientes.Add(new Pendientes() { materiaCod = entry.Key, abr = entry.Value.Abr });
                 }
                 return pendientes;
             }
