@@ -3,9 +3,8 @@
 
     angular.module('bob').component('arbol', {
         controllerAs: 'vm',
-        controller: function (caeceService) {
+        controller: function (caeceService, authService) {
             var vm = this;
-            vm.matricula = "825471";
             vm.materias;
             vm.tabla;
             vm.total;
@@ -17,7 +16,7 @@
             vm.materiaspendientes = materiaspendientes;
             vm.filtro;
 
-            caeceService.getArbol(vm.matricula).then(function (response) {
+            caeceService.getArbol(authService.authentication.userName).then(function (response) {
                 vm.tabla = response;
                 vm.materias = vm.tabla.materias;
                 vm.total = vm.tabla.total;
