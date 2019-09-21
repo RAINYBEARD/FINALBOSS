@@ -5,7 +5,6 @@
         controllerAs: 'vm',
         controller: function (caeceService, authService) {
             var vm = this;
-            vm.matricula;
             vm.cursos;
 
             vm.checkboxModel = {

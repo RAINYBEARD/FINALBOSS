@@ -34,13 +34,29 @@ h4 {
 
 .btn-caece {
     background: #54625b;
-    padding: 5px 35px;
+    padding: 5px 57px;
     color: #fff;
     float: left;
     position: relative;
-    height: 35px;
+    height: 50px;
     text-align: center;
     font-family:"PTSansRegular", Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+    border-radius: 0;
+}
+
+.btn-caece2 {
+    background: #54625b;
+    padding: 5px 85px;
+    color: #fff;
+    float: left;
+    position: relative;
+    height: 50px;
+    text-align: center;
+    font-family: "PTSansRegular", Arial, Helvetica, sans-serif;
     font-weight: bold;
     font-size: 14px;
     cursor: pointer;
@@ -117,7 +133,7 @@ button#buttonGroupEstadisticas.btn.btn-info.dropdown-toggle:focus {
     font-size: 16px;
     padding: 10px;
     width: 200px;
-    height: 60px;
+    height: 75px;
     font-weight: bold;
     border: 0;
 }
@@ -171,3 +187,7 @@ button#buttonGroupEstadisticas.btn.btn-info.dropdown-toggle:focus {
     z-index: 10;
 }
 
+
+.bg-inf {
+    background-color: lightgray;
+}
