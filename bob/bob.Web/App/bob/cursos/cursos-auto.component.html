@@ -15,37 +15,37 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="curso in vm.cursos | orderBy:'-Dia' | cursosfilterauto:vm.checkboxModel.lun+vm.checkboxModel.mar+vm.checkboxModel.mie+vm.checkboxModel.jue+vm.checkboxModel.vie+vm.checkboxModel.sab+'0':vm.filtroCantDias.valor ">
-                <th align="left" scope="row">{{curso.Abr}}</th>
-                <td align="center" ng-if="curso.Dia.substr(0,1) == '1'">X</td>
-                <td align="center" ng-if="curso.Dia.substr(0,1) == '2'">D</td>
-                <td align="center" ng-if="curso.Dia.substr(0,1) == '3'">T</td>
-                <td align="center" ng-if="curso.Dia.substr(0,1) != '1' && curso.Dia.substr(0,1) != '2' && curso.Dia.substr(0,1) != '3'"></td>
+            <tr ng-repeat="curso in vm.cursos | orderBy:'-dia' | cursosfilterauto:vm.checkboxModel.lun+vm.checkboxModel.mar+vm.checkboxModel.mie+vm.checkboxModel.jue+vm.checkboxModel.vie+vm.checkboxModel.sab+'0':vm.filtroCantDias.valor ">
+                <th align="left" scope="row">{{curso.abr}}</th>
+                <td align="center" ng-if="curso.dia.substr(0,1) == '1'">X</td>
+                <td align="center" ng-if="curso.dia.substr(0,1) == '2'">D</td>
+                <td align="center" ng-if="curso.dia.substr(0,1) == '3'">T</td>
+                <td align="center" ng-if="curso.dia.substr(0,1) != '1' && curso.dia.substr(0,1) != '2' && curso.dia.substr(0,1) != '3'"></td>
 
-                <td align="center" ng-if="curso.Dia.substr(1,1) == '1'">X</td>
-                <td align="center" ng-if="curso.Dia.substr(1,1) == '2'">D</td>
-                <td align="center" ng-if="curso.Dia.substr(1,1) == '3'">T</td>
-                <td align="center" ng-if="curso.Dia.substr(1,1) != '1' && curso.Dia.substr(1,1) != '2' && curso.Dia.substr(1,1) != '3'"></td>
+                <td align="center" ng-if="curso.dia.substr(1,1) == '1'">X</td>
+                <td align="center" ng-if="curso.dia.substr(1,1) == '2'">D</td>
+                <td align="center" ng-if="curso.dia.substr(1,1) == '3'">T</td>
+                <td align="center" ng-if="curso.dia.substr(1,1) != '1' && curso.dia.substr(1,1) != '2' && curso.dia.substr(1,1) != '3'"></td>
 
-                <td align="center" ng-if="curso.Dia.substr(2,1) == '1'">X</td>
-                <td align="center" ng-if="curso.Dia.substr(2,1) == '2'">D</td>
-                <td align="center" ng-if="curso.Dia.substr(2,1) == '3'">T</td>
-                <td align="center" ng-if="curso.Dia.substr(2,1) != '1' && curso.Dia.substr(2,1) != '2' && curso.Dia.substr(2,1) != '3'"></td>
+                <td align="center" ng-if="curso.dia.substr(2,1) == '1'">X</td>
+                <td align="center" ng-if="curso.dia.substr(2,1) == '2'">D</td>
+                <td align="center" ng-if="curso.dia.substr(2,1) == '3'">T</td>
+                <td align="center" ng-if="curso.dia.substr(2,1) != '1' && curso.dia.substr(2,1) != '2' && curso.dia.substr(2,1) != '3'"></td>
 
-                <td align="center" ng-if="curso.Dia.substr(3,1) == '1'">X</td>
-                <td align="center" ng-if="curso.Dia.substr(3,1) == '2'">D</td>
-                <td align="center" ng-if="curso.Dia.substr(3,1) == '3'">T</td>
-                <td align="center" ng-if="curso.Dia.substr(3,1) != '1' && curso.Dia.substr(3,1) != '2' && curso.Dia.substr(3,1) != '3'"></td>
+                <td align="center" ng-if="curso.dia.substr(3,1) == '1'">X</td>
+                <td align="center" ng-if="curso.dia.substr(3,1) == '2'">D</td>
+                <td align="center" ng-if="curso.dia.substr(3,1) == '3'">T</td>
+                <td align="center" ng-if="curso.dia.substr(3,1) != '1' && curso.dia.substr(3,1) != '2' && curso.dia.substr(3,1) != '3'"></td>
 
-                <td align="center" ng-if="curso.Dia.substr(4,1) == '1'">X</td>
-                <td align="center" ng-if="curso.Dia.substr(4,1) == '2'">D</td>
-                <td align="center" ng-if="curso.Dia.substr(4,1) == '3'">T</td>
-                <td align="center" ng-if="curso.Dia.substr(4,1) != '1' && curso.Dia.substr(4,1) != '2' && curso.Dia.substr(4,1) != '3'"></td>
+                <td align="center" ng-if="curso.dia.substr(4,1) == '1'">X</td>
+                <td align="center" ng-if="curso.dia.substr(4,1) == '2'">D</td>
+                <td align="center" ng-if="curso.dia.substr(4,1) == '3'">T</td>
+                <td align="center" ng-if="curso.dia.substr(4,1) != '1' && curso.dia.substr(4,1) != '2' && curso.dia.substr(4,1) != '3'"></td>
 
-                <td align="center" ng-if="curso.Dia.substr(5,1) == '1'">X</td>
-                <td align="center" ng-if="curso.Dia.substr(5,1) == '2'">D</td>
-                <td align="center" ng-if="curso.Dia.substr(5,1) == '3'">T</td>
-                <td align="center" ng-if="curso.Dia.substr(5,1) != '1' && curso.Dia.substr(5,1) != '2' && curso.Dia.substr(5,1) != '3'"></td>
+                <td align="center" ng-if="curso.dia.substr(5,1) == '1'">X</td>
+                <td align="center" ng-if="curso.dia.substr(5,1) == '2'">D</td>
+                <td align="center" ng-if="curso.dia.substr(5,1) == '3'">T</td>
+                <td align="center" ng-if="curso.dia.substr(5,1) != '1' && curso.dia.substr(5,1) != '2' && curso.dia.substr(5,1) != '3'"></td>
             </tr>
         </tbody>
     </table>

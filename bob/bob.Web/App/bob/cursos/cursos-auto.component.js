@@ -39,26 +39,26 @@
 
             angular.forEach(cursos, function (curso) {
                 var i = 0;
-                while (i < 7 && ((diasQueCursa.substr(i, 1) === "0" && curso.Dia.substr(i, 1) === "1") ||
-                    (diasQueCursa.substr(i, 1) === "0" && curso.Dia.substr(i, 1) === "0") ||
-                    (diasQueCursa.substr(i, 1) === "1" && curso.Dia.substr(i, 1) === "0") ||
-                    (diasQueCursa.substr(i, 1) === "0" && curso.Dia.substr(i, 1) === "2") ||
-                    (diasQueCursa.substr(i, 1) === "2" && curso.Dia.substr(i, 1) === "0") ||
-                    (diasQueCursa.substr(i, 1) === "2" && curso.Dia.substr(i, 1) === "3") ||
-                    (diasQueCursa.substr(i, 1) === "0" && curso.Dia.substr(i, 1) === "3") ||
-                    (diasQueCursa.substr(i, 1) === "3" && curso.Dia.substr(i, 1) === "0") ||
-                    (diasQueCursa.substr(i, 1) === "0" && curso.Dia.substr(i, 1) === "4") ||
-                    (diasQueCursa.substr(i, 1) === "1" && curso.Dia.substr(i, 1) === "4") ||
-                    (diasQueCursa.substr(i, 1) === "2" && curso.Dia.substr(i, 1) === "4") ||
-                    (diasQueCursa.substr(i, 1) === "3" && curso.Dia.substr(i, 1) === "4") ||
-                    (diasQueCursa.substr(i, 1) === "3" && curso.Dia.substr(i, 1) === "2")) &&
-                    ((filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '1') ||
-                        (filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '2') ||
-                        (filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '3') ||
-                        (filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '4') ||
-                        (filtro.substr(i, 1) === '0' && curso.Dia.substr(i, 1) === '4') ||
-                        (filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '0') ||
-                        (filtro.substr(i, 1) === '0' && curso.Dia.substr(i, 1) === '0'))) {
+                while (i < 7 && ((diasQueCursa.substr(i, 1) === "0" && curso.dia.substr(i, 1) === "1") ||
+                    (diasQueCursa.substr(i, 1) === "0" && curso.dia.substr(i, 1) === "0") ||
+                    (diasQueCursa.substr(i, 1) === "1" && curso.dia.substr(i, 1) === "0") ||
+                    (diasQueCursa.substr(i, 1) === "0" && curso.dia.substr(i, 1) === "2") ||
+                    (diasQueCursa.substr(i, 1) === "2" && curso.dia.substr(i, 1) === "0") ||
+                    (diasQueCursa.substr(i, 1) === "2" && curso.dia.substr(i, 1) === "3") ||
+                    (diasQueCursa.substr(i, 1) === "0" && curso.dia.substr(i, 1) === "3") ||
+                    (diasQueCursa.substr(i, 1) === "3" && curso.dia.substr(i, 1) === "0") ||
+                    (diasQueCursa.substr(i, 1) === "0" && curso.dia.substr(i, 1) === "4") ||
+                    (diasQueCursa.substr(i, 1) === "1" && curso.dia.substr(i, 1) === "4") ||
+                    (diasQueCursa.substr(i, 1) === "2" && curso.dia.substr(i, 1) === "4") ||
+                    (diasQueCursa.substr(i, 1) === "3" && curso.dia.substr(i, 1) === "4") ||
+                    (diasQueCursa.substr(i, 1) === "3" && curso.dia.substr(i, 1) === "2")) &&
+                    ((filtro.substr(i, 1) === '1' && curso.dia.substr(i, 1) === '1') ||
+                        (filtro.substr(i, 1) === '1' && curso.dia.substr(i, 1) === '2') ||
+                        (filtro.substr(i, 1) === '1' && curso.dia.substr(i, 1) === '3') ||
+                        (filtro.substr(i, 1) === '1' && curso.dia.substr(i, 1) === '4') ||
+                        (filtro.substr(i, 1) === '0' && curso.dia.substr(i, 1) === '4') ||
+                        (filtro.substr(i, 1) === '1' && curso.dia.substr(i, 1) === '0') ||
+                        (filtro.substr(i, 1) === '0' && curso.dia.substr(i, 1) === '0'))) {
 
                     i++;
 
@@ -74,14 +74,14 @@
                 }
 
                 // Le sumo la cantidad de dias de la materia nueva
-                //var cantDiasMateria = curso.Dia.split('1').length - 1;
+                //var cantDiasMateria = curso.dia.split('1').length - 1;
                 //cantDias = cantDias + cantDiasMateria;
-                //var cantDiasMateria = curso.Dia.split('1').length - 1;
-                cantDias = cantDias + (curso.Dia.split('1').length - 1) + (curso.Dia.split('2').length - 1) + (curso.Dia.split('3').length - 1);
+                //var cantDiasMateria = curso.dia.split('1').length - 1;
+                cantDias = cantDias + (curso.dia.split('1').length - 1) + (curso.dia.split('2').length - 1) + (curso.dia.split('3').length - 1);
 
                 if (i === 7 && (cantDias <= filtroCantDias)) {
                     var diasParaCursar = diasQueCursa.split('');
-                    var diasMateria = curso.Dia.split('');
+                    var diasMateria = curso.dia.split('');
                     j = 0;
                     while (j < 7) {
                         if ((diasParaCursar[j] === '0' && diasMateria[j] === '1') || (diasParaCursar[j] === '0' && diasMateria[j] === '4') || (diasParaCursar[j] === '3' && diasMateria[j] === '2') || (diasParaCursar[j] === '2' && diasMateria[j] === '3')) {

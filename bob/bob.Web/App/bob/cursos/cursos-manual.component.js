@@ -29,37 +29,37 @@
 
             function deseleccionaritems(diaid) {
                 vm.materiasSeleccionadas.forEach(function (item, key) {
-                    if (vm.checkboxModel.lun === '0' && item.Dia[0] === '1') {
+                    if (vm.checkboxModel.lun === '0' && item.dia[0] === '1') {
                         vm.materiasSeleccionadas.splice(key, 1);
                     }
-                    if (vm.checkboxModel.mar === '0' && item.Dia[1] === '1') {
+                    if (vm.checkboxModel.mar === '0' && item.dia[1] === '1') {
                         vm.materiasSeleccionadas.splice(key, 1);
                     }
-                    if (vm.checkboxModel.mie === '0' && item.Dia[2] === '1') {
+                    if (vm.checkboxModel.mie === '0' && item.dia[2] === '1') {
                         vm.materiasSeleccionadas.splice(key, 1);
                     }
-                    if (vm.checkboxModel.jue === '0' && item.Dia[3] === '1') {
+                    if (vm.checkboxModel.jue === '0' && item.dia[3] === '1') {
                         vm.materiasSeleccionadas.splice(key, 1);
                     }
-                    if (vm.checkboxModel.vie === '0' && item.Dia[4] === '1') {
+                    if (vm.checkboxModel.vie === '0' && item.dia[4] === '1') {
                         vm.materiasSeleccionadas.splice(key, 1);
                     }
-                    if (vm.checkboxModel.sab === '0' && item.Dia[5] === '1') {
+                    if (vm.checkboxModel.sab === '0' && item.dia[5] === '1') {
                         vm.materiasSeleccionadas.splice(key, 1);
                     }
-                    var cantDiasMateria = item.Dia.split('1').length - 1;
+                    var cantDiasMateria = item.dia.split('1').length - 1;
                     // Resuelvo el bug cuando una materia tiene mas de un dia que se cursa y destrabo la materia que se cursa tambien otro dia
-                    if (cantDiasMateria > 1 && ((diaid === '0' && item.Dia[0] === '1')
-                        || (diaid === '1' && item.Dia[1] === '1')
-                        || (diaid === '2' && item.Dia[2] === '1')
-                        || (diaid === '3' && item.Dia[3] === '1')
-                        || (diaid === '4' && item.Dia[4] === '1')
-                        || (diaid === '5' && item.Dia[5] === '1'))
+                    if (cantDiasMateria > 1 && ((diaid === '0' && item.dia[0] === '1')
+                        || (diaid === '1' && item.dia[1] === '1')
+                        || (diaid === '2' && item.dia[2] === '1')
+                        || (diaid === '3' && item.dia[3] === '1')
+                        || (diaid === '4' && item.dia[4] === '1')
+                        || (diaid === '5' && item.dia[5] === '1'))
                     ) {
                         vm.cursos.forEach(function (curso) {
-                            for (var i = 0; i < item.Dia.length; i++) {
-                                if ((item.Dia[i] === '1' && curso.Dia[i] === '1') ||
-                                    (item.Dia[i] === '1' && curso.Dia[i] === '0')) {
+                            for (var i = 0; i < item.dia.length; i++) {
+                                if ((item.dia[i] === '1' && curso.dia[i] === '1') ||
+                                    (item.dia[i] === '1' && curso.dia[i] === '0')) {
                                     vm.materiasSeleccionadas.splice(key, 1);
                                 }
                             }
@@ -74,12 +74,12 @@
                 vm.mismoDia = false;
 
                 vm.materiasSeleccionadas.forEach(function (item, key) {
-                    for (var i = 0; i < curso.Dia.length; i++) {
+                    for (var i = 0; i < curso.dia.length; i++) {
                         if ((curso.Materia_Id !== item.Materia_Id) &&
-                            ((curso.Dia[i] === item.Dia[i]) ||
-                                ((curso.Dia[i] === '1') && ((item.Dia[i] === '2') || (item.Dia[i] === '3'))) ||
-                                (((curso.Dia[i] === '2') || (curso.Dia[i] === '3')) && (item.Dia[i] === '1'))) &&
-                            ((curso.Dia[i] === '1') || (curso.Dia[i] === '2') || (curso.Dia[i] === '3'))) {
+                            ((curso.dia[i] === item.dia[i]) ||
+                                ((curso.dia[i] === '1') && ((item.dia[i] === '2') || (item.dia[i] === '3'))) ||
+                                (((curso.dia[i] === '2') || (curso.dia[i] === '3')) && (item.dia[i] === '1'))) &&
+                            ((curso.dia[i] === '1') || (curso.dia[i] === '2') || (curso.dia[i] === '3'))) {
                             vm.mismoDia = true;
                             break;
                         }
@@ -115,13 +115,13 @@
             console.log('Materias Seleccionadas: ', cursos);
             angular.forEach(cursos, function (curso) {
                 var i = 0;
-                while (i < 7 && (((filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '1') ||
-                    (filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '0') ||
-                    (filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '2') ||
-                    (filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '3') ||
-                    (filtro.substr(i, 1) === '0' && curso.Dia.substr(i, 1) === '0') ||
-                    (filtro.substr(i, 1) === '0' && curso.Dia.substr(i, 1) === '4') ||
-                    (filtro.substr(i, 1) === '1' && curso.Dia.substr(i, 1) === '4')))) {
+                while (i < 7 && (((filtro.substr(i, 1) === '1' && curso.dia.substr(i, 1) === '1') ||
+                    (filtro.substr(i, 1) === '1' && curso.dia.substr(i, 1) === '0') ||
+                    (filtro.substr(i, 1) === '1' && curso.dia.substr(i, 1) === '2') ||
+                    (filtro.substr(i, 1) === '1' && curso.dia.substr(i, 1) === '3') ||
+                    (filtro.substr(i, 1) === '0' && curso.dia.substr(i, 1) === '0') ||
+                    (filtro.substr(i, 1) === '0' && curso.dia.substr(i, 1) === '4') ||
+                    (filtro.substr(i, 1) === '1' && curso.dia.substr(i, 1) === '4')))) {
 
                     i++;
 
