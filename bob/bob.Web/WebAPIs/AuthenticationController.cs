@@ -18,27 +18,39 @@ namespace bob.Controllers
 
         public AuthenticationController()
         {
-            _ctx = new CaeceDBContext(); 
+            _ctx = new CaeceDBContext();
         }
 
         // POST api/Account/Validate
         [AllowAnonymous]
         [Route("validate")]
         [HttpPost]
-        public IHttpActionResult Validate(Usuario userModel) {
-            if (!ModelState.IsValid) {
+        public IHttpActionResult Validate(Usuario userModel)
+        {
+            if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
             }
-            if (userModel.UserName.Length < 7) {
-                userModel.UserName = " " + userModel.UserName;
-            }
-            var result = (bool)JObject.Parse(caeceWS.autenticacion(_token, userModel.UserName, userModel.Password))["autenticacion"][0]["esValido"];
-            if (result)
+            if (WebConfigurationManager.AppSettings.Get("Validacion") == "true")
             {
-                return Ok(result);
+
+                if (userModel.UserName.Length < 7)
+                {
+                    userModel.UserName = " " + userModel.UserName;
+                }
+                var result = (bool)JObject.Parse(caeceWS.autenticacion(_token, userModel.UserName, userModel.Password))["autenticacion"][0]["esValido"];
+                if (result)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest("Validation Failed");
+                }
             }
-            else {
-                return BadRequest("Validation Failed");
+            else
+            {
+                return Ok(true);
             }
         }
 
@@ -59,7 +71,7 @@ namespace bob.Controllers
             {
                 return BadRequest("User already exists");
             }
-            
+
             var alumno = new Alumno();
             alumno.Matricula = userModel.UserName;
             alumno.Password = PasswordHash.HashPassword(userModel.Password);
@@ -106,6 +118,6 @@ namespace bob.Controllers
 
 
     }
-    
+
 
 }
