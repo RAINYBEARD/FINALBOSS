@@ -15,45 +15,45 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="curso in vm.cursos | orderBy:'-Dia' | cursosfiltermanual:vm.checkboxModel.lun+vm.checkboxModel.mar+vm.checkboxModel.mie+vm.checkboxModel.jue+vm.checkboxModel.vie+vm.checkboxModel.sab+vm.checkboxModel.dom" ng-class="{'custom_class_materia_desactivada':vm.mismoDia == true}">
+            <tr ng-repeat="curso in vm.cursos | orderBy:'-dia' | cursosfiltermanual:vm.checkboxModel.lun+vm.checkboxModel.mar+vm.checkboxModel.mie+vm.checkboxModel.jue+vm.checkboxModel.vie+vm.checkboxModel.sab+vm.checkboxModel.dom" ng-class="{'custom_class_materia_desactivada':vm.mismoDia == true}">
                 <td align="left" scope="row"><input type="checkbox" ng-disabled="vm.trabarMateria(curso)" ng-checked="vm.materiasSeleccionadas.indexOf(curso.Materia_Id) > -1" ng-click="vm.seleccionmateria(curso)" /></td>
-                <th ng-disabled="vm.mismoDia" align="left" scope="row">{{curso.Abr}}</th>
+                <th ng-disabled="vm.mismoDia" align="left" scope="row">{{curso.abr}}</th>
 
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(0,1) == '1'">X</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(0,1) == '2'">D</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(0,1) == '3'">T</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(0,1) == '4'">C</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(0,1) != '1' && curso.Dia.substr(0,1) != '2' && curso.Dia.substr(0,1) != '3'"></td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(0,1) == '1'">X</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(0,1) == '2'">D</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(0,1) == '3'">T</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(0,1) == '4'">C</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(0,1) != '1' && curso.dia.substr(0,1) != '2' && curso.dia.substr(0,1) != '3'"></td>
 
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(1,1) == '1'">X</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(1,1) == '2'">D</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(1,1) == '3'">T</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(1,1) == '4'">C</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(1,1) != '1' && curso.Dia.substr(1,1) != '2' && curso.Dia.substr(1,1) != '3'"></td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(1,1) == '1'">X</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(1,1) == '2'">D</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(1,1) == '3'">T</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(1,1) == '4'">C</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(1,1) != '1' && curso.dia.substr(1,1) != '2' && curso.dia.substr(1,1) != '3'"></td>
 
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(2,1) == '1'">X</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(2,1) == '2'">D</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(2,1) == '3'">T</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(2,1) == '4'">C</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(2,1) != '1' && curso.Dia.substr(2,1) != '2' && curso.Dia.substr(2,1) != '3'"></td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(2,1) == '1'">X</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(2,1) == '2'">D</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(2,1) == '3'">T</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(2,1) == '4'">C</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(2,1) != '1' && curso.dia.substr(2,1) != '2' && curso.dia.substr(2,1) != '3'"></td>
 
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(3,1) == '1'">X</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(3,1) == '2'">D</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(3,1) == '3'">T</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(3,1) == '4'">C</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(3,1) != '1' && curso.Dia.substr(3,1) != '2' && curso.Dia.substr(3,1) != '3'"></td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(3,1) == '1'">X</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(3,1) == '2'">D</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(3,1) == '3'">T</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(3,1) == '4'">C</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(3,1) != '1' && curso.dia.substr(3,1) != '2' && curso.dia.substr(3,1) != '3'"></td>
 
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(4,1) == '1'">X</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(4,1) == '2'">D</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(4,1) == '3'">T</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(4,1) == '4'">C</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(4,1) != '1' && curso.Dia.substr(4,1) != '2' && curso.Dia.substr(4,1) != '3'"></td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(4,1) == '1'">X</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(4,1) == '2'">D</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(4,1) == '3'">T</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(4,1) == '4'">C</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(4,1) != '1' && curso.dia.substr(4,1) != '2' && curso.dia.substr(4,1) != '3'"></td>
 
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(5,1) == '1'">X</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(5,1) == '2'">D</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(5,1) == '3'">T</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(5,1) == '4'">C</td>
-                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.Dia.substr(5,1) != '1' && curso.Dia.substr(5,1) != '2' && curso.Dia.substr(5,1) != '3'"></td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(5,1) == '1'">X</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(5,1) == '2'">D</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(5,1) == '3'">T</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(5,1) == '4'">C</td>
+                <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(5,1) != '1' && curso.dia.substr(5,1) != '2' && curso.dia.substr(5,1) != '3'"></td>
 
             </tr>
         </tbody>
