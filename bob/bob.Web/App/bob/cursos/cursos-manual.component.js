@@ -75,7 +75,7 @@
 
                 vm.materiasSeleccionadas.forEach(function (item, key) {
                     for (var i = 0; i < curso.dia.length; i++) {
-                        if ((curso.Materia_Id !== item.Materia_Id) &&
+                        if ((curso.materia_Id !== item.materia_Id) &&
                             ((curso.dia[i] === item.dia[i]) ||
                                 ((curso.dia[i] === '1') && ((item.dia[i] === '2') || (item.dia[i] === '3'))) ||
                                 (((curso.dia[i] === '2') || (curso.dia[i] === '3')) && (item.dia[i] === '1'))) &&
