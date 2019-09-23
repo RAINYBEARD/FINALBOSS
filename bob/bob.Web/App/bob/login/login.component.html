@@ -1,13 +1,18 @@
-﻿<div class="row">
-    <div class="col-10">
-        <form class="form-login" role="form">
-            <h2 class="form-login-heading">Login</h2>
-            <input type="text" class="form-control" placeholder="Username" data-ng-model="vm.loginData.username" required autofocus value="987654">
-            <input type="password" class="form-control" placeholder="Password" data-ng-model="vm.loginData.password" required value="987654">
-            <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="vm.login()">Login</button>
-            <div data-ng-hide="vm.message == ''" class="alert-danger">
-                {{vm.message}}
-            </div>
-        </form>
+﻿<div class="container">
+    <div class="row">
+        <div class="col-12 barra-titulo"><img src="http://www.ucaece.edu.ar/wp-content/uploads/2017/02/logo2017_blanco.png" alt="CAECE" width="200" height="80" /></div>
+    </div>
+    <div class="row">
+        <div class="col-10">
+            <form class="form-login" role="form">
+                <h2 class="form-login-heading">Login</h2>
+                <input type="text" class="form-control" placeholder="Username" data-ng-model="vm.loginData.username" required autofocus value="987654">
+                <input type="password" class="form-control" placeholder="Password" data-ng-model="vm.loginData.password" required value="987654">
+                <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="vm.login()">Login</button>
+                <div data-ng-hide="vm.message == ''" class="alert-danger">
+                    {{vm.message}}
+                </div>
+            </form>
+        </div>
     </div>
 </div>
