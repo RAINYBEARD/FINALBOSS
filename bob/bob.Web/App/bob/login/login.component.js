@@ -7,7 +7,7 @@
             var vm = this;
 
             vm.loginData = {
-                userName: "",
+                username: "",
                 password: "",
                 clientId: ""
             };
@@ -18,12 +18,10 @@
             function login() {
 
                 authService.login(vm.loginData).then(function (response) {
-
-                    caeceService.savePlanEstudio(vm.loginData.userName).then(function (response) {
-                        caeceService.setSesionUsuario(vm.loginData.userName).then(function (response) {
-                            $state.go('bob');
-                        });
+                    caeceService.setSesionUsuario(vm.loginData.username).then(function (response) {
+                        $state.go('bob');
                     });
+
                 },
                     function (err) {
                         vm.message = err.data.error_description;

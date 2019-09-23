@@ -112,6 +112,7 @@
             $state.go('login');
         });
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+            authService.fillAuthData();
             let loggedIn = authService.authentication.isAuth;
             if (toState.name !== 'login' && toState.name !== 'register' && toState.name !== 'changepassword' && !loggedIn) {
                 event.preventDefault();

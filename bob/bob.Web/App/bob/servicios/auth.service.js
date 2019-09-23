@@ -7,11 +7,11 @@
 
         var _authentication = {
             isAuth: false,
-            userName: ""
+            username: ""
         };
 
         var _validate = function (validationModel) {
-            _logOut();
+            _logout();
             return $http.post(authApi + "validate", validationModel).then(function (response) {
                 return response;
             });
@@ -19,7 +19,7 @@
 
         var _register = function (registration) {
 
-            _logOut();
+            _logout();
 
             return $http.post(authApi + "register", registration).then(function (response) {
                 return response;
@@ -28,7 +28,7 @@
         };
 
         var _changepassword = function (changepassword) {
-            _logOut();
+            _logout();
 
             return $http.post(authApi + "changepassword", changepassword).then(function (response) {
                 return response;
@@ -37,7 +37,7 @@
 
         var _login = function (loginData) {
 
-            var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
+            var data = "grant_type=password&username=" + loginData.username + "&password=" + loginData.password;
 
             data = data + "&client_id=" + ngAuthSettings.clientId;
 
@@ -45,26 +45,26 @@
 
             $http.post(base + 'token', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).then(function (response) {
 
-                localStorageService.set('authorizationData', { token: response.data.access_token, userName: loginData.userName });
+                localStorageService.set('authorizationData', { token: response.data.access_token, username: loginData.username });
 
                 _authentication.isAuth = true;
-                _authentication.userName = loginData.userName;
+                _authentication.username = loginData.username;
 
                 deferred.resolve(response);
 
             }, function (err) {
-                _logOut();
+                _logout();
                 deferred.reject(err);
             });
             return deferred.promise;
         };
 
-        var _logOut = function () {
+        var _logout = function () {
 
             localStorageService.remove('authorizationData');
 
             _authentication.isAuth = false;
-            _authentication.userName = "";
+            _authentication.username = "";
 
         };
 
@@ -73,7 +73,7 @@
             var authData = localStorageService.get('authorizationData');
             if (authData) {
                 _authentication.isAuth = true;
-                _authentication.userName = authData.userName;
+                _authentication.username = authData.username;
             }
 
         };
@@ -92,7 +92,7 @@
 
         //        $http.post(serviceBase + 'token', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function (response) {
 
-        //            localStorageService.set('authorizationData', { token: response.access_token, userName: response.userName, refreshToken: response.refresh_token});
+        //            localStorageService.set('authorizationData', { token: response.access_token, username: response.username, refreshToken: response.refresh_token});
 
         //            deferred.resolve(response);
 
@@ -110,7 +110,7 @@
         authServiceFactory.changepassword = _changepassword;
         authServiceFactory.validate = _validate;
         authServiceFactory.login = _login;
-        authServiceFactory.logOut = _logOut;
+        authServiceFactory.logout = _logout;
         authServiceFactory.fillAuthData = _fillAuthData;
         authServiceFactory.authentication = _authentication;
         //authServiceFactory.refreshToken = _refreshToken;

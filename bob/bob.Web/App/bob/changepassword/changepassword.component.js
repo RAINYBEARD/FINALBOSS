@@ -7,14 +7,14 @@
             var vm = this;
 
             vm.validationModel = {
-                userName: "",
+                username: "",
                 password: ""
             };
             vm.validation = false;
 
             vm.savedSuccessfully = false;
             vm.changePasswordModel = {
-                userName: "",
+                username: "",
                 password: "",
                 confirmPassword: ""
             };
@@ -27,7 +27,7 @@
             function validate() {
                 authService.validate(vm.validationModel).then(function (response) {
                     vm.validation = response;
-                    vm.registration.userName = vm.validationModel.userName;
+                    vm.registration.username = vm.validationModel.username;
                 },
                     function (err) {
                         vm.message = "Failed to register user due to:" + err.data.message;

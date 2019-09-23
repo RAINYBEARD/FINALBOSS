@@ -13,7 +13,7 @@
             vm.orden;
             vm.filtro;
 
-            caeceService.getFinales(authService.authentication.userName).then(function (response) {
+            caeceService.getFinales(authService.authentication.username).then(function (response) {
                 vm.finales = response;
             });
  

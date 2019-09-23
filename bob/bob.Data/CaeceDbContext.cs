@@ -28,7 +28,15 @@ namespace bob.Data
             modelBuilder.Entity<Alumno>()
                 .Property(e => e.Password)
                 .IsUnicode(false);
-            
+
+            modelBuilder.Entity<Alumno>()
+                .Property(e => e.Plan_Tit)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Alumno>()
+                .Property(e => e.Abr_Titulo)
+                .IsUnicode(false);
+
             modelBuilder.Entity<Correlativa>()
                 .Property(e => e.PCursar)
                 .IsUnicode(false);

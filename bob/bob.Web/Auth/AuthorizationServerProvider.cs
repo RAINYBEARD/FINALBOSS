@@ -88,7 +88,7 @@ namespace bob.Auth
             var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin");
 
             if (allowedOrigin == null) allowedOrigin = "*";
-
+            var username = context.UserName.PadLeft(7, ' ');
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
             try
             {
@@ -96,7 +96,7 @@ namespace bob.Auth
                 {
                     if (db.Alumnos.Count() > 0)
                     {
-                        var user = db.Alumnos.First(a => a.Matricula == context.UserName);
+                        var user = db.Alumnos.First(a => a.Matricula == username);
 
                         if (user == null)
                         {
@@ -126,7 +126,7 @@ namespace bob.Auth
                 var props = new AuthenticationProperties(new Dictionary<string, string>
                 {
                     {
-                        "userName", context.UserName
+                        "username", context.UserName
                     }
                 });
 

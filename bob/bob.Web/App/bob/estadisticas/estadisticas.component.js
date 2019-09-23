@@ -12,7 +12,7 @@
             vm.cursadas;
             vm.nocursadas;
 
-            caeceService.getEstadisticas(authService.authentication.userName).then(function (response) {
+            caeceService.getEstadisticas(authService.authentication.username).then(function (response) {
                 vm.materias = response;
                 vm.aprobadas = (vm.materias.aprobadas / vm.materias.total) * 100;
                 vm.noaprobadas = ((vm.materias.total - vm.materias.aprobadas) / vm.materias.total) * 100;

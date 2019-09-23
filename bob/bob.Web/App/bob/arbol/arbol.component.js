@@ -16,7 +16,7 @@
             vm.materiaspendientes = materiaspendientes;
             vm.filtro;
 
-            caeceService.getArbol(authService.authentication.userName).then(function (response) {
+            caeceService.getArbol(authService.authentication.username).then(function (response) {
                 vm.tabla = response;
                 vm.materias = vm.tabla.materias;
                 vm.total = vm.tabla.total;

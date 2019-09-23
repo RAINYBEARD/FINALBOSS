@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
-using System.Threading;
 using bob.Data;
 using bob.Data.Entities;
 using bob.Data.DTOs;
@@ -13,12 +12,9 @@ using bob.Data.Estadisticas;
 using bob.Data.Pendientes;
 using bob.Data.Vencerse;
 using Newtonsoft.Json.Linq;
-using bob.CaeceWS;
 using System.Web.Configuration;
-using bob.Mocks;
 using bob.Helpers;
 using System.Globalization;
-using Newtonsoft.Json;
 
 namespace bob.Controllers
 {
@@ -39,23 +35,35 @@ namespace bob.Controllers
         [Route("save-plan-estudio/{matricula}")]
         public void SavePlanDeEstudio(string matricula)
         {
-            if (matricula.Length == 6)
-            {
-                matricula = " " + matricula;
-            }
+            matricula = matricula.PadLeft(7, ' ');
             var JSON = caeceWS.getPlanEstudioJSON(_token, matricula);
             var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
             if (PlanDeEstudio.Count > 0)
             {
-                SessionManager.TituloId = PlanDeEstudio[0].titulo_id;
-                SessionManager.PlanTit = PlanDeEstudio[0].plan_tit;
-
                 using (var context = new CaeceDBContext())
                 {
                     using (var transaction = context.Database.BeginTransaction())
                     {
                         try
                         {
+                            var alumno = context.Alumnos.First(x => x.Matricula == matricula);
+                            alumno.Plan_Tit = PlanDeEstudio[0].plan_tit;
+                            alumno.Titulo_Id = PlanDeEstudio[0].titulo_id;
+                            alumno.Abr_Titulo = PlanDeEstudio[0].abr_titulo;
+                            context.SaveChanges();
+                            transaction.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                        }
+                    }
+
+                    using (var transaction = context.Database.BeginTransaction())
+                    {
+                        try
+                        {
+
                             foreach (PlanEstudio dato in PlanDeEstudio)
                             {
                                 // Cargo a la base los datos de las materias
@@ -116,10 +124,8 @@ namespace bob.Controllers
         [Route("set-sesion-usuario/{matricula}")]
         public void SetSesionUsuario(string matricula)
         {
-            if (matricula.Length == 6)
-            {
-                matricula = " " + matricula;
-            }
+            matricula = matricula.PadLeft(7, ' ');
+
             // Para hacer la llamada al WS
             var JSONCursos = caeceWS.getCursosAbiertosJSON(_token);
             var cursosAbiertos = ((JArray)JObject.Parse(JSONCursos)["Cursos"]).ToObject<List<Curso>>();
@@ -228,7 +234,8 @@ namespace bob.Controllers
             {
                 try
                 {
-                    var listCorrelativas = context.Correlativas.Where(a => a.Titulo_Id == SessionManager.TituloId && a.Plan_Tit == SessionManager.PlanTit).ToList();
+                    var alumno = context.Alumnos.First(x => x.Matricula == matricula);
+                    var listCorrelativas = context.Correlativas.Where(a => a.Titulo_Id == alumno.Titulo_Id && a.Plan_Tit == alumno.Plan_Tit).ToList();
                     var existentes = new List<CorrValue>();
                     var dicCorrelativas = new CorrDictionary();
 
@@ -272,10 +279,7 @@ namespace bob.Controllers
         /// <param name="matricula"></param>
         public List<string> GetMateriasACursar(string matricula)
         {
-            if (matricula.Length == 6)
-            {
-                matricula = " " + matricula;
-            }
+            matricula = matricula.PadLeft(7, ' ');
             var tiempoInicio = DateTime.Now;
 
             List<string> materiasACursar = new List<string>();
@@ -400,10 +404,7 @@ namespace bob.Controllers
         [Route("get-cursos/{matricula}")]
         public List<Curso> GetCursosCuatrimestreActual(string matricula)
         {
-            if (matricula.Length == 6)
-            {
-                matricula = " " + matricula;
-            }
+            matricula = matricula.PadLeft(7, ' ');
             List<string> materiasACursar = GetMateriasACursar(matricula);
             List<Curso> materiasACursarEsteCuatri = new List<Curso>();
 
@@ -499,10 +500,7 @@ namespace bob.Controllers
 
         public List<Curso> MostrarMateriasACursarCuatrimestreActual(string matricula, string filtroDias, int filtroCantDias, string modo)
         {
-            if (matricula.Length == 6)
-            {
-                matricula = " " + matricula;
-            }
+            matricula = matricula.PadLeft(7, ' ');
             List<Curso> materiasACursarEsteCuatri = GetCursosCuatrimestreActual(matricula);
             List<Curso> mostrarMateriasACursarEsteCuatri = new List<Curso>();
             List<Curso> auxMateriasACursar = new List<Curso>();
@@ -841,10 +839,7 @@ namespace bob.Controllers
         [Route("get-estadisticas/{matricula}")]
         public Estadisticas EstadisticasAlumno(string matricula)
         {
-            if (matricula.Length == 6)
-            {
-                matricula = " " + matricula;
-            }
+            matricula = matricula.PadLeft(7, ' ');
             Estadisticas estadistica = new Estadisticas();
             estadistica.Lista = new List<AprobadasPorAnio>();
             //SetSesionUsuario(matricula);
@@ -909,10 +904,7 @@ namespace bob.Controllers
         [Route("get-arbol/{matricula}")]
         public Tabla GetArbol(string matricula)
         {
-            if (matricula.Length == 6)
-            {
-                matricula = " " + matricula;
-            }
+            matricula = matricula.PadLeft(7, ' ');
             Tabla tabla = new Tabla();
             tabla.materias = new List<Materias>();
 

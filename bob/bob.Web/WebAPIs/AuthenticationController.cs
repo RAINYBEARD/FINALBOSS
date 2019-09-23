@@ -1,4 +1,5 @@
-﻿using System.Web.Configuration;
+﻿using System;
+using System.Web.Configuration;
 using System.Web.Http;
 using bob.Data;
 using bob.Data.Entities;
@@ -34,10 +35,7 @@ namespace bob.Controllers
             if (WebConfigurationManager.AppSettings.Get("Validacion") == "true")
             {
 
-                if (userModel.UserName.Length < 7)
-                {
-                    userModel.UserName = " " + userModel.UserName;
-                }
+                userModel.UserName = userModel.UserName.PadLeft(7, ' ');
                 var result = (bool)JObject.Parse(caeceWS.autenticacion(_token, userModel.UserName, userModel.Password))["autenticacion"][0]["esValido"];
                 if (result)
                 {
@@ -65,13 +63,14 @@ namespace bob.Controllers
                 return BadRequest(ModelState);
             }
 
+            userModel.UserName = userModel.UserName.PadLeft(7, ' ');
             var aux = _ctx.Alumnos.Find(userModel.UserName);
 
             if (aux != null)
             {
                 return BadRequest("User already exists");
             }
-
+            
             var alumno = new Alumno();
             alumno.Matricula = userModel.UserName;
             alumno.Password = PasswordHash.HashPassword(userModel.Password);
@@ -83,7 +82,7 @@ namespace bob.Controllers
 
         // POST api/Account/ChangePassword
         [AllowAnonymous]
-        [Route("changePassword")]
+        [Route("changepassword")]
         [HttpPost]
         public IHttpActionResult ChangePassword(Register userModel)
         {
@@ -91,6 +90,8 @@ namespace bob.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            userModel.UserName = userModel.UserName.PadLeft(7, ' ');
 
             var alumno = _ctx.Alumnos.Find(userModel.UserName);
 

@@ -23,7 +23,7 @@
 
             vm.filtro = vm.checkboxModel.lun + vm.checkboxModel.mar + vm.checkboxModel.mie + vm.checkboxModel.jue + vm.checkboxModel.vie + vm.checkboxModel.sab + vm.checkboxModel.dom;
 
-            caeceService.getCursos(authService.authentication.userName).then(function (response) {
+            caeceService.getCursos(authService.authentication.username).then(function (response) {
                 vm.cursos = response;
             });
 

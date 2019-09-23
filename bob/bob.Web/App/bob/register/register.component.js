@@ -3,18 +3,18 @@
 
     angular.module('bob').component('register', {
         controllerAs: 'vm',
-        controller: function ($location, $timeout, authService) {
+        controller: function ($location, $timeout, authService, caeceService) {
             var vm = this;
 
             vm.validationModel = {
-                userName: "",
+                username: "",
                 password: ""
             };
             vm.validation = false;
 
             vm.savedSuccessfully = false;
             vm.registration = {
-                userName: "",
+                username: "",
                 password: "",
                 confirmPassword: ""
             };
@@ -27,7 +27,7 @@
             function validate() {
                 authService.validate(vm.validationModel).then(function (response) {
                     vm.validation = response;
-                    vm.registration.userName = vm.validationModel.userName;
+                    vm.registration.username = vm.validationModel.username;
                 },
                     function (err) {
                         vm.message = "Failed to register user due to:" + err.data.message;
@@ -38,12 +38,11 @@
 
 
                 authService.register(vm.registration).then(function (response) {
-                    vm.savedSuccessfully = true;
-                    vm.message = "User has been registered successfully, you will be redirected to login page in 2 seconds";
-                    var timer = $timeout(function () {
-                        $timeout.cancel(timer);
-                        $location.path('/login');
-                    }, 2000);
+                    authService.login({ username: vm.registration.username, password: vm.registration.password }).then(function () {
+                        caeceService.savePlanEstudio(vm.registration.username).then(function (response) {
+                            vm.savedSuccessfully = true;
+                        });
+                    });
                 },
                     function (err) {
                         vm.message = "Failed to register user due to:" + err.data.message;
