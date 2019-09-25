@@ -3,7 +3,7 @@
 
     angular.module('bob').component('register', {
         controllerAs: 'vm',
-        controller: function ($location, $timeout, authService, caeceService) {
+        controller: function ($state, authService, caeceService) {
             var vm = this;
 
             vm.validationModel = {
@@ -41,6 +41,7 @@
                     authService.login({ username: vm.registration.username, password: vm.registration.password }).then(function () {
                         caeceService.savePlanEstudio(vm.registration.username).then(function (response) {
                             vm.savedSuccessfully = true;
+                            $state.go('bob.arbol');
                         });
                     });
                 },

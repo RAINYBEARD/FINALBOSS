@@ -882,7 +882,7 @@ namespace bob.Controllers
                     estadistica.Aprobadas++;
                     estadistica.Cursadas++;
                 }
-                if ((curDictionary.ContainsKey(mat_id)) && (penDictionary.ContainsKey(mat_id)))
+                if ((curDictionary.ContainsKey(mat_id)) || (penDictionary.ContainsKey(mat_id)))
                 {
                     estadistica.Cursadas++;
                 }
