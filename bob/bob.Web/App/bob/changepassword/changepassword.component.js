@@ -27,7 +27,7 @@
             function validate() {
                 authService.validate(vm.validationModel).then(function (response) {
                     vm.validation = response;
-                    vm.registration.username = vm.validationModel.username;
+                    vm.changePasswordModel.username = vm.validationModel.username;
                 },
                     function (err) {
                         vm.message = "Failed to register user due to:" + err.data.message;
