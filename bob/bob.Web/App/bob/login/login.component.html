@@ -5,11 +5,10 @@
     <div class="row">
         <div class="col-10">
             <form class="form-login" role="form">
-                <p>Ingrese su matricula</p>
-                <input type="text" class="form-control" placeholder="Username" data-ng-model="vm.loginData.username" required autofocus value="987654">
-                <p>Ingrese su contrasenia</p>
-                <input type="password" class="form-control" placeholder="Password" data-ng-model="vm.loginData.password" required value="987654">
-                <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="vm.login()">Login</button>
+                <p>Ingrese su matricula y contraseña</p>
+                <input type="text" class="form-control" placeholder="Usuario" data-ng-model="vm.loginData.username" required autofocus value="987654">
+                <input type="password" class="form-control" placeholder="Contraseña" data-ng-model="vm.loginData.password" required value="987654">
+                <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="vm.login()">Ingresar</button>
                 <div data-ng-hide="vm.message == ''" class="alert-danger">
                     {{vm.message}}
                 </div>
@@ -17,4 +16,6 @@
 
         </div>
     </div>
+    <button type="button" class="btn btn-log" ui-sref='register'>Crear Cuenta</button>
+    <button type="button" class="btn btn-log" ui-sref='changepassword'>Olvido su Contraseña?</button>
 </div>

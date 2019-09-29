@@ -9,6 +9,7 @@ namespace bob.Data.Finales
     public class CursadoStatus
     {
         public string materiaCod;
+        public string materiaCod2;
         public string fechaCursada;
         public string fechaVencimiento;
         public string abr;

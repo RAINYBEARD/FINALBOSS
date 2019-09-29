@@ -4,10 +4,10 @@
     </div>
 
     <form class="form-login" role="form" data-ng-show="!vm.validation">
-        <p>Ingrese su matricula y contrasenia de Data Caece</p>
+        <p>Ingrese su matricula y contraseña de Data Caece</p>
         <input type="text" class="form-control" placeholder="Matricula Data Caece" data-ng-model="vm.validationModel.username" required autofocus>
-        <input type="password" class="form-control" placeholder="Password Data Caece" data-ng-model="vm.validationModel.password" required>
-        <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="vm.validate()">Validate</button>
+        <input type="password" class="form-control" placeholder="Contraseña Data Caece" data-ng-model="vm.validationModel.password" required>
+        <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="vm.validate()">Confirmar</button>
         <div data-ng-hide="vm.message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
             {{vm.message}}
         </div>
@@ -15,14 +15,15 @@
 
     <form class="form-login" role="form" data-ng-show="vm.validation">
         <p>Su matricula</p>
-        <input type="text" class="form-control" placeholder="Username" data-ng-model="vm.registration.username" disabled="disabled" required autofocus>
-        <p>Ingrese su contrasenia</p>
-        <input type="password" class="form-control" placeholder="Password" data-ng-model="vm.registration.password" required>
-        <p>Repita su contrasenia</p>
-        <input type="password" class="form-control" placeholder="Confirm Password" data-ng-model="vm.registration.confirmPassword" required>
-        <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="vm.register()">Submit</button>
+        <input type="text" class="form-control" placeholder="Usuario" data-ng-model="vm.registration.username" disabled="disabled" required autofocus>
+        <p>Ingrese su contraseña</p>
+        <input type="password" class="form-control" placeholder="Contraseña" data-ng-model="vm.registration.password" required>
+        <p>Repita su contraseña</p>
+        <input type="password" class="form-control" placeholder="Confirme Contraseña" data-ng-model="vm.registration.confirmPassword" required>
+        <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="vm.register()">Enviar</button>
         <div data-ng-hide="vm.message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
             {{vm.message}}
         </div>
     </form>
+    <button type="button" class="btn btn-log" ui-sref='login'>Ingresar a Cuenta</button>
 </div>

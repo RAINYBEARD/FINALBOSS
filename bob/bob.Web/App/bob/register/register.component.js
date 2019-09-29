@@ -30,7 +30,7 @@
                     vm.registration.username = vm.validationModel.username;
                 },
                     function (err) {
-                        vm.message = "Failed to register user due to:" + err.data.message;
+                        vm.message = "Error al registrarse por:" + err.data.message;
                     });
             }
 
@@ -46,7 +46,7 @@
                     });
                 },
                     function (err) {
-                        vm.message = "Failed to register user due to:" + err.data.message;
+                        vm.message = "Error al registrarse por:" + err.data.message;
                     });
             }
         },

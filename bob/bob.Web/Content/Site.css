@@ -191,3 +191,25 @@ button#buttonGroupEstadisticas.btn.btn-info.dropdown-toggle:focus {
 .bg-inf {
     background-color: white;
 }
+
+.btn-log {
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    color: blue;
+    text-decoration: underline;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+}
+
+.btn-user {
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    color:white;
+    font-size: 25px;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+}

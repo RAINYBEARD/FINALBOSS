@@ -49,7 +49,7 @@ namespace bob.Controllers
                             var alumno = context.Alumnos.First(x => x.Matricula == matricula);
                             alumno.Plan_Tit = PlanDeEstudio[0].plan_tit;
                             alumno.Titulo_Id = PlanDeEstudio[0].titulo_id;
-                            alumno.Abr_Titulo = PlanDeEstudio[0].abr_titulo;
+                            alumno.Abr_Titulo = PlanDeEstudio[0].abr_titulo;                            
                             context.SaveChanges();
                             transaction.Commit();
                         }
@@ -665,11 +665,14 @@ namespace bob.Controllers
                 var repDictionary = SessionManager.DiccionarioReprobadas as RepDictionary;
                 var penDictionary = SessionManager.DiccionarioPendientes as PenDictionary;
                 var notCurDictionary = SessionManager.DiccionarioNoCursadas as NotCurDictionary;
+                var alumno = context.Alumnos.First(x => x.Matricula == matricula);
+                var titulo_Id = alumno.Titulo_Id;
+                var plan_Id = alumno.Plan_Tit;
                 foreach (KeyValuePair<string, CurValue> entry in curDictionary)
                 {
                     string reprobadas = "No";
                     int correlativas = 0;
-
+                    string entry2 = entry.Value.Materia_Id + "/10Z";
                     DateTime fechaAuxiliar = DateTime.ParseExact(entry.Value.Fecha, "dd/MM/yyyy", null);
                     string fechaDeCursada = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
                     string fechaDeVencimiento = fechaAuxiliar.ToString("MMMM yyyy", new CultureInfo("es-ES"));
@@ -714,7 +717,7 @@ namespace bob.Controllers
                             }
                         }
                     }
-                    correlativas = context.Correlativas.Where(a => a.Titulo_Id == SessionManager.TituloId && a.Plan_Tit == SessionManager.PlanTit && (a.Codigo_Correlativa + "/" + a.Plan_Id) == entry.Key).ToList().Count;
+                    correlativas = context.Correlativas.Where(a => a.Titulo_Id == titulo_Id && a.Plan_Tit == plan_Id && ((a.Codigo_Correlativa + "/" + a.Plan_Id) == entry.Key) || (a.Codigo_Correlativa + "/" + a.Plan_Id) == entry2).ToList().Count;
                     //Numero de Correlativas de la Materia Cursada
 
                     //Si se reprobo o no
@@ -737,7 +740,7 @@ namespace bob.Controllers
                     }
 
                     //Usar AutoMapper
-                    cursados.Add(new CursadoStatus() { materiaCod = entry.Key, fechaCursada = fechaDeCursada, fechaVencimiento = fechaDeVencimiento, abr = entry.Value.Abr, descrip = entry.Value.Descrip, nCorrelativas = correlativas, reprobado = reprobadas });
+                    cursados.Add(new CursadoStatus() { materiaCod = entry.Key, materiaCod2 = entry2, fechaCursada = fechaDeCursada, fechaVencimiento = fechaDeVencimiento, abr = entry.Value.Abr, descrip = entry.Value.Descrip, nCorrelativas = correlativas, reprobado = reprobadas });
                 }
                 //Filtro materias que no se pueden rendir aunque esten cursadas
                 int totalCursadas = cursados.Count;
@@ -747,10 +750,10 @@ namespace bob.Controllers
                 {
                     bool seEleminoLaMateria = false;
                     CursadoStatus cur = cursados[z];
-                    var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
+                    var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == titulo_Id && x.Plan_Tit == plan_Id && ((x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod) || ((x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod2)).ToList();
                     foreach (Correlativa corr in correlativaAuxiliar)
                     {
-                        string materia_correlativa = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
+                        string materia_correlativa = (corr.Materia_Id + "/" + corr.Plan_Id);
 
                         if ((((!aprDictionary.ContainsKey(materia_correlativa)) && (!curDictionary.ContainsKey(materia_correlativa))) || (elimDictionary.ContainsKey(materia_correlativa))))
                         {
@@ -776,8 +779,8 @@ namespace bob.Controllers
                 {
                     List<CorrelativasCursadas> correlativ = new List<CorrelativasCursadas>();
                     List<CorrelativasCursadas> correlativ2 = new List<CorrelativasCursadas>();
-                    var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == SessionManager.TituloId && x.Plan_Tit == SessionManager.PlanTit && (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
-                    var correlativaAuxiliar2 = context.Correlativas.Where(y => y.Titulo_Id == SessionManager.TituloId && y.Plan_Tit == SessionManager.PlanTit && (y.Codigo_Correlativa + "/" + y.Plan_Id) == cur.materiaCod).ToList();
+                    var correlativaAuxiliar = context.Correlativas.Where(x => x.Titulo_Id == titulo_Id && x.Plan_Tit == plan_Id && (x.Materia_Id + "/" + x.Plan_Id) == cur.materiaCod).ToList();
+                    var correlativaAuxiliar2 = context.Correlativas.Where(y => y.Titulo_Id == titulo_Id && y.Plan_Tit == plan_Id && ((y.Codigo_Correlativa + "/" + y.Plan_Id) == cur.materiaCod) || ((y.Codigo_Correlativa + "/" + y.Plan_Id) == cur.materiaCod2)).ToList();
                     foreach (Correlativa corr in correlativaAuxiliar)
                     {
                         string materiaCursada = (corr.Codigo_Correlativa + "/" + corr.Plan_Id);
@@ -791,10 +794,10 @@ namespace bob.Controllers
                     {
                         string materiaNoCursada = (corr.Materia_Id + "/" + corr.Plan_Id);
                         bool correlativasHechas = true;
-                        var correlativaAuxiliar3 = context.Correlativas.Where(w => w.Titulo_Id == SessionManager.TituloId && w.Plan_Tit == SessionManager.PlanTit && w.Codigo_Correlativa + "/" + w.Plan_Id == materiaNoCursada).ToList();
+                        var correlativaAuxiliar3 = context.Correlativas.Where(w => w.Titulo_Id == titulo_Id && w.Plan_Tit == plan_Id && ((w.Codigo_Correlativa + "/" + w.Plan_Id) == materiaNoCursada) || ((w.Codigo_Correlativa + "/" + w.Plan_Id) == cur.materiaCod2)).ToList();
                         foreach (Correlativa corr2 in correlativaAuxiliar3)
                         {
-                            if ((!curDictionary.ContainsKey(corr2.Codigo_Correlativa + "/" + corr2.Plan_Id)) && (!aprDictionary.ContainsKey(corr2.Codigo_Correlativa + "/" + corr2.Plan_Id) && (corr2.Codigo_Correlativa + "/" + corr2.Plan_Id != materiaNoCursada)))
+                            if ((!curDictionary.ContainsKey(corr2.Materia_Id + "/" + corr2.Plan_Id)) && (!aprDictionary.ContainsKey(corr2.Materia_Id + "/" + corr2.Plan_Id) && (corr2.Materia_Id + "/" + corr2.Plan_Id != materiaNoCursada)))
                             {
                                 correlativasHechas = false;
                             }
@@ -810,7 +813,9 @@ namespace bob.Controllers
                             {
                                 abreviatura = notCurDictionary[materiaNoCursada].Abr;
                             }
+
                             correlativ2.Add(new CorrelativasCursadas() { materiaCod = materiaNoCursada, abr = abreviatura });
+
                         }
 
                     }
