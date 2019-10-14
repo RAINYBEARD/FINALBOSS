@@ -30,7 +30,7 @@
                     vm.changePasswordModel.username = vm.validationModel.username;
                 },
                     function (err) {
-                        vm.message = "Failed to register user due to:" + err.data.message;
+                        vm.message = "La registracion del usuario ha fallado debido a: " + err.data.message;
                     });
             }
 
@@ -38,14 +38,14 @@
 
                 authService.changepassword(vm.changePasswordModel).then(function (response) {
                     vm.savedSuccessfully = true;
-                    vm.message = "User has changed his password successfully, you will be redirected to login page in 2 seconds";
+                    vm.message = "El usuario ha cambiado su contraseña satisfactoriamente y sera redirigido";
                     var timer = $timeout(function () {
                         $timeout.cancel(timer);
-                        $location.path('/login');
-                    }, 2000);
+                        $location.path('/ingresar');
+                    }, 5000);
                 },
                     function (err) {
-                        vm.message = "Failed to change user password due to:" + err.data.message;
+                        vm.message = "El cambio de contraseña ha fallado debido a: " + err.data.message;
                     });
             }
         },

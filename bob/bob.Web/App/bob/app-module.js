@@ -15,8 +15,8 @@
 
         var states = [
             {
-                name: 'login',
-                url: '/login',
+                name: 'ingresar',
+                url: '/ingresar',
                 views: {
                     'content@': {
                         template: '<login></login>'
@@ -24,8 +24,8 @@
                 }
             },
             {
-                name: 'register',
-                url: '/register',
+                name: 'registro',
+                url: '/registro',
                 views: {
                     'content@': {
                         template: '<register></register>'
@@ -33,8 +33,8 @@
                 }
             },
             {
-                name: 'changepassword',
-                url: '/changepassword',
+                name: 'cambiar',
+                url: '/cambiar',
                 views: {
                     'content@': {
                         template: '<changepassword></changepassword>'
@@ -109,14 +109,14 @@
     appModule.run(function ($rootScope, $state, authService) {
         $rootScope.$on('unauthorized', function (event) {
             event.preventDefault();
-            $state.go('login');
+            $state.go('ingresar');
         });
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
             authService.fillAuthData();
             let loggedIn = authService.authentication.isAuth;
-            if (toState.name !== 'login' && toState.name !== 'register' && toState.name !== 'changepassword' && !loggedIn) {
+            if (toState.name !== 'ingresar' && toState.name !== 'registro' && toState.name !== 'cambiar' && !loggedIn) {
                 event.preventDefault();
-                $state.go('login');
+                $state.go('ingresar');
             }
         });
 

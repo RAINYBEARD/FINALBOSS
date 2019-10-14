@@ -10,12 +10,12 @@
 
             vm.changepassword = function () {
                 authService.logout();
-                $state.go('changepassword');
+                $state.go('cambiar');
             };
 
             vm.logout = function () {
                 authService.logout();
-                $state.go('login');
+                $state.go('ingresar');
             };
 
 

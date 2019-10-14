@@ -47,15 +47,15 @@
                 });
         };
 
-        self.getPendientes = function (matricula) {
-            return $http.get(caeceApi + 'get-pendientes' + '/' + matricula)
+        self.getPendientes = function () {
+            return $http.get(caeceApi + 'get-pendientes')
                 .then(function (result) {
                     return result.data;
                 });
         };
 
-        self.getPorVencerse = function (matricula) {
-            return $http.get(caeceApi + 'get-porvencerse' + '/' + matricula)
+        self.getPorVencerse = function () {
+            return $http.get(caeceApi + 'get-porvencerse')
                 .then(function (result) {
                     return result.data;
                 });

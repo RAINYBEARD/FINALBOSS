@@ -60,7 +60,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arbol\Arbol.cs" />
+    <Compile Include="Arbol\Correlativas.cs" />
+    <Compile Include="Arbol\Materias.cs" />
+    <Compile Include="Arbol\Tabla.cs" />
     <Compile Include="Auth\ApplicationTypes.cs" />
     <Compile Include="Auth\Client.cs" />
     <Compile Include="Auth\RefreshToken.cs" />

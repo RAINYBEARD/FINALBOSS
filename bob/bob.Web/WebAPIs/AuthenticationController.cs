@@ -43,7 +43,7 @@ namespace bob.Controllers
                 }
                 else
                 {
-                    return BadRequest("Validation Failed");
+                    return BadRequest("La Validacion ha fallado");
                 }
             }
             else
@@ -68,7 +68,7 @@ namespace bob.Controllers
 
             if (aux != null)
             {
-                return BadRequest("User already exists");
+                return BadRequest("El usuario ya existe");
             }
             
             var alumno = new Alumno();
@@ -97,7 +97,7 @@ namespace bob.Controllers
 
             if (alumno == null)
             {
-                return BadRequest("User does not exist");
+                return BadRequest("El usuario no existe");
             }
 
             alumno.Matricula = userModel.UserName;

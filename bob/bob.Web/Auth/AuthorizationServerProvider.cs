@@ -96,11 +96,11 @@ namespace bob.Auth
                 {
                     if (db.Alumnos.Count() > 0)
                     {
-                        var user = db.Alumnos.First(a => a.Matricula == username);
+                        var user = db.Alumnos.FirstOrDefault(a => a.Matricula == username);
 
                         if (user == null)
                         {
-                            context.SetError("invalid_grant", "The user name or password is incorrect.");
+                            context.SetError("invalid_grant", "Matricula o contraseña incorrecta.");
                             return;
                         }
 
@@ -108,12 +108,12 @@ namespace bob.Auth
 
                         if (!validPass)
                         {
-                            context.SetError("invalid_grant", "The user name or password is incorrect.");
+                            context.SetError("invalid_grant", "Matricula o contraseña incorrecta.");
                             return;
                         }
                     }
                     else {
-                        context.SetError("invalid_grant", "The user name or password is incorrect.");
+                        context.SetError("invalid_grant", "Matricula o contraseña incorrecta.");
                         return;
                     }
                 }

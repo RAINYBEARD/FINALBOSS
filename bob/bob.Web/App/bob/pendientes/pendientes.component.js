@@ -8,11 +8,11 @@
             vm.pendientes;
 
             if (authService.authentication.isAuth) {
-                caeceService.getPendientes(authService.authentication.username).then(function (response) {
+                caeceService.getPendientes().then(function (response) {
                     vm.pendientes = response;
                 });
 
-                caeceService.getPorVencerse(authService.authentication.username).then(function (response) {
+                caeceService.getPorVencerse().then(function (response) {
                     vm.porvencerse = response;
                 });
             }
