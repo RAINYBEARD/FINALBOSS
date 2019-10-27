@@ -28,7 +28,7 @@ namespace bob.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest("La Matricula o Contraseña es incorrecta");
             }
             if (WebConfigurationManager.AppSettings.Get("Validacion") == "true")
             {

@@ -30,7 +30,7 @@
                     vm.changePasswordModel.username = vm.validationModel.username;
                 },
                     function (err) {
-                        vm.message = "La registracion del usuario ha fallado debido a: " + err.data.message;
+                        vm.message = "La registracion del usuario ha fallado: " + err.data.message;
                     });
             }
 
@@ -45,7 +45,7 @@
                     }, 5000);
                 },
                     function (err) {
-                        vm.message = "El cambio de contraseña ha fallado debido a: " + err.data.message;
+                        vm.message = "El cambio de contraseña ha fallado: " + err.data.message;
                     });
             }
         },
