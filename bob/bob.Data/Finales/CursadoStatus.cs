@@ -19,10 +19,4 @@ namespace bob.Data.Finales
         public List<CorrelativasCursadas> correlativasFuturas;
         public List<CorrelativasCursadas> correlativasCursadas;
     }
-
-    public class CorrelativasCursadas
-    {
-        public string materiaCod;
-        public string abr;
-    }
 }

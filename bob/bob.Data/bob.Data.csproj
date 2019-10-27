@@ -60,9 +60,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arbol\Correlativas.cs" />
-    <Compile Include="Arbol\Materias.cs" />
-    <Compile Include="Arbol\Tabla.cs" />
+    <Compile Include="PlanEstudio\Correlativas.cs" />
+    <Compile Include="PlanEstudio\Materias.cs" />
+    <Compile Include="PlanEstudio\Tabla.cs" />
     <Compile Include="Auth\ApplicationTypes.cs" />
     <Compile Include="Auth\Client.cs" />
     <Compile Include="Auth\RefreshToken.cs" />
@@ -85,6 +85,7 @@
     <Compile Include="Entities\Correlativa.cs" />
     <Compile Include="Estadisticas\Estadisticas.cs" />
     <Compile Include="Estadisticas\AprobadasPorAnio.cs" />
+    <Compile Include="Finales\CorrelativasCursadas.cs" />
     <Compile Include="Finales\CursadoStatus.cs" />
     <Compile Include="Entities\Materia.cs" />
     <Compile Include="Entities\Materia_Descripcion.cs" />

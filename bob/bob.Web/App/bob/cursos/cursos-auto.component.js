@@ -18,7 +18,7 @@
 
             vm.filtroCantDias = {
                 valor: 6
-            }
+            };
 
             vm.filtro = vm.checkboxModel.lun + vm.checkboxModel.mar + vm.checkboxModel.mie + vm.checkboxModel.jue + vm.checkboxModel.vie + vm.checkboxModel.sab + '0';
 

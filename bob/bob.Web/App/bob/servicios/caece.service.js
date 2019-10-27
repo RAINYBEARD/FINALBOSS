@@ -40,8 +40,8 @@
                 });
         };
 
-        self.getArbol = function (matricula) {
-            return $http.get(caeceApi + 'get-arbol' + '/' + matricula)
+        self.getPlanEstudio = function (matricula) {
+            return $http.get(caeceApi + 'get-plan-estudio' + '/' + matricula)
                 .then(function (result) {
                     return result.data;
                 });

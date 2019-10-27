@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace bob.Data.Arbol
+namespace bob.Data.PlanEstudio
 {
     public class Tabla
     {

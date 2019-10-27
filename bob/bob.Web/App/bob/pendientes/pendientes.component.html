@@ -5,17 +5,11 @@
             <thead class="thead">
                 <tr>
                     <th scope="col">Materias Pendientes</th>
-                    <!--<th scope="col">Correlativas No Aprobadas</th>-->
                 </tr>
             </thead>
             <tbody ng-repeat="pendientes in vm.pendientes">
                 <tr>
                     <td>{{pendientes.abr}}</td>
-                    <!--<td>
-                        <ul>
-                            <li ng-repeat="n in pendientes.correlativasNoAprobadas">{{n.abr}}</li>
-                        </ul>
-                    </td>-->
                 </tr>
             </tbody>
         </table>

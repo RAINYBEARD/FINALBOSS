@@ -1,4 +1,4 @@
-﻿namespace bob.Data.Arbol
+﻿namespace bob.Data.PlanEstudio
 {
     public class Correlativas
     {

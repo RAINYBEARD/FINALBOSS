@@ -121,7 +121,11 @@ namespace bob.Auth
                 var identity = new ClaimsIdentity(context.Options.AuthenticationType);
                 identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
                 identity.AddClaim(new Claim("sub", context.UserName));
-                identity.AddClaim(new Claim("role", "user"));
+
+                if (username == "0000000")
+                    identity.AddClaim(new Claim("role", "admin"));
+                else
+                    identity.AddClaim(new Claim("role", "user"));
 
                 var props = new AuthenticationProperties(new Dictionary<string, string>
                 {

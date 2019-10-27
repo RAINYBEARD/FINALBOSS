@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bob.Web", "bob.Web\bob.Web.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bob.Data", "bob.Data\bob.Data.csproj", "{F931DC86-656E-4165-AC59-40027DAEDB52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bob.Common", "bob.Common\bob.Common.csproj", "{EB6249E1-A239-4ED7-887F-05B0BC19CF48}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{F931DC86-656E-4165-AC59-40027DAEDB52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F931DC86-656E-4165-AC59-40027DAEDB52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F931DC86-656E-4165-AC59-40027DAEDB52}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EB6249E1-A239-4ED7-887F-05B0BC19CF48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB6249E1-A239-4ED7-887F-05B0BC19CF48}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB6249E1-A239-4ED7-887F-05B0BC19CF48}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB6249E1-A239-4ED7-887F-05B0BC19CF48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

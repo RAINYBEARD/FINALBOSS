@@ -1,11 +1,9 @@
-﻿using System;
-using System.Web.Configuration;
+﻿using System.Web.Configuration;
 using System.Web.Http;
 using bob.Data;
 using bob.Data.Entities;
 using bob.Data.Usuario;
 using bob.Helpers;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace bob.Controllers
@@ -70,7 +68,7 @@ namespace bob.Controllers
             {
                 return BadRequest("El usuario ya existe");
             }
-            
+
             var alumno = new Alumno();
             alumno.Matricula = userModel.UserName;
             alumno.Password = PasswordHash.HashPassword(userModel.Password);

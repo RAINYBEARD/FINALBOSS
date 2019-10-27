@@ -7,7 +7,7 @@ using bob.Data.Entities;
 using bob.Data.DTOs;
 using bob.Data.Dictionaries;
 using bob.Data.Finales;
-using bob.Data.Arbol;
+using bob.Data.PlanEstudio;
 using bob.Data.Estadisticas;
 using bob.Data.Pendientes;
 using bob.Data.Vencerse;
@@ -397,7 +397,7 @@ namespace bob.Controllers
                             {
                                 flagMateriaACursar = false;
                             }
-                            // Hago llamada recursiva para recorrer el arbol de materias correlativas
+                            // Hago llamada recursiva para recorrer el plan estudio de materias correlativas
                             BuscarMateriasACursar(resultado, ref materiasACursar, materiaAnt);
                         }
                     }
@@ -794,7 +794,6 @@ namespace bob.Controllers
                             seEleminoLaMateria = true;
                             break;
                         }
-                        //}
                     }
                     if (seEleminoLaMateria == false)
                     {
@@ -877,7 +876,6 @@ namespace bob.Controllers
                 matricula = matricula.PadLeft(7, ' ');
                 Estadisticas estadistica = new Estadisticas();
                 estadistica.Lista = new List<AprobadasPorAnio>();
-                //SetSesionUsuario(matricula);
                 var JSON = caeceWS.getPlanEstudioJSON(_token, matricula);
                 var PlanDeEstudio = ((JArray)JObject.Parse(JSON)["PlanEstudio"]).ToObject<List<PlanEstudio>>();
                 var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
@@ -932,16 +930,16 @@ namespace bob.Controllers
         }
         #endregion
 
-        #region Arbol
+        #region Plan Estudio
 
         /// <summary>
-        /// Devuelvo estructura del Arbol; que tiene una lista de nodos y una lista de arcos
+        /// Devuelvo estructura del Plan de Estudio; que tiene una lista de nodos y una lista de arcos
         /// </summary>
         /// <param name="matricula"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("get-arbol/{matricula}")]
-        public Tabla GetArbol(string matricula)
+        [Route("get-plan-estudio/{matricula}")]
+        public Tabla GetPlanEstudio(string matricula)
         {
             try
             {
@@ -956,7 +954,6 @@ namespace bob.Controllers
                 {
                     foreach (PlanEstudio dato in PlanDeEstudio)
                     {
-                        //var id = dato.materia_id.ToString();
                         var resultado = tabla.materias.Exists(a => a.materia_id == dato.materia_id);
 
                         if (resultado == false)
@@ -968,7 +965,6 @@ namespace bob.Controllers
                             reg.mat_des = dato.mat_des;
                             reg.mat_anio = dato.mat_anio;
 
-                            //hacer el casteo de cuatrimestre para mostrar vacio en vez de un 3
                             if (dato.mat_cuatrim == 1 || dato.mat_cuatrim == 2)
                             {
                                 reg.mat_cuatrim = dato.mat_cuatrim.ToString();
@@ -1010,7 +1006,6 @@ namespace bob.Controllers
                     throw;
                 }
 
-                //SetSesionUsuario(matricula);
                 var aprDictionary = SessionManager.DiccionarioAprobadas as AprDictionary;
                 var curDictionary = SessionManager.DiccionarioCursadas as CurDictionary;
                 var NoCurDictionary = SessionManager.DiccionarioNoCursadas as NotCurDictionary;
@@ -1022,7 +1017,6 @@ namespace bob.Controllers
 
                     if (aprDictionary.ContainsKey(mat_id))
                     {
-                        //dato.estado = aprDictionary[mat_id].Descrip;
                         dato.estado = "Aprobada";
 
                         tabla.aprobadas = tabla.aprobadas + 1;
@@ -1030,24 +1024,20 @@ namespace bob.Controllers
 
                     if (curDictionary.ContainsKey(mat_id))
                     {
-                        //dato.estado = curDictionary[mat_id].Descrip;
                         dato.estado = "Cursada";
                     }
 
                     if (NoCurDictionary.ContainsKey(mat_id))
                     {
-                        //dato.estado = NoCurDictionary[mat_id].Descrip;
                         dato.estado = "Sin Cursar";
                     }
 
                     if (PenDictionary.ContainsKey(mat_id))
                     {
-                        //dato.estado = PenDictionary[mat_id].Descrip;
                         dato.estado = "Pendiente";
                     }
 
                 }
-                //var json = JsonConvert.SerializeObject(tabla);
                 return tabla;
             }
             catch (Exception)

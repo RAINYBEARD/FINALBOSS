@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    angular.module('bob').component('arbol', {
+    angular.module('bob').component('planestudio', {
         controllerAs: 'vm',
         controller: function (caeceService, authService) {
             var vm = this;
@@ -16,7 +16,7 @@
             vm.materiaspendientes = materiaspendientes;
             vm.filtro;
 
-            caeceService.getArbol(authService.authentication.username).then(function (response) {
+            caeceService.getPlanEstudio(authService.authentication.username).then(function (response) {
                 vm.tabla = response;
                 vm.materias = vm.tabla.materias;
                 vm.total = vm.tabla.total;
@@ -96,7 +96,7 @@
             });
 
         },
-        templateUrl: '/App/bob/arbol/arbol.component.html'
+        templateUrl: '/App/bob/planestudio/planestudio.component.html'
     });
 
 })();

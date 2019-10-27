@@ -51,11 +51,11 @@
                 }
             },
             {
-                name: 'bob.arbol',
-                url: '/arbol',
+                name: 'bob.planestudio',
+                url: '/planestudio',
                 views: {
                     'bob@bob': {
-                        template: '<arbol></arbol>'
+                        template: '<planestudio></planestudio>'
                     }
                 }
             },
@@ -99,7 +99,7 @@
         ];
 
         $urlRouterProvider.otherwise('/bob');
-        $urlRouterProvider.when('/bob', '/bob/arbol');
+        $urlRouterProvider.when('/bob', '/bob/planestudio');
         states.forEach(function (state) {
             $stateProvider.state(state);
         });

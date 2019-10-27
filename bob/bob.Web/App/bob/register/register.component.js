@@ -41,7 +41,7 @@
                     authService.login({ username: vm.registration.username, password: vm.registration.password }).then(function () {
                         caeceService.savePlanEstudio(vm.registration.username).then(function (response) {
                             vm.savedSuccessfully = true;
-                            $state.go('bob.arbol');
+                            $state.go('bob.planestudio');
                         });
                     });
                 },
