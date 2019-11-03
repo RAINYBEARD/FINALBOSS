@@ -40,6 +40,7 @@ namespace bob
             bundles.Add(new ScriptBundle("~/bundles/components").Include(
                         "~/App/bob/app-module.js",
                         "~/App/bob/bob-app.component.js",
+                        "~/App/bob/admin/admin.component.js",
                         "~/App/bob/servicios/caece.service.js",
                         "~/App/bob/nav/nav.component.js",
                         "~/App/bob/userstatus/userstatus.component.js",

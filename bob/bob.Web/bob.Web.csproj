@@ -212,10 +212,8 @@
     <Compile Include="WebAPIs\HomeController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App\bob\admin\altas.component.html" />
-    <Content Include="App\bob\admin\altas.component.js" />
-    <Content Include="App\bob\admin\bajas.component.html" />
-    <Content Include="App\bob\admin\bajas.component.js" />
+    <Content Include="App\bob\admin\admin.component.html" />
+    <Content Include="App\bob\admin\admin.component.js" />
     <Content Include="App\bob\app-module.js" />
     <Content Include="App\bob\planestudio\planestudio.component.js" />
     <Content Include="App\bob\planestudio\planestudio.component.html" />
@@ -331,7 +329,6 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Home\Admin.cshtml" />
     <None Include="Web References\CaeceWS\wbsSync.disco" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

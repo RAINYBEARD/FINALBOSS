@@ -19,7 +19,7 @@
 
                 authService.login(vm.loginData).then(function (response) {
                     caeceService.setSesionUsuario(vm.loginData.username).then(function (response) {
-                        $state.go('bob');
+                        $state.go('landing');
                     });
 
                 },

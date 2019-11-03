@@ -39,7 +39,7 @@
 
             var data = "grant_type=password&username=" + loginData.username + "&password=" + loginData.password;
 
-            data = data + "&client_id=" + ngAuthSettings.clientId;
+            //data = data + "&client_id=" + ngAuthSettings.clientId;
 
             var deferred = $q.defer();
 
@@ -65,7 +65,6 @@
 
             _authentication.isAuth = false;
             _authentication.username = "";
-
         };
 
         var _fillAuthData = function () {
@@ -75,7 +74,17 @@
                 _authentication.isAuth = true;
                 _authentication.username = authData.username;
             }
+        };
 
+        var _isAdmin = function () {
+            var deferred = $q.defer();
+            $http.get(authApi + "is-admin").then(function (response) {
+                deferred.resolve(response.data);
+
+            }, function () {
+                deferred.resolve(false);
+            });
+            return deferred.promise;
         };
 
         //var _refreshToken = function () {
@@ -107,6 +116,7 @@
         //};
 
         authServiceFactory.register = _register;
+        authServiceFactory.isAdmin = _isAdmin;
         authServiceFactory.changepassword = _changepassword;
         authServiceFactory.validate = _validate;
         authServiceFactory.login = _login;

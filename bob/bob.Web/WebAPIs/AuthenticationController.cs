@@ -1,4 +1,6 @@
-﻿using System.Web.Configuration;
+﻿using System.Linq;
+using System.Security.Claims;
+using System.Web.Configuration;
 using System.Web.Http;
 using bob.Data;
 using bob.Data.Entities;
@@ -103,6 +105,16 @@ namespace bob.Controllers
             _ctx.SaveChanges();
 
             return Ok();
+        }
+
+        [Authorize]
+        [Route("is-admin")]
+        [HttpGet]
+        public IHttpActionResult IsAdmin()
+        {
+            ClaimsIdentity claimsIdentity = User.Identity as ClaimsIdentity;
+
+            return Ok(claimsIdentity.Claims.Any(x => x.Type == "role" && x.Value == "admin"));
         }
 
         protected override void Dispose(bool disposing)

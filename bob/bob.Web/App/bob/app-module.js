@@ -42,11 +42,40 @@
                 }
             },
             {
+                name: 'landing',
+                url: '/',
+                views: {
+                    'content@': {
+                        templateProvider: ['$state', 'authService', function ($state, authService) {
+                            if (authService.authentication.isAuth) {
+                                authService.isAdmin().then(function (response) {
+                                    if (response) {
+                                        $state.go('admin');
+                                    }
+                                    else {
+                                        $state.go('bob');
+                                    }
+                                });
+                            }
+                        }]
+                    }
+                }
+            },
+            {
                 name: 'bob',
                 url: '/bob',
                 views: {
                     'content@': {
                         template: '<bob-app></bob-app>'
+                    }
+                }
+            },
+            {
+                name: 'admin',
+                url: '/admin',
+                views: {
+                    'content@': {
+                        template: '<admin></admin>'
                     }
                 }
             },
@@ -98,7 +127,7 @@
             }
         ];
 
-        $urlRouterProvider.otherwise('/bob');
+        $urlRouterProvider.otherwise('/');
         $urlRouterProvider.when('/bob', '/bob/planestudio');
         states.forEach(function (state) {
             $stateProvider.state(state);
@@ -106,17 +135,36 @@
     });
 
 
-    appModule.run(function ($rootScope, $state, authService) {
+    appModule.run(function ($rootScope, $state, authService, localStorageService) {
         $rootScope.$on('unauthorized', function (event) {
             event.preventDefault();
             $state.go('ingresar');
         });
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-            authService.fillAuthData();
+            var authData = localStorageService.get('authorizationData');
+            if (authData) {
+                authService.authentication.isAuth = true;
+                authService.authentication.username = authData.username;
+            }
             let loggedIn = authService.authentication.isAuth;
             if (toState.name !== 'ingresar' && toState.name !== 'registro' && toState.name !== 'cambiar' && !loggedIn) {
                 event.preventDefault();
                 $state.go('ingresar');
+            }
+
+            if (loggedIn) {
+                authService.isAdmin().then(function (response) {
+                    if (response) {
+                        event.preventDefault();
+                        $state.go('admin');
+                    }
+                    else {
+                        if (toState.name === 'admin') {
+                            event.preventDefault();
+                            $state.go('bob');
+                        }
+                    }
+                });
             }
         });
 
