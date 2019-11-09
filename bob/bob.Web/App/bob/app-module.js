@@ -24,8 +24,8 @@
                 }
             },
             {
-                name: 'registro',
-                url: '/registro',
+                name: 'registrar',
+                url: '/registrar',
                 views: {
                     'content@': {
                         template: '<register></register>'
@@ -147,7 +147,7 @@
                 authService.authentication.username = authData.username;
             }
             let loggedIn = authService.authentication.isAuth;
-            if (toState.name !== 'ingresar' && toState.name !== 'registro' && toState.name !== 'cambiar' && !loggedIn) {
+            if (toState.name !== 'ingresar' && toState.name !== 'registrar' && toState.name !== 'cambiar' && !loggedIn) {
                 event.preventDefault();
                 $state.go('ingresar');
             }
