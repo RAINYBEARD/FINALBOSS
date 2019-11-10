@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Web.Configuration;
 using System.Web.Http;
@@ -14,12 +15,14 @@ namespace bob.Controllers
     public class AuthenticationController : ApiController
     {
         private CaeceDBContext _ctx;
-        private string _token = WebConfigurationManager.AppSettings.Get("CaeceWSToken");
-        private CaeceWS.wbsTrans caeceWS = new CaeceWS.wbsTrans();
+        private string _token;
+        private CaeceWS.wbsTrans _caeceWS;
 
         public AuthenticationController()
         {
             _ctx = new CaeceDBContext();
+            _token = WebConfigurationManager.AppSettings.Get("CaeceWSToken");
+            _caeceWS = new CaeceWS.wbsTrans();
         }
 
         // POST api/Account/Validate
@@ -36,7 +39,7 @@ namespace bob.Controllers
             {
 
                 userModel.UserName = userModel.UserName.PadLeft(7, ' ');
-                var result = (bool)JObject.Parse(caeceWS.autenticacion(_token, userModel.UserName, userModel.Password))["autenticacion"][0]["esValido"];
+                var result = (bool)JObject.Parse(_caeceWS.autenticacion(_token, userModel.UserName, userModel.Password))["autenticacion"][0]["esValido"];
                 if (result)
                 {
                     return Ok(result);
@@ -117,6 +120,36 @@ namespace bob.Controllers
             return Ok(claimsIdentity.Claims.Any(x => x.Type == "role" && x.Value == "admin"));
         }
 
+        [Authorize]
+        [HttpGet]
+        [Route("get-alumnos")]
+        public IHttpActionResult GetUsuarios()
+        {
+            ClaimsIdentity claimsIdentity = User.Identity as ClaimsIdentity;
+            if (claimsIdentity.Claims.Any(x => x.Type == "role" && x.Value == "admin"))
+            {
+                var usuarios = _ctx.Alumnos.Where(x => !x.Matricula.Equals("0000000")).ToList();
+                return Ok(usuarios);
+            }
+            return Unauthorized();
+        }
+
+        [Authorize]
+        [HttpDelete]
+        [Route("borrar-alumno/{matricula}")]
+        public IHttpActionResult BorrarUsuario(string matricula)
+        {
+            ClaimsIdentity claimsIdentity = User.Identity as ClaimsIdentity;
+            if (claimsIdentity.Claims.Any(x => x.Type == "role" && x.Value == "admin"))
+            {
+                var usuario = _ctx.Alumnos.First(x => !x.Matricula.Equals("0000000") && x.Matricula.Equals(matricula));
+                _ctx.Alumnos.Remove(usuario);
+                _ctx.SaveChanges();
+                return Ok();
+            }
+            return Unauthorized();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -126,7 +159,6 @@ namespace bob.Controllers
 
             base.Dispose(disposing);
         }
-
 
     }
 

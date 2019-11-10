@@ -1,32 +1,31 @@
 ﻿<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<h4 class="row">Tú Plan de Estudio</h4>
+<h4 class="row">Plan de Estudio</h4>
 
 <div class="row">
     <div>{{vm.aprobadas}} Materias Aprobadas de {{vm.total}} Materias Totales </div>
 </div>
 
-<div class="row" style="overflow-x:auto;">
+<div class="row">
+    <button class="col-3" ng-click="vm.materiasaprobadas()"> Aprobadas</button>
+    <button class="col-3" ng-click="vm.materiascursadas()"> Cursadas</button>
+    <button class="col-3" ng-click="vm.materiasnocursadas()"> Sin Cursar</button>
+    <button class="col-3" ng-click="vm.materiaspendientes()"> Pendientes</button>
+</div>
 
-    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-        <button class="btn btn-caece2" ng-click="vm.materiasaprobadas()"> Aprobadas</button>
-        <button class="btn btn-caece2" ng-click="vm.materiascursadas()"> Cursadas</button>
-        <button class="btn btn-caece2" ng-click="vm.materiasnocursadas()"> Sin Cursar</button>
-        <button class="btn btn-caece2" ng-click="vm.materiaspendientes()"> Pendientes</button>
-    </div>
-
+<div class="row">
     <table class="table-caece">
-        <thead class="thead">
+        <thead>
             <tr>
                 <th>Año</th>
                 <th>Cuatrimestre</th>
                 <th>Materia</th>
-                <th>Estado de la Materia</th>
+                <th>Estado</th>
                 <th>Correlativas</th>
             </tr>
         </thead>
-        <tbody ng-repeat="materia in vm.materias | orderBy: 'mat_anio' | filter: vm.filtro">
-            <tr>
+        <tbody>
+            <tr style="width:100%;" ng-repeat="materia in vm.materias | orderBy: 'mat_anio' | filter: vm.filtro">
                 <td>{{materia.mat_anio}}</td>
                 <td>{{materia.mat_cuatrim}}</td>
                 <td>{{materia.mat_des}}</td>

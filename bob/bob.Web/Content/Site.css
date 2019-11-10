@@ -1,6 +1,7 @@
 ﻿body {
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
+    overflow-y:scroll;
 }
 
 #cantidaddias {
@@ -28,7 +29,7 @@
 
 h4 {
     text-align: left;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 
@@ -40,7 +41,7 @@ h4 {
     position: relative;
     height: 50px;
     text-align: center;
-    font-family:"PTSansRegular", Arial, Helvetica, sans-serif;
+    font-family: "PTSansRegular", Arial, Helvetica, sans-serif;
     font-weight: bold;
     font-size: 14px;
     cursor: pointer;
@@ -89,13 +90,13 @@ h4 {
     float: left;
 }
 
-.btn-info:hover {
-    background-color: #005c52
-}
+    .btn-info:hover {
+        background-color: #005c52
+    }
 
-.btn-info:focus {
-    background-color: #005c52
-}
+    .btn-info:focus {
+        background-color: #005c52
+    }
 
 a.dropdown-item:focus {
     background-color: #e5e5e5;
@@ -105,9 +106,10 @@ a.dropdown-item:focus {
 button#buttonGroupEstadisticas.btn.btn-info.dropdown-toggle {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
-button#buttonGroupEstadisticas.btn.btn-info.dropdown-toggle:focus {
-    background-color: #005c52
-}
+
+    button#buttonGroupEstadisticas.btn.btn-info.dropdown-toggle:focus {
+        background-color: #005c52
+    }
 
 .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {
     color: #fff;
@@ -115,45 +117,32 @@ button#buttonGroupEstadisticas.btn.btn-info.dropdown-toggle:focus {
     border-color: #bcbec0;
 }
 
-.table-caece table {
+.table-caece {
+    width: 100%;
     text-align: center;
-    position: fixed;
-    table-layout: fixed;
-    width: 200px;
-    height: 200px;
-    border-collapse: collapse;
-    padding: 10px;
+    table-layout: auto;
     border: 0;
+    overflow-y:hidden;
 }
 
-.table-caece th {
-    text-align: center;
-    background-color: #1AAB8A;
-    color: #fff;
-    font-size: 16px;
-    padding: 10px;
-    width: 200px;
-    height: 75px;
-    font-weight: bold;
-    border: 0;
-}
+    .table-caece th, td {
+        border: 1px solid black;
+        width: 100px;
+    }
 
-.table-caece td {
-    padding: 10px;
-    text-align: center;
-}
-.table-caece ul {
-    text-align:left;
-}
-.table-caece tbody:nth-child(even) {
-    background-color: #bae5db;
-    color: black;
-}
+    .table-caece ul {
+        text-align: left;
+    }
 
-.table-caece tbody:nth-child(odd) {
-    background-color: #30b395;
-    color: black;
-}
+    .table-caece tbody:nth-child(even) {
+        background-color: #bae5db;
+        color: black;
+    }
+
+    .table-caece tbody:nth-child(odd) {
+        background-color: #30b395;
+        color: black;
+    }
 
 .component-borders {
     border: 1px double black;
@@ -206,7 +195,7 @@ button#buttonGroupEstadisticas.btn.btn-info.dropdown-toggle:focus {
 .btn-user {
     background-color: Transparent;
     background-repeat: no-repeat;
-    color:white;
+    color: white;
     font-size: 25px;
     border: none;
     cursor: pointer;

@@ -1,9 +1,9 @@
 ﻿<div class="dropdown">
-    <button class="btn btn-secondary" href="#" ng-show="!vm.authenticated" type="button" >
-       Por Favor Ingresar
+    <button class="btn btn-secondary" href="#" ng-show="!vm.authenticated" type="button">
+        Por Favor Ingresar
     </button>
     <button class="btn btn-user dropdown-toggle" ng-show="vm.authenticated" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Hola {{vm.user}}
+        {{vm.user}}
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <div class="dropdown-item" style="cursor:pointer;" ng-click="vm.changepassword()">Cambiar Contraseña</div>

@@ -87,6 +87,26 @@
             return deferred.promise;
         };
 
+        var _getAlumnos = function () {
+            var deferred = $q.defer();
+            $http.get(authApi + "get-alumnos").then(function (response) {
+                deferred.resolve(response.data);
+            }, function () {
+                deferred.resolve(false);
+            });
+            return deferred.promise;
+        };
+
+        var _borrarAlumno = function (matricula) {
+            var deferred = $q.defer();
+            $http.delete(authApi + "borrar-alumno/" + matricula).then(function (response) {
+                deferred.resolve(response.data);
+            }, function () {
+                deferred.resolve(false);
+            });
+            return deferred.promise;
+        };
+
         //var _refreshToken = function () {
         //    var deferred = $q.defer();
 
@@ -123,6 +143,8 @@
         authServiceFactory.logout = _logout;
         authServiceFactory.fillAuthData = _fillAuthData;
         authServiceFactory.authentication = _authentication;
+        authServiceFactory.getAlumnos = _getAlumnos;
+        authServiceFactory.borrarAlumno = _borrarAlumno;
         //authServiceFactory.refreshToken = _refreshToken;
 
         return authServiceFactory;
