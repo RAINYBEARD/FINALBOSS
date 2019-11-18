@@ -1,9 +1,13 @@
 ﻿(function () {
     'use strict';
 
-    angular.module('bob').factory('authInterceptorService', function ($q, $rootScope, localStorageService) {
+    angular.module('bob').factory('authInterceptorService', authInterceptorService);
 
-    var authInterceptorServiceFactory = {};
+    authInterceptorService.$inject = ['$q', '$rootScope', 'localStorageService'];
+
+    function authInterceptorService($q, $rootScope, localStorageService) {
+
+        var authInterceptorServiceFactory = {};
 
         var _request = function (config) {
 
@@ -24,9 +28,10 @@
             return $q.reject(rejection);
         };
 
-    authInterceptorServiceFactory.request = _request;
-    authInterceptorServiceFactory.responseError = _responseError;
+        authInterceptorServiceFactory.request = _request;
+        authInterceptorServiceFactory.responseError = _responseError;
 
-    return authInterceptorServiceFactory;
-    });
+        return authInterceptorServiceFactory;
+    }
+
 })();

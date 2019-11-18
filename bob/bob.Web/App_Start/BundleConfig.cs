@@ -27,9 +27,8 @@ namespace bob
                         "~/Scripts/d3/d3.min.js"
                     ));
 
-            bundles.Add(new ScriptBundle("~/bundles/angular").Include(
+            bundles.Add(new Bundle("~/bundles/angular").Include(
                         "~/Scripts/angular.js",
-                        // "~/Scripts/angular-animate.js",
                         "~//Scripts/angular-local-storage.js",
                         "~/Scripts/angular-ui-router.js"
                     ));
@@ -37,7 +36,7 @@ namespace bob
                         "~/Content/bootstrap.css",
                         "~/Content/site.css"
                     ));
-            bundles.Add(new ScriptBundle("~/bundles/components").Include(
+            bundles.Add(new Bundle("~/bundles/components").Include(
                         "~/App/bob/app-module.js",
                         "~/App/bob/bob-app.component.js",
                         "~/App/bob/admin/admin.component.js",

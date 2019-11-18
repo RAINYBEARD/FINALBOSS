@@ -2,14 +2,18 @@
     'use strict';
     var appModule = angular.module('bob', ['ui.router', 'LocalStorageModule']);
 
-    appModule.value('base', 'http://localhost:52178/');
-    appModule.value('caeceApi', 'http://localhost:52178/api/v1/caece/');
-    appModule.value('authApi', 'http://localhost:52178/api/v1/auth/');
+    appModule.value('base', 'http://caeceprometeo.azurewebsites.net/');
+    appModule.value('caeceApi', 'http://caeceprometeo.azurewebsites.net/api/v1/caece/');
+    appModule.value('authApi', 'http://caeceprometeo.azurewebsites.net/api/v1/auth/');
 
     appModule.constant('ngAuthSettings', {
         clientId: 'bob'
     });
-    appModule.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
+    appModule.config(config);
+
+    config.$inject = ['$stateProvider', '$urlRouterProvider', '$httpProvider'];
+
+    function config($stateProvider, $urlRouterProvider, $httpProvider) {
 
         $httpProvider.interceptors.push('authInterceptorService');
 
@@ -132,8 +136,7 @@
         states.forEach(function (state) {
             $stateProvider.state(state);
         });
-    });
-
+    }
 
     appModule.run(function ($rootScope, $state, authService, localStorageService) {
         $rootScope.$on('unauthorized', function (event) {

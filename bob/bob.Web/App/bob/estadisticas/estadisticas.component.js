@@ -3,26 +3,30 @@
 
     angular.module('bob').component('estadisticas', {
         controllerAs: 'vm',
-        controller: function (caeceService, authService) {
-            var vm = this;
-            
-            vm.materias;
-            vm.aprobadas;
-            vm.noaprobadas;
-            vm.cursadas;
-            vm.nocursadas;
-
-            caeceService.getEstadisticas(authService.authentication.username).then(function (response) {
-                vm.materias = response;
-                vm.aprobadas = (vm.materias.aprobadas / vm.materias.total) * 100;
-                vm.noaprobadas = ((vm.materias.total - vm.materias.aprobadas) / vm.materias.total) * 100;
-                vm.cursadas = (vm.materias.cursadas / vm.materias.total) * 100;
-                vm.nocursadas = ((vm.materias.total - vm.materias.cursadas) / vm.materias.total) * 100;
-            });
-
-        },
+        controller: EstadisticasController,
         templateUrl: '/App/bob/estadisticas/estadisticas.component.html'
     });
+
+    EstadisticasController.$inject = ['caeceService', 'authService'];
+
+    function EstadisticasController(caeceService, authService) {
+        var vm = this;
+
+        vm.materias;
+        vm.aprobadas;
+        vm.noaprobadas;
+        vm.cursadas;
+        vm.nocursadas;
+
+        caeceService.getEstadisticas(authService.authentication.username).then(function (response) {
+            vm.materias = response;
+            vm.aprobadas = (vm.materias.aprobadas / vm.materias.total) * 100;
+            vm.noaprobadas = ((vm.materias.total - vm.materias.aprobadas) / vm.materias.total) * 100;
+            vm.cursadas = (vm.materias.cursadas / vm.materias.total) * 100;
+            vm.nocursadas = ((vm.materias.total - vm.materias.cursadas) / vm.materias.total) * 100;
+        });
+
+    }
 
     angular.module('bob').directive('d3Aprobadas', function () {
         var directive = {};
@@ -34,7 +38,7 @@
 
         directive.link = function (scope, elements, attr) {
             var svg = d3.select(elements[0])
-                .append("svg") 
+                .append("svg")
                 .style("background", "white")
                 .attr("id", "grafoAprobadas")
                 .attr("width", "950")
@@ -62,7 +66,7 @@
                 d3.select(this).attr("x", center[0]).attr("y", center[1])
                     .text(d.data.number);
             });
-            
+
             var path = svg.selectAll('path');
 
             var tooltip = d3.select(elements[0])
@@ -82,9 +86,9 @@
             });
 
 
-            path.on('mouseout', function () {                             
-                tooltip.style('display', 'none');                           
-            });  
+            path.on('mouseout', function () {
+                tooltip.style('display', 'none');
+            });
 
             var legends = svg.append("g").attr("transform", "translate(800,250)")
                 .selectAll(".legends").data(data);
@@ -113,7 +117,7 @@
         };
 
         directive.link = function (scope, elements, attr) {
-  
+
             var svg = d3.select(elements[0]).append("svg")
                 .style("background", "white")
                 .attr("width", "950")
@@ -129,7 +133,7 @@
             var segments = d3.arc()
                 .innerRadius(70)
                 .outerRadius(150)
-  
+
             var sections = svg.append("g").classed("pepe", true).attr("transform", "translate(425,180)")
                 .selectAll("path").data(data);
             sections.enter().append("path").attr("d", segments).attr("fill", function
@@ -162,7 +166,7 @@
 
             path.on('mouseout', function () {
                 tooltip.style('display', 'none');
-            });  
+            });
 
             var legends = svg.append("g").attr("transform", "translate(800,250)")
                 .selectAll(".legends").data(data);
