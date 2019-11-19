@@ -98,15 +98,10 @@
         function seleccionmateria(curso) {
             var idx = vm.materiasSeleccionadas.indexOf(curso);
             if (vm.materiasSeleccionadas.indexOf(curso) === -1) {
-                console.log('Pushing: ', curso.Materia_Id);
-                console.log('Contenido de variable idx : ', idx);
 
                 vm.materiasSeleccionadas.push(curso);
-                console.log(vm.materiasSeleccionadas);
             } else {
                 vm.materiasSeleccionadas.splice(idx, 1);
-                console.log('Contenido de variable idx : ', idx);
-                console.log(vm.materiasSeleccionadas);
             }
         }
 
@@ -115,7 +110,6 @@
     angular.module('bob').filter('cursosfiltermanual', function () {
         return function (cursos, filtro) {
             var out = [];
-            console.log('Materias Seleccionadas: ', cursos);
             angular.forEach(cursos, function (curso) {
                 var i = 0;
                 while (i < 7 && (((filtro.substr(i, 1) === '1' && curso.dia.substr(i, 1) === '1') ||

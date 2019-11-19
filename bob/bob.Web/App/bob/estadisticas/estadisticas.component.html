@@ -10,18 +10,20 @@
 
 <h4 class="row"> Cantidad de Materias Aprobadas por Año</h4>
 <div class="row">
-    <table align="center" class="table-caece">
-        <thead>
-            <tr>
-                <th>Año</th>
-                <th>Materias Aprobadas</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="materia in vm.materias.lista | orderBy: 'anio'">
-                <td>{{materia.anio}}</td>
-                <td>{{materia.aprobadas}}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table align="center" class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Año</th>
+                    <th>Materias Aprobadas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="materia in vm.materias.lista | orderBy: 'anio'">
+                    <td>{{materia.anio}}</td>
+                    <td>{{materia.aprobadas}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

@@ -7,38 +7,41 @@
 </div>
 
 <div class="row">
-    <button class="col-3" ng-click="vm.materiasaprobadas()"> Aprobadas</button>
-    <button class="col-3" ng-click="vm.materiascursadas()"> Cursadas</button>
-    <button class="col-3" ng-click="vm.materiasnocursadas()"> Sin Cursar</button>
-    <button class="col-3" ng-click="vm.materiaspendientes()"> Pendientes</button>
+        <button class="col-2" ng-click="vm.todas()">Todas</button>
+        <button class="col-2" ng-click="vm.materiasaprobadas()">Aprobadas</button>
+        <button class="col-2" ng-click="vm.materiascursadas()">Cursadas</button>
+        <button class="col-3" ng-click="vm.materiasnocursadas()">Sin Cursar</button>
+        <button class="col-3" ng-click="vm.materiaspendientes()">Pendientes</button>
 </div>
 
 <div class="row">
-    <table class="table-caece">
-        <thead>
-            <tr>
-                <th>Año</th>
-                <th>Cuatrimestre</th>
-                <th>Materia</th>
-                <th>Estado</th>
-                <th>Correlativas</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr style="width:100%;" ng-repeat="materia in vm.materias | orderBy: 'mat_anio' | filter: vm.filtro">
-                <td>{{materia.mat_anio}}</td>
-                <td>{{materia.mat_cuatrim}}</td>
-                <td>{{materia.mat_des}}</td>
-                <td>{{materia.estado}}</td>
+    <div class="table-responsive">
+        <table class="table table-sm table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Año</th>
+                    <th scope="col">Cuatrimestre</th>
+                    <th scope="col">Materia</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Correlativas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="width:100%;" ng-repeat="materia in vm.materias | orderBy: 'mat_anio' | filter: vm.filtro">
+                    <td>{{materia.mat_anio}}</td>
+                    <td>{{materia.mat_cuatrim}}</td>
+                    <td>{{materia.mat_des}}</td>
+                    <td>{{materia.estado}}</td>
 
-                <td>
-                    <ul>
-                        <li class="correlativas" ng-if="materia.correlativas.length != 0" ng-repeat="n in materia.correlativas">{{n.materia_des}}</li>
-                    </ul>
-                </td>
+                    <td>
+                        <ul>
+                            <li class="correlativas" ng-if="materia.correlativas.length != 0" ng-repeat="n in materia.correlativas">{{n.materia_des}}</li>
+                        </ul>
+                    </td>
 
-            </tr>
+                </tr>
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>

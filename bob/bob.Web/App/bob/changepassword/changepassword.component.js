@@ -39,7 +39,7 @@
                     vm.message = "Error al intentar validar el usuario: " + err.data.message;
                 });
         }
-        $('#msg').fadeOut(9500);
+        //$('#msg').fadeOut(9500);
 
         function changepassword() {
 
@@ -55,7 +55,7 @@
                     vm.message = "Error al intentar cambiar la contraseña: " + err.data.message;
                 });
         }
-        $('#msg2').fadeOut(10000);
+        //$('#msg2').fadeOut(10000);
     }
 
 })();

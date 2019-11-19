@@ -16,6 +16,7 @@
         vm.total;
         vm.aprobadas;
 
+        vm.todas = todas;
         vm.materiasaprobadas = materiasaprobadas;
         vm.materiascursadas = materiascursadas;
         vm.materiasnocursadas = materiasnocursadas;
@@ -29,6 +30,10 @@
             vm.aprobadas = vm.tabla.aprobadas;
 
         });
+
+        function todas() {
+            vm.filtro = '';
+        }
 
         function materiasaprobadas() {
             vm.filtro = 'Aprobada';

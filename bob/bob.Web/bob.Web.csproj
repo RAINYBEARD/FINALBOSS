@@ -215,6 +215,7 @@
     <Content Include="App\bob\admin\admin.component.html" />
     <Content Include="App\bob\admin\admin.component.js" />
     <Content Include="App\bob\app-module.js" />
+    <Content Include="App\bob\cursos\cursos.component.css" />
     <Content Include="App\bob\planestudio\planestudio.component.js" />
     <Content Include="App\bob\planestudio\planestudio.component.html" />
     <Content Include="App\bob\bob-app.component.js" />

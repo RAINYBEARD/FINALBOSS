@@ -8,7 +8,7 @@
         templateUrl: '/App/bob/register/register.component.html'
     });
 
-    register.$inject = ['$state', 'authService','caeceService']
+    register.$inject = ['$state', 'authService', 'caeceService'];
 
     function register($state, authService, caeceService) {
         var vm = this;
@@ -40,7 +40,7 @@
                     vm.message = "Error al intentar validar el usuario: " + err.data.message;
                 });
         }
-        $('#msg').fadeOut(9500);
+        //$('#msg').fadeOut(9500);
 
         function register() {
 
@@ -57,7 +57,7 @@
                     vm.message = "Error al intentar registrar el usuario: " + err.data.message;
                 });
         }
-        $('#msg2').fadeOut(15000);
+        //$('#msg2').fadeOut(15000);
     }
 
 })();

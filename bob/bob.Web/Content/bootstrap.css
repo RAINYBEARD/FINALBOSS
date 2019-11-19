@@ -1560,7 +1560,7 @@ pre code {
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: rgba(0, 0, 0, 0.05);
+    background-color: #FFFCF3;
 }
 
 .table-hover tbody tr:hover {
@@ -1760,9 +1760,9 @@ pre code {
 }
 
 .table .thead-dark th {
-  color: #fff;
-  background-color: #343a40;
-  border-color: #454d55;
+    color: #fff;
+    background-color: #007367;
+    border-color: #454d55;
 }
 
 .table .thead-light th {

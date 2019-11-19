@@ -1,8 +1,8 @@
 ﻿<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <div>
-    <div ng-if="vm.pendientes.length != 0">
-        <table id="pendientes" class="table-striped table-bordered thead-dark table-caece">
-            <thead class="thead">
+    <div class="table-responsive" ng-if="vm.pendientes.length != 0">
+        <table id="pendientes" class="table table-bordered table-striped">
+            <thead class="thead-dark">
                 <tr>
                     <th scope="col">Materias Pendientes</th>
                 </tr>
@@ -14,13 +14,13 @@
             </tbody>
         </table>
     </div>
-    <div ng-if="vm.pendientes.length == 0">
-        Sin Materias Pendientes
+    <div ng-if="vm.pendientes.length == 0 && vm.porvencerse.length != 0">
+        <h3>No tiene Materias Pendientes</h3>
     </div>
 
-    <div ng-if="vm.porvencerse.length != 0">
-        <table id="porvencerse" class="table-bordered table-striped thead-dark table-caece">
-            <thead>
+    <div class="table-responsive" ng-if="vm.porvencerse.length != 0">
+        <table id="porvencerse" class="table table-bordered table-striped">
+            <thead class="thead-dark">
                 <tr>
                     <th>Materias por Vencerse en proximo Cuatrimestre</th>
                 </tr>
@@ -32,7 +32,10 @@
             </tbody>
         </table>
     </div>
-    <div ng-if="vm.porvencerse.length == 0">
-        Sin Materias Por Vencerse
+    <div ng-if="vm.porvencerse.length == 0 && vm.pendientes.length != 0">
+        <h3>No tiene Materias Por Vencerse</h3>
+    </div>
+    <div ng-if="vm.porvencerse.length == 0 && vm.pendientes.length == 0">
+        <h3>Felicidades! No tiene materias pendientes o proximas a vencerse</h3>
     </div>
 </div>

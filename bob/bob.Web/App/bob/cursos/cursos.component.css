@@ -1,0 +1,14 @@
+﻿input[type=checkbox] {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+}
+
+label {
+    cursor: pointer;
+}
+
+label:hover {
+    color: blue; 
+    cursor: pointer;
+}
