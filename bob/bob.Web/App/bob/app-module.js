@@ -57,7 +57,7 @@
                                         $state.go('admin');
                                     }
                                     else {
-                                        $state.go('bob');
+                                        $state.go('bob.pendientes');
                                     }
                                 });
                             }
@@ -107,6 +107,15 @@
                 views: {
                     'bob@bob': {
                         template: '<estadisticas></estadisticas>'
+                    }
+                }
+            },
+            {
+                name: 'bob.pendientes',
+                url: '/pendientes',
+                views: {
+                    'bob@bob': {
+                        template: '<pendientes></pendientes>'
                     }
                 }
             },

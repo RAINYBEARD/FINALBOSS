@@ -14,6 +14,9 @@
             </tbody>
         </table>
     </div>
+    <div ng-if="vm.pendientes.length == 0">
+        Sin Materias Pendientes
+    </div>
 
     <div ng-if="vm.porvencerse.length != 0">
         <table id="porvencerse" class="table-bordered table-striped thead-dark table-caece">
@@ -28,5 +31,8 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div ng-if="vm.porvencerse.length == 0">
+        Sin Materias Por Vencerse
     </div>
 </div>
