@@ -40,6 +40,7 @@
                     vm.message = "La registracion del usuario ha fallado: " + err.data.message;
                 });
         }
+        $('#msg').fadeOut(9500);
 
         function register() {
 
@@ -56,6 +57,7 @@
                     vm.message = "La registracion del usuario ha fallado: " + err.data.message;
                 });
         }
+        $('#msg2').fadeOut(15000);
     }
 
 })();

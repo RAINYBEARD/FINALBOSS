@@ -36,9 +36,10 @@
                 vm.changePasswordModel.username = vm.validationModel.username;
             },
                 function (err) {
-                    vm.message = "La registracion del usuario ha fallado: " + err.data.message;
+                    vm.message = "La registracion del usuario ha fallado: " + err.data.message;                       
                 });
         }
+        $('#msg').fadeOut(9500);
 
         function changepassword() {
 
@@ -51,9 +52,10 @@
                 }, 5000);
             },
                 function (err) {
-                    vm.message = "El cambio de contraseña ha fallado: " + err.data.message;
+                    vm.message = "El cambio de contraseña ha fallado: " + err.data.message; 
                 });
         }
+        $('#msg2').fadeOut(10000);
     }
 
 })();
