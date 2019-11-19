@@ -3,11 +3,12 @@
 
     angular.module('bob').component('cursos', {
         controllerAs: 'vm',
-        controller: function () {
-
-        },
-
+        controller: CursosController,
         templateUrl: '/App/bob/cursos/cursos.component.html'
     });
+
+    function CursosController() {
+
+    }
 
 })();

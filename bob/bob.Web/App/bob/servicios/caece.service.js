@@ -1,7 +1,11 @@
 ﻿(function () {
     'use strict';
 
-    angular.module('bob').factory('caeceService', function (caeceApi, $http) {
+    angular.module('bob').factory('caeceService', caeceService);
+
+    caeceService.$inject = ['caeceApi', '$http'];
+
+    function caeceService(caeceApi, $http) {
 
         var self = this;
 
@@ -62,5 +66,5 @@
         };
 
         return this;
-    });
+    }
 })();

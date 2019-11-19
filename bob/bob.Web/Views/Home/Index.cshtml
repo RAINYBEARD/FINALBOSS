@@ -2,12 +2,8 @@
     <link rel="stylesheet" type="text/css" href="/App/bob/finales/finales.component.css">
 }
 
-@section jsCode {
-    angular.bootstrap(document.getElementById("bob"), ['bob']);
-}
-
 <div ng-non-bindable class="container-fluid">
-    <div id="bob" class="section-container">
+    <div ng-app="bob" id="bob" class="section-container">
         <div class="body-content" ng-cloak>
             <div ui-view="content"></div>
         </div>

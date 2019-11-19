@@ -3,34 +3,37 @@
 
     angular.module('bob').component('cursosAuto', {
         controllerAs: 'vm',
-        controller: function (caeceService, authService) {
-            var vm = this;
-            vm.cursos;
-
-            vm.checkboxModel = {
-                lun: '1',
-                mar: '1',
-                mie: '1',
-                jue: '1',
-                vie: '1',
-                sab: '1'
-            };
-
-            vm.filtroCantDias = {
-                valor: 6
-            };
-
-            vm.filtro = vm.checkboxModel.lun + vm.checkboxModel.mar + vm.checkboxModel.mie + vm.checkboxModel.jue + vm.checkboxModel.vie + vm.checkboxModel.sab + '0';
-
-            caeceService.getCursos(authService.authentication.username).then(function (response) {
-                vm.cursos = response;
-            });
-
-
-        },
-
+        controller: CursosAutoController,
         templateUrl: '/App/bob/cursos/cursos-auto.component.html'
-    })
+    });
+
+    CursosAutoController.$inject = ['caeceService', 'authService'];
+
+    function CursosAutoController(caeceService, authService) {
+        var vm = this;
+        vm.cursos;
+
+        vm.checkboxModel = {
+            lun: '1',
+            mar: '1',
+            mie: '1',
+            jue: '1',
+            vie: '1',
+            sab: '1'
+        };
+
+        vm.filtroCantDias = {
+            valor: 6
+        };
+
+        vm.filtro = vm.checkboxModel.lun + vm.checkboxModel.mar + vm.checkboxModel.mie + vm.checkboxModel.jue + vm.checkboxModel.vie + vm.checkboxModel.sab + '0';
+
+        caeceService.getCursos(authService.authentication.username).then(function (response) {
+            vm.cursos = response;
+        });
+
+
+    }
 
     angular.module('bob').filter('cursosfilterauto', function () {
         return function (cursos, filtro, filtroCantDias) {

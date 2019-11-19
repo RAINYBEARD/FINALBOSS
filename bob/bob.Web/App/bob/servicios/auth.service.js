@@ -1,7 +1,11 @@
 ﻿(function () {
     'use strict';
 
-    angular.module('bob').factory('authService', function ($http, $q, localStorageService, base, authApi, ngAuthSettings) {
+    angular.module('bob').factory('authService', authService);
+
+    authService.$inject = ['$http', '$q', 'localStorageService', 'base', 'authApi'];
+
+    function authService($http, $q, localStorageService, base, authApi) {
 
         var authServiceFactory = {};
 
@@ -38,8 +42,6 @@
         var _login = function (loginData) {
 
             var data = "grant_type=password&username=" + loginData.username + "&password=" + loginData.password;
-
-            //data = data + "&client_id=" + ngAuthSettings.clientId;
 
             var deferred = $q.defer();
 
@@ -107,34 +109,6 @@
             return deferred.promise;
         };
 
-        //var _refreshToken = function () {
-        //    var deferred = $q.defer();
-
-        //    var authData = localStorageService.get('authorizationData');
-
-        //    if (authData) {
-
-
-        //        var data = "grant_type=refresh_token&refresh_token=" + authData.refreshToken + "&client_id=" + ngAuthSettings.clientId;
-
-        //        localStorageService.remove('authorizationData');
-
-        //        $http.post(serviceBase + 'token', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function (response) {
-
-        //            localStorageService.set('authorizationData', { token: response.access_token, username: response.username, refreshToken: response.refresh_token});
-
-        //            deferred.resolve(response);
-
-        //        }).error(function (err, status) {
-        //            _logOut();
-        //            deferred.reject(err);
-        //        });
-
-        //    }
-
-        //    return deferred.promise;
-        //};
-
         authServiceFactory.register = _register;
         authServiceFactory.isAdmin = _isAdmin;
         authServiceFactory.changepassword = _changepassword;
@@ -145,8 +119,7 @@
         authServiceFactory.authentication = _authentication;
         authServiceFactory.getAlumnos = _getAlumnos;
         authServiceFactory.borrarAlumno = _borrarAlumno;
-        //authServiceFactory.refreshToken = _refreshToken;
 
         return authServiceFactory;
-    });
+    }
 })();

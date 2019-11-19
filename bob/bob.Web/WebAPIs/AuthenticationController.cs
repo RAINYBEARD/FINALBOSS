@@ -33,7 +33,7 @@ namespace bob.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("La Matricula o Contraseña es incorrecta");
+                return BadRequest("Matricula o contraseña incorrectos. Recuerde que la matricula debe tener al menos 6 caracteres y la contraseña debe tener al menos 6 caracteres.");
             }
             if (WebConfigurationManager.AppSettings.Get("Validacion") == "true")
             {
@@ -46,7 +46,7 @@ namespace bob.Controllers
                 }
                 else
                 {
-                    return BadRequest("La Validacion ha fallado");
+                    return BadRequest("La validación ha fallado. Por favor revise su matricula y contraseña.");
                 }
             }
             else
@@ -63,7 +63,7 @@ namespace bob.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest("Matricula o contraseña incorrectos. Recuerde que la matricula debe tener al menos 6 caracteres y la contraseña debe tener al menos 6 caracteres.");
             }
 
             userModel.UserName = userModel.UserName.PadLeft(7, ' ');
@@ -71,7 +71,7 @@ namespace bob.Controllers
 
             if (aux != null)
             {
-                return BadRequest("El usuario ya existe");
+                return BadRequest("La matricula ingresada ya existe.");
             }
 
             var alumno = new Alumno();
@@ -91,7 +91,7 @@ namespace bob.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest("Matricula o contraseña incorrectos. Recuerde que la matricula debe tener al menos 6 caracteres y la contraseña debe tener al menos 6 caracteres.");
             }
 
             userModel.UserName = userModel.UserName.PadLeft(7, ' ');
@@ -100,7 +100,7 @@ namespace bob.Controllers
 
             if (alumno == null)
             {
-                return BadRequest("El usuario no existe");
+                return BadRequest("La matricula ingresada no existe.");
             }
 
             alumno.Matricula = userModel.UserName;
