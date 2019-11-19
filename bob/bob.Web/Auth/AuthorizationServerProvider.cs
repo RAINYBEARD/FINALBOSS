@@ -37,7 +37,7 @@ namespace bob.Auth
 
                         if (user == null)
                         {
-                            context.SetError("invalid_grant", "Matricula o contraseña incorrecta.");
+                            context.SetError("invalid_grant", "Matricula o contraseña incorrectos.");
                             return;
                         }
 
@@ -45,12 +45,12 @@ namespace bob.Auth
 
                         if (!validPass)
                         {
-                            context.SetError("invalid_grant", "Matricula o contraseña incorrecta.");
+                            context.SetError("invalid_grant", "Matricula o contraseña incorrectos.");
                             return;
                         }
                     }
                     else {
-                        context.SetError("invalid_grant", "Matricula o contraseña incorrecta.");
+                        context.SetError("invalid_grant", "Matricula o contraseña incorrectos.");
                         return;
                     }
                 }
