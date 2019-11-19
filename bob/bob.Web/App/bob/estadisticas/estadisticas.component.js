@@ -51,10 +51,10 @@
 
 
             var data = d3.pie().sort(null).value(function (d) { return d.number; })(details);
-            console.log(data);
+
             var segments = d3.arc()
                 .innerRadius(70)
-                .outerRadius(150)
+                .outerRadius(150);
 
             var sections = svg.append("g").attr("transform", "translate(425,180)")
                 .selectAll("path").data(data);
@@ -103,7 +103,7 @@
                 .attr("x", 10)
                 .attr("y", 10);
 
-        }
+        };
 
         return directive;
     });
@@ -129,10 +129,10 @@
             }, { grade: "No Cursado", number: scope.nocursadas.toFixed(2) }];
 
             var data = d3.pie().sort(null).value(function (d) { return d.number; })(details);
-            console.log(data);
+
             var segments = d3.arc()
                 .innerRadius(70)
-                .outerRadius(150)
+                .outerRadius(150);
 
             var sections = svg.append("g").classed("pepe", true).attr("transform", "translate(425,180)")
                 .selectAll("path").data(data);
@@ -180,7 +180,7 @@
                 .attr("fill", function (d) { return colors(d.data.number); })
                 .attr("x", 10)
                 .attr("y", 10);
-        }
+        };
 
         return directive;
     });

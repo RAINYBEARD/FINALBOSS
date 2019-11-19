@@ -10,7 +10,7 @@ namespace bob.Controllers
         public string UserName { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "El {0} debe tener al menos {2} caracteres de largo.", MinimumLength = 7)]
+        [StringLength(20, ErrorMessage = "El {0} debe tener al menos {2} caracteres de largo.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }

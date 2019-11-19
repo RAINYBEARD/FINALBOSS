@@ -9,14 +9,14 @@ namespace bob.Data.Usuario
         public string UserName { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "El {0} debe tener al menos {2} caracteres de largo.", MinimumLength = 6)]
+        [StringLength(50, ErrorMessage = "El {0} debe tener al menos {2} caracteres de largo.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "CaecePassword")]
         public string CaecePassword { get; set; }
 
 
         [Required]
-        [StringLength(100, ErrorMessage = "El {0} debe tener al menos {2} caracteres de largo.", MinimumLength = 6)]
+        [StringLength(20, ErrorMessage = "El {0} debe tener al menos {2} caracteres de largo.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password{ get; set; }
@@ -24,7 +24,7 @@ namespace bob.Data.Usuario
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Confirmar Password")]
-        [Compare("Password", ErrorMessage = "El password y el password de confirmacion no son iguales" )]
+        [Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmacion deben ser iguales")]
         public string ConfirmPassword{ get; set; }
     }
 }
