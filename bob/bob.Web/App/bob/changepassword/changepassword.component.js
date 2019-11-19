@@ -36,7 +36,7 @@
                 vm.changePasswordModel.username = vm.validationModel.username;
             },
                 function (err) {
-                    vm.message = "La registracion del usuario ha fallado: " + err.data.message;
+                    vm.message = "Error al intentar validar el usuario: " + err.data.message;
                 });
         }
 
@@ -44,14 +44,14 @@
 
             authService.changepassword(vm.changePasswordModel).then(function (response) {
                 vm.savedSuccessfully = true;
-                vm.message = "El usuario ha cambiado su contraseña satisfactoriamente y sera redirigido";
+                vm.message = "El usuario ha cambiado su contraseña satisfactoriamente. Aguarde mientras es redirigido.";
                 var timer = $timeout(function () {
                     $timeout.cancel(timer);
                     $location.path('/ingresar');
                 }, 5000);
             },
                 function (err) {
-                    vm.message = "El cambio de contraseña ha fallado: " + err.data.message;
+                    vm.message = "Error al intentar cambiar la contraseña: " + err.data.message;
                 });
         }
     }

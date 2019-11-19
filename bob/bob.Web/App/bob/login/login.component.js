@@ -30,7 +30,7 @@
 
             },
                 function (err) {
-                    vm.message = err.data.error_description;
+                    vm.message = "Error al intentar ingresar:" + err.data.error_description;
                 });
 
         }

@@ -46,7 +46,7 @@ namespace bob.Controllers
                 }
                 else
                 {
-                    return BadRequest("La validación ha fallado. Por favor revise su matricula y contraseña.");
+                    return BadRequest("La validación ha fallado. Por favor revise su matricula y contraseña e intentelo nuevamente.");
                 }
             }
             else
