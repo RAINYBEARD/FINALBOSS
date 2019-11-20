@@ -1,7 +1,7 @@
 ﻿body {
     margin: 0;
     padding: 0;
-    overflow-y:scroll;
+    overflow-y: scroll;
 }
 
 #cantidaddias {
@@ -12,6 +12,10 @@
     background-color: #007367;
     color: #ffffff;
 }
+
+    .barra-titulo img {
+        padding: 10px;
+    }
 
 .active {
     background-color: #4CAF50;
@@ -122,7 +126,7 @@ button#buttonGroupEstadisticas.btn.btn-info.dropdown-toggle {
     text-align: center;
     table-layout: auto;
     border: 0;
-    overflow-y:hidden;
+    overflow-y: hidden;
 }
 
     .table-caece th, td {
@@ -196,7 +200,7 @@ button#buttonGroupEstadisticas.btn.btn-info.dropdown-toggle {
     background-color: Transparent;
     background-repeat: no-repeat;
     color: white;
-    font-size: 25px;
+    font-size: 21px;
     border: none;
     cursor: pointer;
     overflow: hidden;

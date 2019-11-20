@@ -1,34 +1,39 @@
 ﻿<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <div class="container">
     <div class="row">
-        <div class="col-md-10 barra-titulo"><img src="http://www.ucaece.edu.ar/wp-content/uploads/2017/02/logo2017_blanco.png" alt="CAECE" width="200" height="80" /></div>
-        <div class="col-md-2 barra-titulo"><userstatus></userstatus></div>
+        <div class="col-md-9 barra-titulo"><img src="http://www.ucaece.edu.ar/wp-content/uploads/2017/02/logo2017_blanco.png" alt="CAECE" width="200" height="80" /></div>
+        <div class="col-md-3 barra-titulo"><userstatus></userstatus></div>
+    </div>
+    <div class="row">
+        <h1>Administrador</h1>
     </div>
 
     <div class="row">
-        <h1>Listado Maestro de Alumnos</h1>
+        <h2>Listado Maestro de Alumnos</h2>
     </div>
 
     <div class="row">
-        <table class="table table-borderless">
-            <thead>
-                <tr>
-                    <th>Matricula</th>
-                    <th>Plan</th>
-                    <th>Titulo</th>
-                    <th>Abreviacion del Titulo</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="alumno in vm.alumnos| orderBy: 'matricula'">
-                    <td>{{alumno.matricula}}</td>
-                    <td>{{alumno.plan_Tit}}</td>
-                    <td>{{alumno.titulo_Id}}</td>
-                    <td>{{alumno.abr_Titulo}}</td>
-                    <td><input type="button" ng-click="vm.borrarAlumno(alumno.matricula)" value="Borrar"></td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Matricula</th>
+                        <th>Plan</th>
+                        <th>Titulo</th>
+                        <th>Abreviacion del Titulo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="alumno in vm.alumnos| orderBy: 'matricula'">
+                        <td>{{alumno.matricula}}</td>
+                        <td>{{alumno.plan_Tit}}</td>
+                        <td>{{alumno.titulo_Id}}</td>
+                        <td>{{alumno.abr_Titulo}}</td>
+                        <td><input type="button" ng-click="vm.borrarAlumno(alumno.matricula)" value="Borrar"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
