@@ -11,10 +11,14 @@
 
     function AdminController(authService) {
         var vm = this;
-
+        vm.matricula = '';
         authService.getAlumnos().then(function (response) {
             vm.alumnos = response;
         });
+
+        vm.modalBorrar = function (matricula) {
+            vm.matricula = matricula;
+        };
 
         vm.borrarAlumno = function (matricula) {
             authService.borrarAlumno(matricula).then(function () {

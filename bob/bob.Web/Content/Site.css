@@ -167,3 +167,8 @@ button#buttonGroupEstadisticas.btn.btn-info.dropdown-toggle {
     overflow: hidden;
     outline: none;
 }
+
+.modal-content .modal-header {
+    background-color: #007367;
+    color:#fff;
+}

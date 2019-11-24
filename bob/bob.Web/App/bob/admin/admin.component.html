@@ -32,10 +32,31 @@
                         <td>{{alumno.plan_Tit}}</td>
                         <td>{{alumno.titulo_Id}}</td>
                         <td>{{alumno.abr_Titulo}}</td>
-                        <td><input type="button" ng-click="vm.borrarAlumno(alumno.matricula)" value="Borrar"></td>
+                        <td>
+                            <input type="button" data-toggle="modal" data-target="#borrarModal" data-ng-click="vm.modalBorrar(alumno.matricula)" value="Borrar">
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal" id="borrarModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Borrar</h5>
+                </div>
+                <div class="modal-body">
+                    <span>Usted está seguro de que quiere borrar el usuario: {{vm.matricula}}</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal">Cancelar</button>
+                    <button ng-click="vm.borrarAlumno(vm.matricula)" type="button" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
