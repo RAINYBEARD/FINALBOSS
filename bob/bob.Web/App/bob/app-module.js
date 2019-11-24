@@ -2,9 +2,9 @@
     'use strict';
     var appModule = angular.module('bob', ['ui.router', 'LocalStorageModule']);
 
-    appModule.value('base', 'http://caeceprometeo.azurewebsites.net/');
-    appModule.value('caeceApi', 'http://caeceprometeo.azurewebsites.net/api/v1/caece/');
-    appModule.value('authApi', 'http://caeceprometeo.azurewebsites.net/api/v1/auth/');
+    appModule.value('base', 'https://caeceprometeo.azurewebsites.net/');
+    appModule.value('caeceApi', 'https://caeceprometeo.azurewebsites.net/api/v1/caece/');
+    appModule.value('authApi', 'https://caeceprometeo.azurewebsites.net/api/v1/auth/');
 
     appModule.constant('ngAuthSettings', {
         clientId: 'bob'

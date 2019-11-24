@@ -5,6 +5,7 @@ namespace bob.Data.Usuario
     public class Register
     {
         [Required]
+        [StringLength(7, ErrorMessage = "El {0} debe tener al menos {2} caracteres de largo.", MinimumLength = 6)]
         [Display(Name = "Matricula")]
         public string UserName { get; set; }
 
