@@ -13,9 +13,8 @@
     color: #ffffff;
 }
 
-.active {
-    background-color: #4CAF50;
-    color: white;
+.table .thead-dark th.active {
+    color: orange;
 }
 
 .barra-opciones-j1 {
@@ -31,7 +30,6 @@ h4 {
     text-align: left;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
-
 
 .btn-caece {
     background: #54625b;
@@ -73,9 +71,6 @@ h4 {
     background-color: #545B62;
 }
 
-.btn-caece:active {
-}
-
 .btn-info {
     background-color: black;
     border: none;
@@ -87,7 +82,6 @@ h4 {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-weight: bold;
     font-size: 16px;
-    float: left;
 }
 
     .btn-info:hover {
@@ -111,38 +105,9 @@ button#buttonGroupEstadisticas.btn.btn-info.dropdown-toggle {
         background-color: #005c52
     }
 
-.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {
-    color: #fff;
-    background-color: #7d8985;
-    border-color: #bcbec0;
+.table label {
+    margin: 0px;
 }
-
-.table-caece {
-    width: 100%;
-    text-align: center;
-    table-layout: auto;
-    border: 0;
-    overflow-y: hidden;
-}
-
-    .table-caece th, td {
-        border: 1px solid black;
-        width: 100px;
-    }
-
-    .table-caece ul {
-        text-align: left;
-    }
-
-    .table-caece tbody:nth-child(even) {
-        background-color: #bae5db;
-        color: black;
-    }
-
-    .table-caece tbody:nth-child(odd) {
-        background-color: #30b395;
-        color: black;
-    }
 
 .component-borders {
     border: 1px double black;

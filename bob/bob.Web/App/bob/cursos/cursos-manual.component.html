@@ -6,18 +6,23 @@
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th align="left" scope="col">Materia</th>
-                    <th align="center" scope="col"><label align="center" for="t1"><input id="t1" type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.lun" ng-click="vm.deseleccionaritems('0')">Lunes</label></th>
-                    <th align="center" scope="col"><label align="center" for="t2"><input id="t2" type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.mar" ng-click="vm.deseleccionaritems('1')">Martes</label></th>
-                    <th align="center" scope="col"><label align="center" for="t3"><input id="t3" type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.mie" ng-click="vm.deseleccionaritems('2')">Miercoles</label></th>
-                    <th align="center" scope="col"><label align="center" for="t4"><input id="t4" type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.jue" ng-click="vm.deseleccionaritems('3')">Jueves</label></th>
-                    <th align="center" scope="col"><label align="center" for="t5"><input id="t5" type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.vie" ng-click="vm.deseleccionaritems('4')">Viernes</label></th>
-                    <th align="center" scope="col"><label align="center" for="t6"><input id="t6" type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.sab" ng-click="vm.deseleccionaritems('5')">Sabado</label></th>
+                    <th align="left" scope="col"><label>Materia</label></th>
+                    <th ng-class="{active: vm.checkboxModel.lun == '0'}" align="center" scope="col"><label align="center" for="t1"><input id="t1" type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.lun" ng-click="vm.deseleccionaritems('0')">Lunes</label></th>
+                    <th ng-class="{active: vm.checkboxModel.mar == '0'}" align="center" scope="col"><label align="center" for="t2"><input id="t2" type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.mar" ng-click="vm.deseleccionaritems('1')">Martes</label></th>
+                    <th ng-class="{active: vm.checkboxModel.mie == '0'}" align="center" scope="col"><label align="center" for="t3"><input id="t3" type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.mie" ng-click="vm.deseleccionaritems('2')">Miercoles</label></th>
+                    <th ng-class="{active: vm.checkboxModel.jue == '0'}" align="center" scope="col"><label align="center" for="t4"><input id="t4" type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.jue" ng-click="vm.deseleccionaritems('3')">Jueves</label></th>
+                    <th ng-class="{active: vm.checkboxModel.vie == '0'}" align="center" scope="col"><label align="center" for="t5"><input id="t5" type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.vie" ng-click="vm.deseleccionaritems('4')">Viernes</label></th>
+                    <th ng-class="{active: vm.checkboxModel.sab == '0'}" align="center" scope="col"><label align="center" for="t6"><input id="t6" type="checkbox" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.sab" ng-click="vm.deseleccionaritems('5')">Sabado</label></th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="curso in vm.cursos | orderBy:'-dia' | cursosfiltermanual:vm.checkboxModel.lun+vm.checkboxModel.mar+vm.checkboxModel.mie+vm.checkboxModel.jue+vm.checkboxModel.vie+vm.checkboxModel.sab+vm.checkboxModel.dom" ng-class="{'custom_class_materia_desactivada':vm.mismoDia == true}">
-                    <th ng-disabled="vm.mismoDia" align="left" scope="row"><label for="{{curso.materia_Id}}"><input id="{{curso.materia_Id}}" type="checkbox" ng-disabled="vm.trabarMateria(curso)" ng-checked="vm.materiasSeleccionadas.indexOf(curso.Materia_Id) > -1" ng-click="vm.seleccionmateria(curso)" />{{curso.abr}}</label></th>
+                    <th ng-disabled="vm.mismoDia" align="left" scope="row">
+                        <label for="{{curso.materia_Id}}">
+                            <input id="{{curso.materia_Id}}" type="checkbox" ng-disabled="vm.trabarMateria(curso)" ng-checked="vm.materiasSeleccionadas.indexOf(curso.Materia_Id) > -1" ng-click="vm.seleccionmateria(curso)" />
+                            {{curso.abr}}
+                        </label>
+                    </th>
 
                     <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(0,1) == '1'">X</td>
                     <td ng-disabled="vm.mismoDia" align="center" ng-if="curso.dia.substr(0,1) == '2'">D</td>

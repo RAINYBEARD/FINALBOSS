@@ -7,13 +7,13 @@
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th align="left" scope="col">Materia</th>
-                    <th align="center" scope="col"><label for="t1"><input type="checkbox" id="t1" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.lun">Lunes</label></th>
-                    <th align="center" scope="col"><label for="t2"><input type="checkbox" id="t2" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.mar">Martes</label></th>
-                    <th align="center" scope="col"><label for="t3"><input type="checkbox" id="t3" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.mie">Miercoles</label></th>
-                    <th align="center" scope="col"><label for="t4"><input type="checkbox" id="t4" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.jue">Jueves</label></th>
-                    <th align="center" scope="col"><label for="t5"><input type="checkbox" id="t5" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.vie">Viernes</label></th>
-                    <th align="center" scope="col"><label for="t6"><input type="checkbox" id="t6" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.sab">Sabado</label></th>
+                    <th align="left" scope="col"><label>Materia</label></th>
+                    <th ng-class="{active: vm.checkboxModel.lun == '0'}" align="center" scope="col"><label for="t1"><input type="checkbox" id="t1" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.lun">Lunes</label></th>
+                    <th ng-class="{active: vm.checkboxModel.mar == '0'}" align="center" scope="col"><label for="t2"><input type="checkbox" id="t2" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.mar">Martes</label></th>
+                    <th ng-class="{active: vm.checkboxModel.mie == '0'}" align="center" scope="col"><label for="t3"><input type="checkbox" id="t3" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.mie">Miercoles</label></th>
+                    <th ng-class="{active: vm.checkboxModel.jue == '0'}" align="center" scope="col"><label for="t4"><input type="checkbox" id="t4" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.jue">Jueves</label></th>
+                    <th ng-class="{active: vm.checkboxModel.vie == '0'}" align="center" scope="col"><label for="t5"><input type="checkbox" id="t5" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.vie">Viernes</label></th>
+                    <th ng-class="{active: vm.checkboxModel.sab == '0'}" align="center" scope="col"><label for="t6"><input type="checkbox" id="t6" ng-true-value="'1'" ng-false-value="'0'" ng-model="vm.checkboxModel.sab">Sabado</label></th>
                 </tr>
             </thead>
             <tbody>
