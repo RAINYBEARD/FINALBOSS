@@ -25,15 +25,22 @@
                         <th>Abreviacion del Titulo</th>
                         <th>Acciones</th>
                     </tr>
+                    <tr>
+                        <td><input class="fullwidth" type="text" ng-model="f.matricula"/></td>
+                        <td><input class="fullwidth" type="text" ng-model="f.plan_Tit" /></td>
+                        <td><input class="fullwidth" type="text" ng-model="f.titulo_Id" /></td>
+                        <td><input class="fullwidth" type="text" ng-model="f.abr_Titulo" /></td>
+                        <td><button style="display:block; margin:auto;" ng-click="f = undefined">Limpiar</button></td>
+                    </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="alumno in vm.alumnos| orderBy: 'matricula'">
+                    <tr ng-repeat="alumno in vm.alumnos| orderBy: 'matricula'| filter:f">
                         <td>{{alumno.matricula}}</td>
                         <td>{{alumno.plan_Tit}}</td>
                         <td>{{alumno.titulo_Id}}</td>
                         <td>{{alumno.abr_Titulo}}</td>
                         <td>
-                            <input type="button" data-toggle="modal" data-target="#borrarModal" data-ng-click="vm.modalBorrar(alumno.matricula)" value="Borrar">
+                            <button data-toggle="modal" style="display:block; margin:auto;" data-target="#borrarModal" data-ng-click="vm.modalBorrar(alumno.matricula)">Borrar</button>
                         </td>
                     </tr>
                 </tbody>

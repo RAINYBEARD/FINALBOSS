@@ -109,6 +109,10 @@ button#buttonGroupEstadisticas.btn.btn-info.dropdown-toggle {
     margin: 0px;
 }
 
+.table .thead-dark tr td .fullwidth {
+    width: 100%;
+}
+
 .component-borders {
     border: 1px double black;
 }
@@ -170,5 +174,5 @@ button#buttonGroupEstadisticas.btn.btn-info.dropdown-toggle {
 
 .modal-content .modal-header {
     background-color: #007367;
-    color:#fff;
+    color: #fff;
 }
